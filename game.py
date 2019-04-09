@@ -119,10 +119,11 @@ tile_underground1_83 = pygame.image.load('tileImages/Tile (83).png').convert_alp
 
 tile_underground1_84= pygame.image.load('tileImages/Tile (84).png').convert_alpha()#passage top
 tile_underground1_85 = pygame.image.load('tileImages/Tile (85).png').convert_alpha()#passage
+tile_underground1_86 = pygame.image.load('tileImages/Tile (86).png').convert_alpha()
 
 ################################OVERWORLD
 
-tile_overworld1_0 = pygame.image.load('tileImages/GreenOverworld/Tile (0).png').convert_alpha()
+
 tile_overworld1_1 = pygame.image.load('tileImages/GreenOverworld/Tile (1).png').convert_alpha()#tile_87
 tile_overworld1_2 = pygame.image.load('tileImages/GreenOverworld/Tile (2).png').convert_alpha()
 tile_overworld1_3 = pygame.image.load('tileImages/GreenOverworld/Tile (3).png').convert_alpha()
@@ -1023,7 +1024,7 @@ class Player:
 
 
     def movement(self):
-        safeTiles = [66,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,33,34,35,36,37,38,80,81,82,83,85,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121]
+        safeTiles = [1,2,3,4,47,48,49,57,62,66,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,33,34,35,36,37,38,72,73,79,80,81,82,83,85,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121]
         if pressed[pygame.K_SPACE] and self.walkCounter == 0 and self.attackCounter == 0 and self.attackDelay == 0: #attack
             self.animateCounter = 0
             self.attackCounter = 8
@@ -1094,7 +1095,7 @@ class Player:
 
     def getY(self):
         #return int(self.y / 64)
-        return int((self.y + 63)/ 64)
+        return int((self.y + 55)/ 64)
 
     def getPos(self):
         return self.x, self.y
@@ -1455,6 +1456,7 @@ class Skeleton:
     def movement(self):
         safeTiles = [66,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,33,34,35,36,37,38,80,81,82,83,85,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121]
 
+
         BasicAI = random.randint(1,1000) #1-8 = actions
         #Left, Right, Up, Down#
         #Walk 1, Walk 3, Walk 3, Walk 4#
@@ -1543,7 +1545,7 @@ class Skeleton:
     
     def getY(self):
         #return int(self.y / 64)
-        return int((self.y + 63)/ 64)
+        return int((self.y + 55)/ 64)
 
         #print(playerAttack, self.Tile)
 ##########################################################################################
@@ -1558,31 +1560,16 @@ map = [
 56,56,56,56,56,56,64,56,56,56,55,7,84,7,53,56,59,51,51,51,
 7,6,7,6,7,7,67,7,6,7,8,11,85,11,8,7,50,51,51,51,
 11,9,11,9,11,11,67,11,9,11,12,15,16,15,12,11,50,51,51,51,
-21,21,21,21,21,21,69,21,21,21,21,21,1,79,4,21,70,70,50,51,
-21,21,21,21,21,21,46,21,21,21,21,21,70,69,5,21,71,71,50,51,
-21,21,21,21,21,21,43,21,21,21,21,21,71,70,12,21,66,16,50,51,
-21,21,21,21,21,21,25,21,21,21,21,21,16,71,16,1,68,2,63,51,
-21,21,21,21,21,21,25,21,21,21,21,21,21,66,21,1,68,2,63,51,
-21,21,21,21,21,21,46,21,21,21,21,21,21,67,21,31,69,41,50,51,
-21,21,21,21,21,21,43,21,21,21,21,21,21,67,21,43,32,44,50,51,
+15,16,15,16,15,15,69,15,16,15,16,21,21,21,16,15,53,54,59,51,
+21,21,21,21,21,21,70,21,21,21,21,21,21,21,21,21,70,70,50,51,
+21,21,21,21,21,21,46,21,21,21,21,21,21,21,21,21,71,71,50,51,
+21,21,21,21,21,21,43,21,21,21,21,21,21,21,21,21,16,16,50,51,
+21,21,21,21,21,21,25,21,21,21,21,21,21,66,21,21,21,21,50,51,
+21,21,21,21,21,21,46,21,21,21,21,21,21,67,21,21,21,21,50,51,
+21,21,21,21,21,21,43,21,21,21,21,21,21,67,21,21,21,21,50,51,
 48,48,48,48,48,48,48,48,48,48,48,48,48,65,48,48,48,48,61,51,
 51,51,51,51,51,51,51,51,51,51,51,51,51,51,51,51,51,51,51,51,
 ]
-
-#map = [
-#56,56,56,56,56,56,64,56,56,56,55, 7,84, 7,53,56,59,51,51,51,
-# 7, 6, 7, 6, 7, 7,67, 7, 6, 7, 8,11,85,11, 8, 7,50,51,51,51,
-#11, 9,11, 9,11,11,67,11, 9,11,12,15,16,15,12,11,50,51,51,51,
-#15,16,15,16,15,15,67,15,16,15,16,21,21,21,16,15,53,54,59,51,
-#21,21,21,21,21,21,69,21,21,21,21,21,21,21,21,21,70,70,50,51,
-#21,21,21,21,21,21,46,21,21,21,21,21,21,21,21,21,71,71,50,51,
-#21,21,21,21,21,21,43,21,21,21,21,21,21,21,21,21,16,16,50,51,
-#21,21,21,21,21,21,25,21,21,21,21,21,21,66,21,21,21,21,50,51,
-#21,21,21,21,21,21,46,21,21,21,21,21,21,67,21,21,21,21,50,51,
-#21,21,21,21,21,21,43,21,21,21,21,21,21,67,21,21,21,21,50,51,
-#48,48,48,48,48,48,48,48,48,48,48,48,48,65,48,48,48,48,61,51,
-#51,51,51,51,51,51,51,51,51,51,51,51,51,51,51,51,51,51,51,51,
-#]
 
 #map = [
 #97,121,97,97,97,97,121,97,90,91,120,120,91,91,91,91,91,91,91,91,
@@ -1610,14 +1597,18 @@ def draw_Tile(i,layer,type):
 
         if i == 0:
             screen.blit(tile_underground1_0,(counter * 64, counter2 * 64))
-        if i == 1:
-            screen.blit(tile_underground1_1,(counter * 64, counter2 * 64))
+        elif i == 1:
+            #screen.blit(tile_underground1_1,(counter * 64, counter2 * 64)) #overlay_tile
+            screen.blit(tile_underground1_21,(counter * 64, counter2 * 64))
         elif i == 2:
-            screen.blit(tile_underground1_2,(counter * 64, counter2 * 64))
+            #screen.blit(tile_underground1_2,(counter * 64, counter2 * 64)) #overlay_tile
+            screen.blit(tile_underground1_21,(counter * 64, counter2 * 64))
         elif i == 3:
-            screen.blit(tile_underground1_3,(counter * 64, counter2 * 64))
+            #screen.blit(tile_underground1_3,(counter * 64, counter2 * 64)) #overlay_tile
+            screen.blit(tile_underground1_21,(counter * 64, counter2 * 64))
         elif i == 4:
-            screen.blit(tile_underground1_4,(counter * 64, counter2 * 64))
+            #screen.blit(tile_underground1_4,(counter * 64, counter2 * 64)) #overlay_tile
+            screen.blit(tile_underground1_21,(counter * 64, counter2 * 64))
         elif i == 5:
             screen.blit(tile_underground1_5,(counter * 64, counter2 * 64))
         elif i == 6:
@@ -1708,11 +1699,14 @@ def draw_Tile(i,layer,type):
         elif i == 46:
             screen.blit(tile_underground1_46,(counter * 64, counter2 * 64))
         elif i == 47:
-            screen.blit(tile_underground1_47,(counter * 64, counter2 * 64))
+            #screen.blit(tile_underground1_47,(counter * 64, counter2 * 64)) #overlay_tile
+            screen.blit(tile_underground1_21,(counter * 64, counter2 * 64))
         elif i == 48:
-            screen.blit(tile_underground1_48,(counter * 64, counter2 * 64))
+            #screen.blit(tile_underground1_48,(counter * 64, counter2 * 64)) #overlay_tile
+            screen.blit(tile_underground1_21,(counter * 64, counter2 * 64))
         elif i == 49:
-            screen.blit(tile_underground1_49,(counter * 64, counter2 * 64))
+            #screen.blit(tile_underground1_49,(counter * 64, counter2 * 64)) #overlay_tile
+            screen.blit(tile_underground1_21,(counter * 64, counter2 * 64))
 
         elif i == 50:
             screen.blit(tile_underground1_50,(counter * 64, counter2 * 64))
@@ -1729,7 +1723,8 @@ def draw_Tile(i,layer,type):
         elif i == 56:
             screen.blit(tile_underground1_56,(counter * 64, counter2 * 64))
         elif i == 57:
-            screen.blit(tile_underground1_57,(counter * 64, counter2 * 64))
+            #screen.blit(tile_underground1_57,(counter * 64, counter2 * 64)) #overlay_tile
+            screen.blit(tile_underground1_21,(counter * 64, counter2 * 64))
         elif i == 58:
             screen.blit(tile_underground1_58,(counter * 64, counter2 * 64))
         elif i == 59:
@@ -1748,7 +1743,8 @@ def draw_Tile(i,layer,type):
         elif i == 65:
             screen.blit(tile_underground1_65,(counter * 64, counter2 * 64))
         elif i == 66:
-            screen.blit(tile_underground1_21,(counter * 64, counter2 * 64))  ##### Changed to 21 for visual overlay
+            #screen.blit(tile_underground1_66,(counter * 64, counter2 * 64))#overlay_tile
+            screen.blit(tile_underground1_21,(counter * 64, counter2 * 64))
         elif i == 67:
             screen.blit(tile_underground1_67,(counter * 64, counter2 * 64))
         elif i == 68:
@@ -1761,9 +1757,11 @@ def draw_Tile(i,layer,type):
         elif i == 71:
             screen.blit(tile_underground1_71,(counter * 64, counter2 * 64))
         elif i == 72:
-            screen.blit(tile_underground1_72,(counter * 64, counter2 * 64))
+            #screen.blit(tile_underground1_72,(counter * 64, counter2 * 64))#overlay_tile
+            screen.blit(tile_underground1_21,(counter * 64, counter2 * 64))
         elif i == 73:
-            screen.blit(tile_underground1_73,(counter * 64, counter2 * 64))
+            #screen.blit(tile_underground1_73,(counter * 64, counter2 * 64))#overlay_tile
+            screen.blit(tile_underground1_21,(counter * 64, counter2 * 64))
         elif i == 74:
             screen.blit(tile_underground1_74,(counter * 64, counter2 * 64))
         elif i == 75:
@@ -1775,7 +1773,8 @@ def draw_Tile(i,layer,type):
         elif i == 78:
             screen.blit(tile_underground1_78,(counter * 64, counter2 * 64))
         elif i == 79:
-            screen.blit(tile_underground1_79,(counter * 64, counter2 * 64))
+            #screen.blit(tile_underground1_79,(counter * 64, counter2 * 64))#overlay_tile
+            screen.blit(tile_underground1_21,(counter * 64, counter2 * 64))
 
         elif i == 80:
             screen.blit(tile_underground1_80,(counter * 64, counter2 * 64))
@@ -1790,12 +1789,11 @@ def draw_Tile(i,layer,type):
             screen.blit(tile_underground1_0,(counter * 64, counter2 * 64))  ##### Changed to 0 for visual overlay
         elif i == 85: #Passage Tile
             screen.blit(tile_underground1_85,(counter * 64, counter2 * 64))  
+        elif i == 86:
+            screen.blit(tile_underground1_86,(counter * 64, counter2 * 64))
 
     ######################################################
     #OVERWORLD#
-
-        elif i == 86:
-            screen.blit(tile_overworld1_0,(counter * 64, counter2 * 64))
 
         elif i == 87:
             screen.blit(tile_overworld1_1,(counter * 64, counter2 * 64))
@@ -1905,16 +1903,57 @@ def draw_Tile(i,layer,type):
 ###################
 
     elif type == 1:
+
+        if i == 1:
+            screen.blit(tile_underground1_1,(counter * 64, counter2 * 64))
+        elif i == 2:
+            screen.blit(tile_underground1_2,(counter * 64, counter2 * 64))
+        elif i == 3:
+            screen.blit(tile_underground1_3,(counter * 64, counter2 * 64))
+        elif i == 4:
+            screen.blit(tile_underground1_4,(counter * 64, counter2 * 64)) 
+
+        elif i == 47:
+            screen.blit(tile_underground1_47,(counter * 64, counter2 * 64))
+        elif i == 48:
+            screen.blit(tile_underground1_48,(counter * 64, counter2 * 64))
+        elif i == 49:
+            screen.blit(tile_underground1_49,(counter * 64, counter2 * 64))
         
-        if i == 50:
+        elif i == 50:
             screen.blit(tile_underground1_50,(counter * 64, counter2 * 64))
+        elif i == 52:
+            screen.blit(tile_underground1_52,(counter * 64, counter2 * 64))
+        elif i == 53:
+            screen.blit(tile_underground1_53,(counter * 64, counter2 * 64))
+        elif i == 55:
+            screen.blit(tile_underground1_55,(counter * 64, counter2 * 64))
+        elif i == 57:
+            screen.blit(tile_underground1_57,(counter * 64, counter2 * 64))
+        elif i == 62:
+            screen.blit(tile_underground1_62,(counter * 64, counter2 * 64))
         elif i == 66:
             screen.blit(tile_underground1_66,(counter * 64, counter2 * 64))
         elif i == 67:
             screen.blit(tile_underground1_67,(counter * 64, counter2 * 64))
         elif i == 69:
             screen.blit(tile_underground1_69,(counter * 64, counter2 * 64))
-        #Eventually add in more of the "wall" tiles here to make the game look better
+        elif i == 72:
+            screen.blit(tile_underground1_72,(counter * 64, counter2 * 64))
+        elif i == 73:
+            screen.blit(tile_underground1_73,(counter * 64, counter2 * 64))
+        elif i == 74:
+            screen.blit(tile_underground1_74,(counter * 64, counter2 * 64))
+        elif i == 75:
+            screen.blit(tile_underground1_75,(counter * 64, counter2 * 64))
+        elif i == 76:
+            screen.blit(tile_underground1_76,(counter * 64, counter2 * 64))
+        elif i == 77:
+            screen.blit(tile_underground1_77,(counter * 64, counter2 * 64))
+        elif i == 78:
+            screen.blit(tile_underground1_78,(counter * 64, counter2 * 64))
+        elif i == 79:
+            screen.blit(tile_underground1_79,(counter * 64, counter2 * 64))
 
 
 
