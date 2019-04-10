@@ -5,7 +5,10 @@ pygame.mixer.init()
 pygame.init()
 os.environ['SDL_VIDEO_WINDOW_POS'] = str(50) + "," + str(50)
 
-screen = pygame.display.set_mode((1280,720)) #640,448
+#screen = pygame.display.set_mode((1280,720)) #Standard
+
+screen = pygame.display.set_mode((1780,770)) #Tile_Map Editor
+
 clock = pygame.time.Clock()
 
 #
@@ -1059,6 +1062,10 @@ class Player:
             self.direction = 2
         elif pressed[pygame.K_LEFT] and self.walkCounter == 0 and self.attackCounter == 0:
             self.direction = 3
+        
+        if self.walkCounter == 32:
+            #17 animations; 32 tile pixels instead of 34! AH!
+            pass
 
         if self.walkCounter > 0:
             self.animate = 1
@@ -1073,7 +1080,8 @@ class Player:
                 self.Tile = self.Tile = int(((self.x - 32 + 64) /64) + (((self.y + 64)/ 64) * 20))
 
         if self.attackCounter == 8: #play slash sound.
-            slashSound.play()
+            #slashSound.play()
+            pass
 
         if self.attackCounter > 0:
             self.animate = 2
@@ -2006,6 +2014,7 @@ while playGame == True: #Main Menu
 
 ##########################################################################################
 
+    #Search1
     EnableMapEditor = True
     if EnableMapEditor == True:
         mousexy = pygame.mouse.get_pos()
@@ -2013,6 +2022,65 @@ while playGame == True: #Main Menu
         mousey = mousexy[1] / 64
     
         mouseTile = (int(mousex) + (int(mousey)* 20))
+
+        screen.blit(tile_underground1_1,(1290                 ,0))
+        screen.blit(tile_underground1_2,(1290 + 64 + 5        ,0))
+        screen.blit(tile_underground1_3,(1290 + (64 * 2) + 10 ,0))
+        screen.blit(tile_underground1_4,(1290 + (64 * 3) + 15 ,0))
+
+        screen.blit(tile_underground1_5,(1290                 , 64 + 5))
+        screen.blit(tile_underground1_6,(1290 + 64 + 5        , 64 + 5))
+        screen.blit(tile_underground1_7,(1290 + (64 * 2) + 10 , 64 + 5))
+        screen.blit(tile_underground1_8,(1290 + (64 * 3) + 15 , 64 + 5))
+
+        screen.blit(tile_underground1_9,(1290                  , (64 * 2) + 10))
+        screen.blit(tile_underground1_10,(1290 + 64 + 5        , (64 * 2) + 10))
+        screen.blit(tile_underground1_11,(1290 + (64 * 2) + 10 , (64 * 2) + 10))
+        screen.blit(tile_underground1_12,(1290 + (64 * 3) + 15 , (64 * 2) + 10))
+
+        screen.blit(tile_underground1_13,(1290                 , (64 * 3) + 15))
+        screen.blit(tile_underground1_14,(1290 + 64 + 5        , (64 * 3) + 15))
+        screen.blit(tile_underground1_15,(1290 + (64 * 2) + 10 , (64 * 3) + 15))
+        screen.blit(tile_underground1_16,(1290 + (64 * 3) + 15 , (64 * 3) + 15))
+
+        screen.blit(tile_underground1_17,(1290                 , (64 * 4) + 20))
+        screen.blit(tile_underground1_18,(1290 + 64 + 5        , (64 * 4) + 20))
+        screen.blit(tile_underground1_19,(1290 + (64 * 2) + 10 , (64 * 4) + 20))
+        screen.blit(tile_underground1_20,(1290 + (64 * 3) + 15 , (64 * 4) + 20))
+
+        screen.blit(tile_underground1_21,(1290                 , (64 * 5) + 25))
+        screen.blit(tile_underground1_22,(1290 + 64 + 5        , (64 * 5) + 25))
+        screen.blit(tile_underground1_23,(1290 + (64 * 2) + 10 , (64 * 5) + 25))
+        screen.blit(tile_underground1_24,(1290 + (64 * 3) + 15 , (64 * 5) + 25))
+
+        screen.blit(tile_underground1_25,(1290                 , (64 * 6) + 30))
+        screen.blit(tile_underground1_26,(1290 + 64 + 5        , (64 * 6) + 30))
+        screen.blit(tile_underground1_27,(1290 + (64 * 2) + 10 , (64 * 6) + 30))
+        screen.blit(tile_underground1_28,(1290 + (64 * 3) + 15 , (64 * 6) + 30))
+
+        screen.blit(tile_underground1_29,(1290                 , (64 * 7) + 35))
+        screen.blit(tile_underground1_33,(1290 + 64 + 5        , (64 * 7) + 35))
+        screen.blit(tile_underground1_34,(1290 + (64 * 2) + 10 , (64 * 7) + 35))
+        screen.blit(tile_underground1_35,(1290 + (64 * 3) + 15 , (64 * 7) + 35))
+
+        screen.blit(tile_underground1_36,(1290                 , (64 * 8) + 40))
+        screen.blit(tile_underground1_37,(1290 + 64 + 5        , (64 * 8) + 40))
+        screen.blit(tile_underground1_38,(1290 + (64 * 2) + 10 , (64 * 8) + 40))
+
+        screen.blit(tile_underground1_30,(1290                 , (64 * 9) + 45))
+        screen.blit(tile_underground1_31,(1290 + 64 + 5        , (64 * 9) + 45))
+        screen.blit(tile_underground1_32,(1290 + (64 * 2) + 10 , (64 * 9) + 45))
+
+        screen.blit(tile_underground1_42,(1290                 , (64 * 10) + 50))
+        screen.blit(tile_underground1_43,(1290 + 64 + 5        , (64 * 10) + 50))
+        screen.blit(tile_underground1_44,(1290 + (64 * 2) + 10 , (64 * 10) + 50))
+
+
+        ########SECOND ROW##
+        
+
+
+
 
         if pressed[pygame.K_RIGHT]:
             if map[mouseTile] < 121:
@@ -2059,6 +2127,7 @@ while playGame == True: #Main Menu
         
 ##########################################################################################
     if oneTime == True:
+
         sk = Skeleton(64 - 32,64 * 2,0)
         s1 = Skeleton((64 * 5) - 32,64 * 3,2)
         P = Player()
