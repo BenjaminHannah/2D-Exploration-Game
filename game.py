@@ -5,9 +5,9 @@ pygame.mixer.init()
 pygame.init()
 os.environ['SDL_VIDEO_WINDOW_POS'] = str(50) + "," + str(50)
 
-#screen = pygame.display.set_mode((1280,720)) #Standard
+screen = pygame.display.set_mode((1280,720)) #Standard
 
-screen = pygame.display.set_mode((1780,770)) #Tile_Map Editor
+#screen = pygame.display.set_mode((1780,920)) #Tile_Map Editor
 screen.fill((255, 255, 255))
 
 #Map Editor
@@ -695,7 +695,8 @@ class Player:
         self.rightBorder = [19,39,59,79,99,119,139,159,179,199,219]
         self.leftBorder =  [0,20,40,60,80,100,120,140,160,180,200]
         self.backBorder =  [20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39]
-        self.frontBorder = [200,201,202,203,204,205,206,207,208,209,210,211,212,213,214,215,216,217,218,219]
+        #self.frontBorder = [200,201,202,203,204,205,206,207,208,209,210,211,212,213,214,215,216,217,218,219]
+        self.frontBorder = []#this is so that you can exit down
 
         self.blinkCounter = 0
         self.blinking = False
@@ -1032,7 +1033,7 @@ class Player:
 
 
     def movement(self):
-        safeTiles = [1,2,3,4,47,48,49,57,62,66,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,33,34,35,36,37,38,72,73,79,80,81,82,83,85,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121]
+        safeTiles = [1,2,3,4,5,47,48,49,57,62,66,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,33,34,35,36,37,38,72,73,79,80,81,82,83,85,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121]
         if pressed[pygame.K_SPACE] and self.walkCounter == 0 and self.attackCounter == 0 and self.attackDelay == 0: #attack
             self.animateCounter = 0
             self.attackCounter = 8
@@ -1467,7 +1468,7 @@ class Skeleton:
                     self.attackedTile = self.Tile - 1
               
     def movement(self):
-        safeTiles = [1,2,3,4,47,48,49,57,62,66,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,33,34,35,36,37,38,72,73,79,80,81,82,83,85,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121]
+        safeTiles = [1,2,3,4,5,47,48,49,57,62,66,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,33,34,35,36,37,38,72,73,79,80,81,82,83,85,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121]
 
 
         BasicAI = random.randint(1,1000) #1-8 = actions
@@ -1570,17 +1571,17 @@ class Skeleton:
 newTile = 0
 
 map = [
-56,56,56,56,56,56,64,56,56,56,55,7,84,7,53,56,59,51,51,51,
-7,6,7,6,7,7,67,7,6,7,8,11,85,11,8,7,50,51,51,51,
-11,9,11,9,11,11,67,11,9,11,12,15,16,15,12,11,50,51,51,51,
-15,16,15,16,15,15,69,15,16,15,16,21,21,21,16,15,53,54,59,51,
-21,21,21,21,21,21,70,21,21,21,21,21,21,21,21,21,70,70,50,51,
-21,21,21,21,21,21,46,21,21,21,21,21,21,21,21,21,71,71,50,51,
-21,21,21,21,21,21,43,21,21,21,21,21,21,21,21,21,16,16,50,51,
-21,21,21,21,21,21,25,21,21,21,21,21,21,66,21,21,21,21,50,51,
-21,21,21,21,21,21,46,21,21,21,21,21,21,67,21,21,21,21,50,51,
-21,21,21,21,21,21,43,21,21,21,21,21,21,67,21,21,21,21,50,51,
-48,48,48,48,48,48,48,48,48,48,48,48,48,65,48,48,48,48,61,51,
+58,54,54,54,54,54,54,54,54,54,55,7,84,7,53,54,54,54,54,59,
+52,6,5,6,5,5,6,5,5,5,8,11,85,11,6,6,6,6,8,50,
+52,10,9,9,9,9,9,9,9,9,12,15,16,15,10,10,10,10,10,50,
+52,16,16,16,16,16,16,16,16,16,16,21,21,21,16,16,16,16,16,50,
+52,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,50,
+52,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,50,
+52,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,50,
+52,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,50,
+52,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,50,
+52,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,50,
+60,48,48,48,48,48,48,48,48,48,48,48,48,48,48,48,48,48,48,61,
 51,51,51,51,51,51,51,51,51,51,51,51,51,51,51,51,51,51,51,51,
 ]
 
@@ -2084,6 +2085,66 @@ while playGame == True: #Main Menu
         screen.blit(tile_underground1_43,(1290 + 64 + 5        , (64 * 10) + 50))
         screen.blit(tile_underground1_44,(1290 + (64 * 2) + 10 , (64 * 10) + 50))
 
+        screen.blit(tile_underground1_80,(1290                 , (64 * 11) + 55))
+        screen.blit(tile_underground1_81,(1290 + 64 + 5        , (64 * 11) + 55))
+        screen.blit(tile_underground1_82,(1290 + (64 * 2) + 10 , (64 * 11) + 55))
+        screen.blit(tile_underground1_83,(1290 + (64 * 3) + 15 , (64 * 11) + 55))
+
+
+        ### More tiles. (Column Next)
+
+        screen.blit(tile_underground1_39,(1576                 ,0))
+        screen.blit(tile_underground1_40,(1576 + 64 + 5        ,0))
+        screen.blit(tile_underground1_41,(1576 + (64 * 2) + 10 ,0))
+
+        screen.blit(tile_underground1_45,(1576                 ,64 + 5))
+        screen.blit(tile_underground1_46,(1576 + 64 + 5        ,64 + 5))
+        screen.blit(tile_underground1_47,(1576 + (64 * 2) + 10 ,64 + 5))
+
+        screen.blit(tile_underground1_48,(1576                  , (64 * 2) + 10))
+        screen.blit(tile_underground1_49,(1576 + 64 + 5        , (64 * 2) + 10))
+        screen.blit(tile_underground1_50,(1576 + (64 * 2) + 10 , (64 * 2) + 10))
+
+        screen.blit(tile_underground1_51,(1576                 , (64 * 3) + 15))
+        screen.blit(tile_underground1_52,(1576 + 64 + 5        , (64 * 3) + 15))
+        screen.blit(tile_underground1_53,(1576 + (64 * 2) + 10 , (64 * 3) + 15))
+
+        screen.blit(tile_underground1_54,(1576                 , (64 * 4) + 20))
+        screen.blit(tile_underground1_55,(1576 + 64 + 5        , (64 * 4) + 20))
+        screen.blit(tile_underground1_56,(1576 + (64 * 2) + 10 , (64 * 4) + 20))
+
+        screen.blit(tile_underground1_57,(1576                 , (64 * 5) + 25))
+        screen.blit(tile_underground1_58,(1576 + 64 + 5        , (64 * 5) + 25))
+        screen.blit(tile_underground1_59,(1576 + (64 * 2) + 10 , (64 * 5) + 25))
+
+        screen.blit(tile_underground1_60,(1576                 , (64 * 6) + 30))
+        screen.blit(tile_underground1_61,(1576 + 64 + 5        , (64 * 6) + 30))
+        screen.blit(tile_underground1_62,(1576 + (64 * 2) + 10 , (64 * 6) + 30))
+
+        screen.blit(tile_underground1_63,(1576                 , (64 * 7) + 35))
+        screen.blit(tile_underground1_64,(1576 + 64 + 5        , (64 * 7) + 35))
+        screen.blit(tile_underground1_65,(1576 + (64 * 2) + 10 , (64 * 7) + 35))
+
+        screen.blit(tile_underground1_66,(1576                 , (64 * 8) + 40))
+        screen.blit(tile_underground1_67,(1576 + 64 + 5        , (64 * 8) + 40))
+        screen.blit(tile_underground1_68,(1576 + (64 * 2) + 10 , (64 * 8) + 40))
+
+        screen.blit(tile_underground1_69,(1576                 , (64 * 9) + 45))
+        screen.blit(tile_underground1_70,(1576 + 64 + 5        , (64 * 9) + 45))
+        screen.blit(tile_underground1_71,(1576 + (64 * 2) + 10 , (64 * 9) + 45))
+
+        screen.blit(tile_underground1_72,(1576                 , (64 * 10) + 50))
+        screen.blit(tile_underground1_73,(1576 + 64 + 5        , (64 * 10) + 50))
+        screen.blit(tile_underground1_74,(1576 + (64 * 2) + 10 , (64 * 10) + 50))
+
+        screen.blit(tile_underground1_75,(1576                 , (64 * 11) + 55))
+        screen.blit(tile_underground1_76,(1576 + 64 + 5        , (64 * 11) + 55))
+        screen.blit(tile_underground1_77,(1576 + (64 * 2) + 10 , (64 * 11) + 55))
+
+        screen.blit(tile_underground1_78,(1576                 , (64 * 12) + 60))
+        screen.blit(tile_underground1_79,(1576 + 64 + 5        , (64 * 12) + 60))
+        screen.blit(tile_underground1_84,(1576 + (64 * 2) + 10 , (64 * 12) + 60))#jump
+
 
         if pygame.mouse.get_pressed()[0]:
             if mousexy[0] > 1280 and mousexy[0] < 1566: ##using these to help with less "if" statements (chunking them out)
@@ -2192,29 +2253,127 @@ while playGame == True: #Main Menu
                     elif mousexy[0] > 1428 and mousexy[0] < 1497:
                         selectedTile = 44
 
-            elif mousexy[0] > 1566 and mousexy[0] < 1780: ##using these to help with less "if" statements (chunking them out)
-                selectedTile = 0
+            elif mousexy[0] > 1566 and mousexy[0] < 1780: ##using these to help with less "if" statements (chunking them out) ######################## *1*
+                if mousexy[1] > 0 and mousexy[1] < 69:#coulmn 1
+                    if mousexy[0] > 1290 + 286 and mousexy[0] < 1359  + 286:
+                        selectedTile = 39
+                    elif mousexy[0] > 1359 + 286 and mousexy[0] < 1428 + 286:
+                        selectedTile = 40
+                    elif mousexy[0] > 1428 + 286 and mousexy[0] < 1497 + 286:
+                        selectedTile = 41
 
-            elif mousexy[0] < 1280 and mousexy[1] < 770:
+                elif mousexy[1] > 69 and mousexy[1] < 143: #column 2
+                    if mousexy[0] > 1290 + 286 and mousexy[0] < 1359 + 286:
+                        selectedTile = 45
+                    elif mousexy[0] > 1359 + 286 and mousexy[0] < 1428 + 286:
+                        selectedTile = 46
+                    elif mousexy[0] > 1428 + 286 and mousexy[0] < 1497+ 286:
+                        selectedTile = 47
+
+                elif mousexy[1] > 143 and mousexy[1] < 212: #column 3
+                    if mousexy[0] > 1290 + 286 and mousexy[0] < 1359 + 286:
+                        selectedTile = 48
+                    elif mousexy[0] > 1359 + 286 and mousexy[0] < 1428+ 286:
+                        selectedTile = 49
+                    elif mousexy[0] > 1428 + 286 and mousexy[0] < 1497+ 286:
+                        selectedTile = 50
+
+                elif mousexy[1] > 212 and mousexy[1] < 281: #column 4
+                    if mousexy[0] > 1290 + 286 and mousexy[0] < 1359 + 286:
+                        selectedTile = 51
+                    elif mousexy[0] > 1359 + 286 and mousexy[0] < 1428 + 286:
+                        selectedTile = 52
+                    elif mousexy[0] > 1428 + 286 and mousexy[0] < 1497 + 286:
+                        selectedTile = 53
+
+                elif mousexy[1] > 281 and mousexy[1] < 350: #column 5
+                    if mousexy[0] > 1290 + 286 and mousexy[0] < 1359 + 286:
+                        selectedTile = 54
+                    elif mousexy[0] > 1359 + 286 and mousexy[0] < 1428 + 286:
+                        selectedTile = 55
+                    elif mousexy[0] > 1428 + 286 and mousexy[0] < 1497 + 286:
+                        selectedTile = 56
+
+                elif mousexy[1] > 350 and mousexy[1] < 419: #column 6
+                    if mousexy[0] > 1290 + 286 and mousexy[0] < 1359 + 286:
+                        selectedTile = 57
+                    elif mousexy[0] > 1359 + 286 and mousexy[0] < 1428 + 286:
+                        selectedTile = 58
+                    elif mousexy[0] > 1428 + 286 and mousexy[0] < 1497 + 286:
+                        selectedTile = 59
+
+                elif mousexy[1] > 419 and mousexy[1] < 488: #column 7
+                    if mousexy[0] > 1290 + 286 and mousexy[0] < 1359 + 286:
+                        selectedTile = 60
+                    elif mousexy[0] > 1359 + 286 and mousexy[0] < 1428 + 286:
+                        selectedTile = 61
+                    elif mousexy[0] > 1428 + 286 and mousexy[0] < 1497 + 286:
+                        selectedTile = 62
+
+                elif mousexy[1] > 488 and mousexy[1] < 577: #column 8
+                    if mousexy[0] > 1290 + 286 and mousexy[0] < 1359 + 286:
+                        selectedTile = 63
+                    elif mousexy[0] > 1359 + 286 and mousexy[0] < 1428 + 286:
+                        selectedTile = 64
+                    elif mousexy[0] > 1428 + 286 and mousexy[0] < 1497 + 286:
+                        selectedTile = 65
+
+                elif mousexy[1] > 577 and mousexy[1] < 626: #column 9
+                    if mousexy[0] > 1290 + 286 and mousexy[0] < 1359 + 286:
+                        selectedTile = 66
+                    elif mousexy[0] > 1359 + 286 and mousexy[0] < 1428 + 286:
+                        selectedTile = 67
+                    elif mousexy[0] > 1428 + 286 and mousexy[0] < 1497 + 286:
+                        selectedTile = 68
+
+                elif mousexy[1] > 626 and mousexy[1] < 695: #column 10
+                    if mousexy[0] > 1290 + 286 and mousexy[0] < 1359 + 286:
+                        selectedTile = 69
+                    elif mousexy[0] > 1359 + 286 and mousexy[0] < 1428 + 286:
+                        selectedTile = 70
+                    elif mousexy[0] > 1428 + 286 and mousexy[0] < 1497 + 286:
+                        selectedTile = 71
+
+                elif mousexy[1] > 695 and mousexy[1] < 764: #column 11
+                    if mousexy[0] > 1290 + 286 and mousexy[0] < 1359 + 286:
+                        selectedTile = 72
+                    elif mousexy[0] > 1359 + 286 and mousexy[0] < 1428 + 286:
+                        selectedTile = 73
+                    elif mousexy[0] > 1428 + 286 and mousexy[0] < 1497 + 286:
+                        selectedTile = 74
+
+                elif mousexy[1] > 764 and mousexy[1] < 833: #column 12
+                    if mousexy[0] > 1290 + 286 and mousexy[0] < 1359 + 286:
+                        selectedTile = 75
+                    elif mousexy[0] > 1359 + 286 and mousexy[0] < 1428 + 286:
+                        selectedTile = 76
+                    elif mousexy[0] > 1428 + 286 and mousexy[0] < 1497 + 286:
+                        selectedTile = 77
+
+                elif mousexy[1] > 833 and mousexy[1] < 902: #column 13
+                    if mousexy[0] > 1290 + 286 and mousexy[0] < 1359 + 286:
+                        selectedTile = 78
+                    elif mousexy[0] > 1359 + 286 and mousexy[0] < 1428 + 286:
+                        selectedTile = 79
+                    elif mousexy[0] > 1428 + 286 and mousexy[0] < 1497 + 286:
+                        selectedTile = 84
+
+            elif mousexy[0] < 1280 and mousexy[1] < 920:
                 try:
                     map[mouseTile] = selectedTile
                 except:
                     pass
 
+        #Old Method of changing Tiles
+        if pressed[pygame.K_6]:
+            if map[mouseTile] < 121:
+                map[mouseTile] = map[mouseTile] + 1
+                pygame.time.delay(100)
 
-
-
-
-        ##Old Method of changing Tiles
-        #if pressed[pygame.K_RIGHT]:
-        #    if map[mouseTile] < 121:
-        #        map[mouseTile] = map[mouseTile] + 1
-        #        pygame.time.delay(100)
-
-        #elif pressed[pygame.K_LEFT]:
-        #    if map[mouseTile] > 0:
-        #        map[mouseTile] = map[mouseTile] - 1
-        #        pygame.time.delay(100)
+        elif pressed[pygame.K_4]:
+            if map[mouseTile] > 0:
+                map[mouseTile] = map[mouseTile] - 1
+                pygame.time.delay(100)
 
 
 #SAVE FUNCTION#
@@ -2254,7 +2413,7 @@ while playGame == True: #Main Menu
 ##########################################################################################
     if oneTime == True:
 
-        sk = Skeleton(64 - 32,64 * 2,0)
+        sk = Skeleton((64 * 8) - 32,64 * 2,0)
         s1 = Skeleton((64 * 5) - 32,64 * 3,2)
         P = Player()
         
