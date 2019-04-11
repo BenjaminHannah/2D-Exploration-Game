@@ -8,6 +8,10 @@ os.environ['SDL_VIDEO_WINDOW_POS'] = str(50) + "," + str(50)
 #screen = pygame.display.set_mode((1280,720)) #Standard
 
 screen = pygame.display.set_mode((1780,770)) #Tile_Map Editor
+screen.fill((255, 255, 255))
+
+#Map Editor
+selectedTile = 0
 
 clock = pygame.time.Clock()
 
@@ -120,12 +124,13 @@ tile_underground1_81 = pygame.image.load('tileImages/Tile (81).png').convert_alp
 tile_underground1_82 = pygame.image.load('tileImages/Tile (82).png').convert_alpha()
 tile_underground1_83 = pygame.image.load('tileImages/Tile (83).png').convert_alpha()
 
-tile_underground1_84= pygame.image.load('tileImages/Tile (84).png').convert_alpha()#passage top
+tile_underground1_84 = pygame.image.load('tileImages/Tile (84).png').convert_alpha()#passage top
 tile_underground1_85 = pygame.image.load('tileImages/Tile (85).png').convert_alpha()#passage
 tile_underground1_86 = pygame.image.load('tileImages/Tile (86).png').convert_alpha()
 
-################################OVERWORLD
+tile_underground1_87 = pygame.image.load('tileImages/Tile (87).png').convert_alpha() #unique tile for underlay of transparent walls
 
+################################OVERWORLD
 
 tile_overworld1_1 = pygame.image.load('tileImages/GreenOverworld/Tile (1).png').convert_alpha()#tile_87
 tile_overworld1_2 = pygame.image.load('tileImages/GreenOverworld/Tile (2).png').convert_alpha()
@@ -1462,7 +1467,7 @@ class Skeleton:
                     self.attackedTile = self.Tile - 1
               
     def movement(self):
-        safeTiles = [66,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,33,34,35,36,37,38,80,81,82,83,85,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121]
+        safeTiles = [1,2,3,4,47,48,49,57,62,66,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,33,34,35,36,37,38,72,73,79,80,81,82,83,85,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121]
 
 
         BasicAI = random.randint(1,1000) #1-8 = actions
@@ -1607,16 +1612,19 @@ def draw_Tile(i,layer,type):
             screen.blit(tile_underground1_0,(counter * 64, counter2 * 64))
         elif i == 1:
             #screen.blit(tile_underground1_1,(counter * 64, counter2 * 64)) #overlay_tile
-            screen.blit(tile_underground1_21,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_87,(counter * 64, counter2 * 64))#87 is a unique tile used for the underlay of transparent walls.
+            #screen.blit(tile_underground1_21,(counter * 64, counter2 * 64))
         elif i == 2:
             #screen.blit(tile_underground1_2,(counter * 64, counter2 * 64)) #overlay_tile
-            screen.blit(tile_underground1_21,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_87,(counter * 64, counter2 * 64))#87 is a unique tile used for the underlay of transparent walls.
+            #screen.blit(tile_underground1_21,(counter * 64, counter2 * 64))
         elif i == 3:
             #screen.blit(tile_underground1_3,(counter * 64, counter2 * 64)) #overlay_tile
-            screen.blit(tile_underground1_21,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_87,(counter * 64, counter2 * 64))#87 is a unique tile used for the underlay of transparent walls.
+            #screen.blit(tile_underground1_21,(counter * 64, counter2 * 64))
         elif i == 4:
             #screen.blit(tile_underground1_4,(counter * 64, counter2 * 64)) #overlay_tile
-            screen.blit(tile_underground1_21,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_87,(counter * 64, counter2 * 64))#87 is a unique tile used for the underlay of transparent walls.
         elif i == 5:
             screen.blit(tile_underground1_5,(counter * 64, counter2 * 64))
         elif i == 6:
@@ -1710,8 +1718,9 @@ def draw_Tile(i,layer,type):
             #screen.blit(tile_underground1_47,(counter * 64, counter2 * 64)) #overlay_tile
             screen.blit(tile_underground1_21,(counter * 64, counter2 * 64))
         elif i == 48:
+            screen.blit(tile_underground1_87,(counter * 64, counter2 * 64))#87 is a unique tile used for the underlay of transparent walls.
             #screen.blit(tile_underground1_48,(counter * 64, counter2 * 64)) #overlay_tile
-            screen.blit(tile_underground1_21,(counter * 64, counter2 * 64))
+            #screen.blit(tile_underground1_21,(counter * 64, counter2 * 64))
         elif i == 49:
             #screen.blit(tile_underground1_49,(counter * 64, counter2 * 64)) #overlay_tile
             screen.blit(tile_underground1_21,(counter * 64, counter2 * 64))
@@ -1751,8 +1760,8 @@ def draw_Tile(i,layer,type):
         elif i == 65:
             screen.blit(tile_underground1_65,(counter * 64, counter2 * 64))
         elif i == 66:
+            screen.blit(tile_underground1_87,(counter * 64, counter2 * 64))#87 is a unique tile used for the underlay of transparent walls.
             #screen.blit(tile_underground1_66,(counter * 64, counter2 * 64))#overlay_tile
-            screen.blit(tile_underground1_21,(counter * 64, counter2 * 64))
         elif i == 67:
             screen.blit(tile_underground1_67,(counter * 64, counter2 * 64))
         elif i == 68:
@@ -1781,8 +1790,8 @@ def draw_Tile(i,layer,type):
         elif i == 78:
             screen.blit(tile_underground1_78,(counter * 64, counter2 * 64))
         elif i == 79:
-            #screen.blit(tile_underground1_79,(counter * 64, counter2 * 64))#overlay_tile
-            screen.blit(tile_underground1_21,(counter * 64, counter2 * 64))
+            #screen.blit(tile_underground1_21,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_79,(counter * 64, counter2 * 64))#overlay_tile
 
         elif i == 80:
             screen.blit(tile_underground1_80,(counter * 64, counter2 * 64))
@@ -1919,7 +1928,9 @@ def draw_Tile(i,layer,type):
         elif i == 3:
             screen.blit(tile_underground1_3,(counter * 64, counter2 * 64))
         elif i == 4:
-            screen.blit(tile_underground1_4,(counter * 64, counter2 * 64)) 
+            screen.blit(tile_underground1_4,(counter * 64, counter2 * 64))
+        elif i == 5:
+            screen.blit(tile_underground1_5,(counter * 64, counter2 * 64))
 
         elif i == 47:
             screen.blit(tile_underground1_47,(counter * 64, counter2 * 64))
@@ -1962,8 +1973,6 @@ def draw_Tile(i,layer,type):
             screen.blit(tile_underground1_78,(counter * 64, counter2 * 64))
         elif i == 79:
             screen.blit(tile_underground1_79,(counter * 64, counter2 * 64))
-
-
 
         elif i == 84: #Passage Tile
             screen.blit(tile_underground1_84,(counter * 64, counter2 * 64)) 
@@ -2076,22 +2085,139 @@ while playGame == True: #Main Menu
         screen.blit(tile_underground1_44,(1290 + (64 * 2) + 10 , (64 * 10) + 50))
 
 
-        ########SECOND ROW##
-        
+        if pygame.mouse.get_pressed()[0]:
+            if mousexy[0] > 1280 and mousexy[0] < 1566: ##using these to help with less "if" statements (chunking them out)
+                if mousexy[1] > 0 and mousexy[1] < 69:#coulmn 1
+                    if mousexy[0] > 1290 and mousexy[0] < 1359:
+                        selectedTile = 1
+                    elif mousexy[0] > 1359 and mousexy[0] < 1428:
+                        selectedTile = 2
+                    elif mousexy[0] > 1428 and mousexy[0] < 1497:
+                        selectedTile = 3
+                    elif mousexy[0] > 1497 and mousexy[0] < 1566:
+                        selectedTile = 4
+
+                elif mousexy[1] > 69 and mousexy[1] < 143: #column 2
+                    if mousexy[0] > 1290 and mousexy[0] < 1359:
+                        selectedTile = 5
+                    elif mousexy[0] > 1359 and mousexy[0] < 1428:
+                        selectedTile = 6
+                    elif mousexy[0] > 1428 and mousexy[0] < 1497:
+                        selectedTile = 7
+                    elif mousexy[0] > 1497 and mousexy[0] < 1566:
+                        selectedTile = 8
+
+                elif mousexy[1] > 143 and mousexy[1] < 212: #column 3
+                    if mousexy[0] > 1290 and mousexy[0] < 1359:
+                        selectedTile = 9
+                    elif mousexy[0] > 1359 and mousexy[0] < 1428:
+                        selectedTile = 10
+                    elif mousexy[0] > 1428 and mousexy[0] < 1497:
+                        selectedTile = 11
+                    elif mousexy[0] > 1497 and mousexy[0] < 1566:
+                        selectedTile = 12
+
+                elif mousexy[1] > 212 and mousexy[1] < 281: #column 4
+                    if mousexy[0] > 1290 and mousexy[0] < 1359:
+                        selectedTile = 13
+                    elif mousexy[0] > 1359 and mousexy[0] < 1428:
+                        selectedTile = 14
+                    elif mousexy[0] > 1428 and mousexy[0] < 1497:
+                        selectedTile = 15
+                    elif mousexy[0] > 1497 and mousexy[0] < 1566:
+                        selectedTile = 16
+
+                elif mousexy[1] > 281 and mousexy[1] < 350: #column 5
+                    if mousexy[0] > 1290 and mousexy[0] < 1359:
+                        selectedTile = 17
+                    elif mousexy[0] > 1359 and mousexy[0] < 1428:
+                        selectedTile = 18
+                    elif mousexy[0] > 1428 and mousexy[0] < 1497:
+                        selectedTile = 19
+                    elif mousexy[0] > 1497 and mousexy[0] < 1566:
+                        selectedTile = 20
+
+                elif mousexy[1] > 350 and mousexy[1] < 419: #column 6
+                    if mousexy[0] > 1290 and mousexy[0] < 1359:
+                        selectedTile = 21
+                    elif mousexy[0] > 1359 and mousexy[0] < 1428:
+                        selectedTile = 22
+                    elif mousexy[0] > 1428 and mousexy[0] < 1497:
+                        selectedTile = 23
+                    elif mousexy[0] > 1497 and mousexy[0] < 1566:
+                        selectedTile = 24
+
+                elif mousexy[1] > 419 and mousexy[1] < 488: #column 7
+                    if mousexy[0] > 1290 and mousexy[0] < 1359:
+                        selectedTile = 25
+                    elif mousexy[0] > 1359 and mousexy[0] < 1428:
+                        selectedTile = 26
+                    elif mousexy[0] > 1428 and mousexy[0] < 1497:
+                        selectedTile = 27
+                    elif mousexy[0] > 1497 and mousexy[0] < 1566:
+                        selectedTile = 28
+
+                elif mousexy[1] > 488 and mousexy[1] < 577: #column 8
+                    if mousexy[0] > 1290 and mousexy[0] < 1359:
+                        selectedTile = 29
+                    elif mousexy[0] > 1359 and mousexy[0] < 1428:
+                        selectedTile = 33
+                    elif mousexy[0] > 1428 and mousexy[0] < 1497:
+                        selectedTile = 34
+                    elif mousexy[0] > 1497 and mousexy[0] < 1566:
+                        selectedTile = 35
+                    
+
+                elif mousexy[1] > 577 and mousexy[1] < 626: #column 9
+                    if mousexy[0] > 1290 and mousexy[0] < 1359:
+                        selectedTile = 36
+                    elif mousexy[0] > 1359 and mousexy[0] < 1428:
+                        selectedTile = 37
+                    elif mousexy[0] > 1428 and mousexy[0] < 1497:
+                        selectedTile = 38
+
+                elif mousexy[1] > 626 and mousexy[1] < 695: #column 10
+                    if mousexy[0] > 1290 and mousexy[0] < 1359:
+                        selectedTile = 30
+                    elif mousexy[0] > 1359 and mousexy[0] < 1428:
+                        selectedTile = 31
+                    elif mousexy[0] > 1428 and mousexy[0] < 1497:
+                        selectedTile = 32
+
+                elif mousexy[1] > 695 and mousexy[1] < 764: #column 11
+                    if mousexy[0] > 1290 and mousexy[0] < 1359:
+                        selectedTile = 42
+                    elif mousexy[0] > 1359 and mousexy[0] < 1428:
+                        selectedTile = 43
+                    elif mousexy[0] > 1428 and mousexy[0] < 1497:
+                        selectedTile = 44
+
+            elif mousexy[0] > 1566 and mousexy[0] < 1780: ##using these to help with less "if" statements (chunking them out)
+                selectedTile = 0
+
+            elif mousexy[0] < 1280 and mousexy[1] < 770:
+                try:
+                    map[mouseTile] = selectedTile
+                except:
+                    pass
 
 
 
 
-        if pressed[pygame.K_RIGHT]:
-            if map[mouseTile] < 121:
-                map[mouseTile] = map[mouseTile] + 1
-                pygame.time.delay(100)
 
-        elif pressed[pygame.K_LEFT]:
-            if map[mouseTile] > 0:
-                map[mouseTile] = map[mouseTile] - 1
-                pygame.time.delay(100)
+        ##Old Method of changing Tiles
+        #if pressed[pygame.K_RIGHT]:
+        #    if map[mouseTile] < 121:
+        #        map[mouseTile] = map[mouseTile] + 1
+        #        pygame.time.delay(100)
 
+        #elif pressed[pygame.K_LEFT]:
+        #    if map[mouseTile] > 0:
+        #        map[mouseTile] = map[mouseTile] - 1
+        #        pygame.time.delay(100)
+
+
+#SAVE FUNCTION#
         if (pressed[pygame.K_LCTRL] or pressed[pygame.K_RCTRL])  and pressed[pygame.K_s]:
             text_file = open("editor.txt","w")
 
@@ -2337,12 +2463,17 @@ while playGame == True: #Main Menu
     for i in range(20):
         draw_Tile(i,10,1)
 
+    #DRAW UNDERLAYER? Overlay? (all the comments may be backwards for the overlay underlay ^
+    for i in range(20):
+        draw_Tile(i,11,1)
+
 ##########################################
 
     playerPos = P.getPos()
     playerX = playerPos[0]
     playerY = playerPos[1]
 
+    #Darkness layer looks good but is very laggy...
     #if darknessCounter >= 0 and darknessCounter < 5: screen.blit(darkness000,(playerX + 64 - 1280,playerY + 64 - 720))
     #elif darknessCounter >= 5 and darknessCounter < 10: screen.blit(darkness001,(playerX + 64 - 1280,playerY + 64 - 720))
     #elif darknessCounter >= 10 and darknessCounter < 15: screen.blit(darkness002,(playerX + 64 - 1280,playerY + 64 - 720))
