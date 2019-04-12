@@ -5,9 +5,11 @@ pygame.mixer.init()
 pygame.init()
 os.environ['SDL_VIDEO_WINDOW_POS'] = str(50) + "," + str(50)
 
-screen = pygame.display.set_mode((1280,720)) #Standard
+#screen = pygame.display.set_mode((1280,720)) #Standard
 
-#screen = pygame.display.set_mode((1780,920)) #Tile_Map Editor
+screen = pygame.display.set_mode((1780,920)) #Tile_Map Editor
+#screen2 = pygame.surface((1780,920))
+
 screen.fill((255, 255, 255))
 
 #Map Editor
@@ -423,6 +425,9 @@ leftSlashing_005 = pygame.image.load('playerImages/Left - Slashing_005.png').con
 leftSlashing_006 = pygame.image.load('playerImages/Left - Slashing_006.png').convert_alpha()
 leftSlashing_007 = pygame.image.load('playerImages/Left - Slashing_007.png').convert_alpha()
 leftSlashing_008 = pygame.image.load('playerImages/Left - Slashing_008.png').convert_alpha()
+
+frontFishing_000 = pygame.image.load('playerImages/Front - Fishing_000.png').convert_alpha()
+fishingLine_000 = pygame.image.load('hudImages/fishingLine_000.png').convert_alpha()
 ##########################################################################################
 
 SfrontIdle_000 = pygame.image.load('playerImages2/Front - Idle_000.png').convert_alpha()
@@ -687,8 +692,8 @@ class Player:
         self.walkCounter = 0
         self.attackCounter = 0
 
-        self.x = (64 * 4 )-32
-        self.y = 64 * 5
+        self.x = (64 * 9 )-32
+        self.y = 64 * 3
         self.Tile = self.Tile = int(((self.x - 32 + 64) /64) + (((self.y + 64)/ 64) * 20)) #23
         self.attackedTile = -1 #out of map
 
@@ -701,6 +706,9 @@ class Player:
         self.blinkCounter = 0
         self.blinking = False
 
+        self.fishing = True
+        self.fishing_cast = False
+
     def draw(self):
         #
         #@self change the way that you do "blinking"
@@ -711,7 +719,10 @@ class Player:
         #print(self.Tile, self.attackedTile)
         screen.blit(Player_Shadow_000,(self.x,self.y))#shadow
 
-        if self.direction == 0: #Front
+        if self.fishing_cast == True:
+                screen.blit(frontFishing_000,(self.x,self.y))
+
+        elif self.direction == 0: #Front
 
             if self.animate == 0: #front Idle
                 if self.blinking == False:#front Idle
@@ -1034,12 +1045,8 @@ class Player:
 
     def movement(self):
         safeTiles = [1,2,3,4,5,47,48,49,57,62,66,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,33,34,35,36,37,38,72,73,79,80,81,82,83,85,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121]
-        if pressed[pygame.K_SPACE] and self.walkCounter == 0 and self.attackCounter == 0 and self.attackDelay == 0: #attack
-            self.animateCounter = 0
-            self.attackCounter = 8
-            self.attackDelay = 15
     
-        elif pressed[pygame.K_s] and self.walkCounter == 0 and self.attackCounter == 0:
+        if pressed[pygame.K_s] and self.walkCounter == 0 and self.attackCounter == 0:
             self.direction = 0
             if map[self.Tile + 20] in safeTiles and self.Tile not in self.frontBorder:
                 self.walkCounter = 32
@@ -1059,6 +1066,21 @@ class Player:
             if map[self.Tile - 1] in safeTiles and self.Tile not in self.leftBorder:
                 self.walkCounter = 32
     
+        elif pressed[pygame.K_SPACE] and self.walkCounter == 0 and self.attackCounter == 0 and self.attackDelay == 0 and self.fishing == True: #fishing
+            if self.fishing_cast == True:
+                self.fishing_cast = False
+                pygame.time.delay(100)###################not good practice. (remove later)
+
+            elif self.fishing_cast == False:
+                self.fishing_cast = True
+                pygame.time.delay(100)###################not good practice. (remove later)
+                
+        elif pressed[pygame.K_SPACE] and self.walkCounter == 0 and self.attackCounter == 0 and self.attackDelay == 0: #attack
+            self.animateCounter = 0
+            self.attackCounter = 8
+            self.attackDelay = 15
+            print ("Slash!!")
+
         #Face different Directions
         elif pressed[pygame.K_DOWN] and self.walkCounter == 0 and self.attackCounter == 0:
             self.direction = 0
@@ -1106,6 +1128,9 @@ class Player:
 
     def getAttack(self):
         return self.attackedTile
+
+    def getFishing_cast(self):
+        return self.fishing_cast
 
     def getY(self):
         #return int(self.y / 64)
@@ -1571,18 +1596,18 @@ class Skeleton:
 newTile = 0
 
 map = [
-58,54,54,54,54,54,54,54,54,54,55,7,84,7,53,54,54,54,54,59,
-52,6,5,6,5,5,6,5,5,5,8,11,85,11,6,6,6,6,8,50,
-52,10,9,9,9,9,9,9,9,9,12,15,16,15,10,10,10,10,10,50,
-52,16,16,16,16,16,16,16,16,16,16,21,21,21,16,16,16,16,16,50,
-52,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,50,
-52,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,50,
-52,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,50,
-52,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,50,
-52,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,50,
-52,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,50,
-60,48,48,48,48,48,48,48,48,48,48,48,48,48,48,48,48,48,48,61,
-51,51,51,51,51,51,51,51,51,51,51,51,51,51,51,51,51,51,51,51,
+51,51,51,51,51,51,51,58,56,54,56,59,51,51,51,51,51,51,51,51,
+51,51,51,51,51,51,51,52,7,84,7,50,51,51,51,51,51,51,51,51,
+51,51,51,51,51,51,51,52,11,85,11,50,51,51,51,51,51,51,51,51,
+51,51,51,51,51,51,51,52,15,16,15,50,51,51,51,51,51,51,51,51,
+51,51,51,51,51,51,51,52,21,21,21,50,51,51,51,51,51,51,51,51,
+51,51,51,51,51,51,58,55,32,32,32,53,59,51,51,51,51,51,51,51,
+51,51,51,51,51,51,52,6,44,44,44,6,50,51,51,51,51,51,51,51,
+51,51,51,51,51,51,52,46,44,44,44,46,50,51,51,51,51,51,51,51,
+51,51,51,51,51,51,52,44,44,44,44,44,50,51,51,51,51,51,51,51,
+51,51,51,51,51,51,52,44,44,44,44,44,50,51,51,51,51,51,51,51,
+51,51,51,51,51,51,60,48,49,44,47,48,61,51,51,51,51,51,51,51,
+51,51,51,51,51,51,51,51,52,44,50,51,51,51,51,51,51,51,51,51,
 ]
 
 #map = [
@@ -2414,7 +2439,7 @@ while playGame == True: #Main Menu
     if oneTime == True:
 
         sk = Skeleton((64 * 8) - 32,64 * 2,0)
-        s1 = Skeleton((64 * 5) - 32,64 * 3,2)
+        s1 = Skeleton((64 * 10) - 32,64 * 2,2)
         P = Player()
         
         #pygame.mixer.music.load('mainMusic.mp3')
@@ -2646,6 +2671,9 @@ while playGame == True: #Main Menu
     screen.blit(heartImage,(1280 - 50, 0))
     screen.blit(heartImage,(1280 - 40 - 50, 0))
     screen.blit(heartImage,(1280 - 80 - 50, 0))
+
+    if P.getFishing_cast() == True:
+        screen.blit(fishingLine_000,(playerX -32,playerY +64))
 
     pygame.display.update()
 
