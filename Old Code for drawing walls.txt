@@ -1,0 +1,55 @@
+
+        if i == 1:
+            screen.blit(tile_underground1_1,(counter * 64, counter2 * 64))
+        elif i == 2:
+            screen.blit(tile_underground1_2,(counter * 64, counter2 * 64))
+        elif i == 3:
+            screen.blit(tile_underground1_3,(counter * 64, counter2 * 64))
+        elif i == 4:
+            screen.blit(tile_underground1_4,(counter * 64, counter2 * 64))
+        elif i == 5:
+            screen.blit(tile_underground1_5,(counter * 64, counter2 * 64))
+        elif i == 7:
+            screen.blit(tile_underground1_7,(counter * 64, counter2 * 64))
+
+        elif i == 47:
+            screen.blit(tile_underground1_47,(counter * 64, counter2 * 64))
+        elif i == 48:
+            screen.blit(tile_underground1_48,(counter * 64, counter2 * 64))
+        elif i == 49:
+            screen.blit(tile_underground1_49,(counter * 64, counter2 * 64))
+        
+        elif i == 50:
+            screen.blit(tile_underground1_50,(counter * 64, counter2 * 64))
+        elif i == 52:
+            screen.blit(tile_underground1_52,(counter * 64, counter2 * 64))
+        elif i == 53:
+            screen.blit(tile_underground1_53,(counter * 64, counter2 * 64))
+        elif i == 55:
+            screen.blit(tile_underground1_55,(counter * 64, counter2 * 64))
+        elif i == 57:
+            screen.blit(tile_underground1_57,(counter * 64, counter2 * 64))
+        elif i == 62:
+            screen.blit(tile_underground1_62,(counter * 64, counter2 * 64))
+        elif i == 66:
+            screen.blit(tile_underground1_66,(counter * 64, counter2 * 64))
+        elif i == 67:
+            screen.blit(tile_underground1_67,(counter * 64, counter2 * 64))
+        elif i == 69:
+            screen.blit(tile_underground1_69,(counter * 64, counter2 * 64))
+        elif i == 72:
+            screen.blit(tile_underground1_72,(counter * 64, counter2 * 64))
+        elif i == 73:
+            screen.blit(tile_underground1_73,(counter * 64, counter2 * 64))
+        elif i == 74:
+            screen.blit(tile_underground1_74,(counter * 64, counter2 * 64))
+        elif i == 75:
+            screen.blit(tile_underground1_75,(counter * 64, counter2 * 64))
+        elif i == 76:
+            screen.blit(tile_underground1_76,(counter * 64, counter2 * 64))
+        elif i == 77:
+            screen.blit(tile_underground1_77,(counter * 64, counter2 * 64))
+        elif i == 78:
+            screen.blit(tile_underground1_78,(counter * 64, counter2 * 64))
+        elif i == 79:
+            screen.blit(tile_underground1_79,(counter * 64, counter2 * 64))
