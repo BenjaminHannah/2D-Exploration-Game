@@ -1044,7 +1044,7 @@ class Player:
 
 
     def movement(self):
-        safeTiles = [1,2,3,4,5,47,48,49,57,62,66,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,33,34,35,36,37,38,72,73,79,80,81,82,83,85,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121]
+        safeTiles = [13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,33,34,35,36,37,38,80,81,82,83,85,87]
     
         if pressed[pygame.K_s] and self.walkCounter == 0 and self.attackCounter == 0:
             self.direction = 0
@@ -1495,8 +1495,7 @@ class Skeleton:
                     self.attackedTile = self.Tile - 1
               
     def movement(self):
-        safeTiles = [1,2,3,4,5,47,48,49,57,62,66,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,33,34,35,36,37,38,72,73,79,80,81,82,83,85,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121]
-
+        safeTiles = [13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,33,34,35,36,37,38,80,81,82,83,85,87]
 
         BasicAI = random.randint(1,1000) #1-8 = actions
         #Left, Right, Up, Down#
@@ -1640,20 +1639,20 @@ def draw_Tile(i,layer,type):
         if i == 0:
             screen.blit(tile_underground1_0,(counter * 64, counter2 * 64))
         elif i == 1:
-            #screen.blit(tile_underground1_1,(counter * 64, counter2 * 64)) #overlay_tile
-            screen.blit(tile_underground1_87,(counter * 64, counter2 * 64))#87 is a unique tile used for the underlay of transparent walls.
+            screen.blit(tile_underground1_1,(counter * 64, counter2 * 64)) #overlay_tile
+            #screen.blit(tile_underground1_87,(counter * 64, counter2 * 64))#87 is a unique tile used for the underlay of transparent walls.
             #screen.blit(tile_underground1_21,(counter * 64, counter2 * 64))
         elif i == 2:
-            #screen.blit(tile_underground1_2,(counter * 64, counter2 * 64)) #overlay_tile
-            screen.blit(tile_underground1_87,(counter * 64, counter2 * 64))#87 is a unique tile used for the underlay of transparent walls.
+            screen.blit(tile_underground1_2,(counter * 64, counter2 * 64)) #overlay_tile
+            #screen.blit(tile_underground1_87,(counter * 64, counter2 * 64))#87 is a unique tile used for the underlay of transparent walls.
             #screen.blit(tile_underground1_21,(counter * 64, counter2 * 64))
         elif i == 3:
-            #screen.blit(tile_underground1_3,(counter * 64, counter2 * 64)) #overlay_tile
-            screen.blit(tile_underground1_87,(counter * 64, counter2 * 64))#87 is a unique tile used for the underlay of transparent walls.
+            screen.blit(tile_underground1_3,(counter * 64, counter2 * 64)) #overlay_tile
+            #screen.blit(tile_underground1_87,(counter * 64, counter2 * 64))#87 is a unique tile used for the underlay of transparent walls.
             #screen.blit(tile_underground1_21,(counter * 64, counter2 * 64))
         elif i == 4:
-            #screen.blit(tile_underground1_4,(counter * 64, counter2 * 64)) #overlay_tile
-            screen.blit(tile_underground1_87,(counter * 64, counter2 * 64))#87 is a unique tile used for the underlay of transparent walls.
+            screen.blit(tile_underground1_4,(counter * 64, counter2 * 64)) #overlay_tile
+            #screen.blit(tile_underground1_87,(counter * 64, counter2 * 64))#87 is a unique tile used for the underlay of transparent walls.
         elif i == 5:
             screen.blit(tile_underground1_5,(counter * 64, counter2 * 64))
         elif i == 6:
@@ -1744,15 +1743,15 @@ def draw_Tile(i,layer,type):
         elif i == 46:
             screen.blit(tile_underground1_46,(counter * 64, counter2 * 64))
         elif i == 47:
-            #screen.blit(tile_underground1_47,(counter * 64, counter2 * 64)) #overlay_tile
-            screen.blit(tile_underground1_21,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_47,(counter * 64, counter2 * 64)) #overlay_tile
+            #screen.blit(tile_underground1_21,(counter * 64, counter2 * 64))
         elif i == 48:
-            screen.blit(tile_underground1_87,(counter * 64, counter2 * 64))#87 is a unique tile used for the underlay of transparent walls.
-            #screen.blit(tile_underground1_48,(counter * 64, counter2 * 64)) #overlay_tile
+            #screen.blit(tile_underground1_87,(counter * 64, counter2 * 64))#87 is a unique tile used for the underlay of transparent walls.
+            screen.blit(tile_underground1_48,(counter * 64, counter2 * 64)) #overlay_tile
             #screen.blit(tile_underground1_21,(counter * 64, counter2 * 64))
         elif i == 49:
-            #screen.blit(tile_underground1_49,(counter * 64, counter2 * 64)) #overlay_tile
-            screen.blit(tile_underground1_21,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_49,(counter * 64, counter2 * 64)) #overlay_tile
+            #screen.blit(tile_underground1_21,(counter * 64, counter2 * 64))
 
         elif i == 50:
             screen.blit(tile_underground1_50,(counter * 64, counter2 * 64))
@@ -1769,8 +1768,8 @@ def draw_Tile(i,layer,type):
         elif i == 56:
             screen.blit(tile_underground1_56,(counter * 64, counter2 * 64))
         elif i == 57:
-            #screen.blit(tile_underground1_57,(counter * 64, counter2 * 64)) #overlay_tile
-            screen.blit(tile_underground1_21,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_57,(counter * 64, counter2 * 64))
+            #screen.blit(tile_underground1_21,(counter * 64, counter2 * 64))#overlay_tile
         elif i == 58:
             screen.blit(tile_underground1_58,(counter * 64, counter2 * 64))
         elif i == 59:
@@ -1789,8 +1788,8 @@ def draw_Tile(i,layer,type):
         elif i == 65:
             screen.blit(tile_underground1_65,(counter * 64, counter2 * 64))
         elif i == 66:
-            screen.blit(tile_underground1_87,(counter * 64, counter2 * 64))#87 is a unique tile used for the underlay of transparent walls.
-            #screen.blit(tile_underground1_66,(counter * 64, counter2 * 64))#overlay_tile
+            #screen.blit(tile_underground1_87,(counter * 64, counter2 * 64))#87 is a unique tile used for the underlay of transparent walls.
+            screen.blit(tile_underground1_66,(counter * 64, counter2 * 64))#overlay_tile
         elif i == 67:
             screen.blit(tile_underground1_67,(counter * 64, counter2 * 64))
         elif i == 68:
@@ -1803,11 +1802,11 @@ def draw_Tile(i,layer,type):
         elif i == 71:
             screen.blit(tile_underground1_71,(counter * 64, counter2 * 64))
         elif i == 72:
-            #screen.blit(tile_underground1_72,(counter * 64, counter2 * 64))#overlay_tile
-            screen.blit(tile_underground1_21,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_72,(counter * 64, counter2 * 64))#overlay_tile
+            #screen.blit(tile_underground1_21,(counter * 64, counter2 * 64))
         elif i == 73:
-            #screen.blit(tile_underground1_73,(counter * 64, counter2 * 64))#overlay_tile
-            screen.blit(tile_underground1_21,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_73,(counter * 64, counter2 * 64))#overlay_tile
+            #screen.blit(tile_underground1_21,(counter * 64, counter2 * 64))
         elif i == 74:
             screen.blit(tile_underground1_74,(counter * 64, counter2 * 64))
         elif i == 75:
@@ -1819,8 +1818,8 @@ def draw_Tile(i,layer,type):
         elif i == 78:
             screen.blit(tile_underground1_78,(counter * 64, counter2 * 64))
         elif i == 79:
-            #screen.blit(tile_underground1_21,(counter * 64, counter2 * 64))
-            screen.blit(tile_underground1_79,(counter * 64, counter2 * 64))#overlay_tile
+            screen.blit(tile_underground1_21,(counter * 64, counter2 * 64))
+            #screen.blit(tile_underground1_79,(counter * 64, counter2 * 64))#overlay_tile
 
         elif i == 80:
             screen.blit(tile_underground1_80,(counter * 64, counter2 * 64))
@@ -1950,62 +1949,8 @@ def draw_Tile(i,layer,type):
 
     elif type == 1:
 
-        if i == 1:
-            screen.blit(tile_underground1_1,(counter * 64, counter2 * 64))
-        elif i == 2:
-            screen.blit(tile_underground1_2,(counter * 64, counter2 * 64))
-        elif i == 3:
-            screen.blit(tile_underground1_3,(counter * 64, counter2 * 64))
-        elif i == 4:
-            screen.blit(tile_underground1_4,(counter * 64, counter2 * 64))
-        elif i == 5:
-            screen.blit(tile_underground1_5,(counter * 64, counter2 * 64))
-        elif i == 7:
-            screen.blit(tile_underground1_7,(counter * 64, counter2 * 64))
-
-        elif i == 47:
-            screen.blit(tile_underground1_47,(counter * 64, counter2 * 64))
-        elif i == 48:
-            screen.blit(tile_underground1_48,(counter * 64, counter2 * 64))
-        elif i == 49:
-            screen.blit(tile_underground1_49,(counter * 64, counter2 * 64))
-        
-        elif i == 50:
-            screen.blit(tile_underground1_50,(counter * 64, counter2 * 64))
-        elif i == 52:
-            screen.blit(tile_underground1_52,(counter * 64, counter2 * 64))
-        elif i == 53:
-            screen.blit(tile_underground1_53,(counter * 64, counter2 * 64))
-        elif i == 55:
-            screen.blit(tile_underground1_55,(counter * 64, counter2 * 64))
-        elif i == 57:
-            screen.blit(tile_underground1_57,(counter * 64, counter2 * 64))
-        elif i == 62:
-            screen.blit(tile_underground1_62,(counter * 64, counter2 * 64))
-        elif i == 66:
-            screen.blit(tile_underground1_66,(counter * 64, counter2 * 64))
-        elif i == 67:
-            screen.blit(tile_underground1_67,(counter * 64, counter2 * 64))
-        elif i == 69:
-            screen.blit(tile_underground1_69,(counter * 64, counter2 * 64))
-        elif i == 72:
-            screen.blit(tile_underground1_72,(counter * 64, counter2 * 64))
-        elif i == 73:
-            screen.blit(tile_underground1_73,(counter * 64, counter2 * 64))
-        elif i == 74:
-            screen.blit(tile_underground1_74,(counter * 64, counter2 * 64))
-        elif i == 75:
-            screen.blit(tile_underground1_75,(counter * 64, counter2 * 64))
-        elif i == 76:
-            screen.blit(tile_underground1_76,(counter * 64, counter2 * 64))
-        elif i == 77:
-            screen.blit(tile_underground1_77,(counter * 64, counter2 * 64))
-        elif i == 78:
-            screen.blit(tile_underground1_78,(counter * 64, counter2 * 64))
-        elif i == 79:
-            screen.blit(tile_underground1_79,(counter * 64, counter2 * 64))
-
-        elif i == 84: #Passage Tile
+        #
+        if i == 84: #Passage Tile
             screen.blit(tile_underground1_84,(counter * 64, counter2 * 64)) 
     
     counter += 1
