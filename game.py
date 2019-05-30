@@ -5,9 +5,9 @@ pygame.mixer.init()
 pygame.init()
 os.environ['SDL_VIDEO_WINDOW_POS'] = str(50) + "," + str(50)
 
-#screen = pygame.display.set_mode((1280,720)) #Standard
+screen = pygame.display.set_mode((1280,720)) #Standard
 
-screen = pygame.display.set_mode((1780,920)) #Tile_Map Editor
+#screen = pygame.display.set_mode((1780,920)) #Tile_Map Editor
 #screen2 = pygame.surface((1780,920))
 
 screen.fill((255, 255, 255))
@@ -2084,7 +2084,7 @@ while playGame == True: #Main Menu
 ##########################################################################################
 
     #Search1
-    EnableMapEditor = True
+    EnableMapEditor = False
     if EnableMapEditor == True:
         mousexy = pygame.mouse.get_pos()
         mousex = mousexy[0] / 64
