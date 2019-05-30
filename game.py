@@ -1092,7 +1092,7 @@ class Player:
             self.direction = 3
         
         if self.walkCounter == 32:
-            #17 animations; 32 tile pixels instead of 34! AH!
+            #17 animations; 32 tile pixels instead of 34! AH! (in an ideal world. Let there be a few more animations to ensure SYNC between animate and movement.) (animate will be at 0 when position is in center of new tile)
             pass
 
         if self.walkCounter > 0:
@@ -1103,9 +1103,11 @@ class Player:
             elif self.direction == 3: self.x = self.x - 2
 
             self.walkCounter = self.walkCounter - 1
-            if self.walkCounter == 0: #maybe beef up this statement to check for "if moving" to clean up walk animation
-                self.animate = 0
+            if self.walkCounter == 0:
                 self.Tile = self.Tile = int(((self.x - 32 + 64) /64) + (((self.y + 64)/ 64) * 20))
+
+        if self.walkCounter == 0 and pressed[pygame.K_d] == False and pressed[pygame.K_a] == False and pressed[pygame.K_w] == False and pressed[pygame.K_s] == False:
+            self.animate = 0
 
         if self.attackCounter == 8: #play slash sound.
             #slashSound.play()
@@ -1123,7 +1125,7 @@ class Player:
     def animateObject(self):
         self.animateCounter += .5
 
-        if int(self.animateCounter) == 18:
+        if self.animateCounter == 18:
             self.animateCounter = 0
 
     def getAttack(self):
