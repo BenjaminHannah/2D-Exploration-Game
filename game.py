@@ -5,9 +5,9 @@ pygame.mixer.init()
 pygame.init()
 os.environ['SDL_VIDEO_WINDOW_POS'] = str(50) + "," + str(50)
 
-screen = pygame.display.set_mode((1280,720)) #Standard
+#screen = pygame.display.set_mode((1280,720)) #Standard
 
-#screen = pygame.display.set_mode((1780,920)) #Tile_Map Editor
+screen = pygame.display.set_mode((1780,920)) #Tile_Map Editor
 #screen2 = pygame.surface((1780,920))
 
 screen.fill((255, 255, 255))
@@ -27,6 +27,11 @@ slashSound = pygame.mixer.Sound('slash001.wav')
 
 #Load Images#
 heartImage = pygame.image.load('hudImages/heart.png').convert_alpha()
+
+ItemPick = 0
+ItemBoxSword = pygame.image.load('hudImages/ItemBoxSword.png').convert_alpha()
+ItemBoxFishing = pygame.image.load('hudImages/ItemBoxFishing.png').convert_alpha()
+
 darkness000 = pygame.image.load('darkness000.png').convert_alpha()
 darkness001 = pygame.image.load('darkness001.png').convert_alpha()
 darkness002 = pygame.image.load('darkness002.png').convert_alpha()
@@ -1092,11 +1097,11 @@ class Player:
         elif pressed[pygame.K_SPACE] and self.walkCounter == 0 and self.attackCounter == 0 and self.attackDelay == 0 and self.fishing == True: #fishing
             if self.fishing_cast == True:
                 self.fishing_cast = False
-                pygame.time.delay(100)###################not good practice. (remove later)
+                pygame.time.delay(150)###################not good practice. (remove later)
 
             elif self.fishing_cast == False:
                 self.fishing_cast = True
-                pygame.time.delay(100)###################not good practice. (remove later)
+                pygame.time.delay(150)###################not good practice. (remove later)
                 
         elif pressed[pygame.K_SPACE] and self.walkCounter == 0 and self.attackCounter == 0 and self.attackDelay == 0: #attack
             self.animateCounter = 0
@@ -1113,6 +1118,18 @@ class Player:
             self.direction = 2
         elif pressed[pygame.K_LEFT] and self.walkCounter == 0 and self.attackCounter == 0:
             self.direction = 3
+
+        elif pressed[pygame.K_e] and self.walkCounter == 0 and self.attackCounter == 0 and self.fishing_cast == False:
+            global ItemPick
+            if ItemPick == 0: #slash
+                ItemPick = 1
+                self.fishing = True
+                pygame.time.delay(150)###################not good practice. (remove later)
+            elif ItemPick == 1: #fish
+                ItemPick = 0
+                self.fishing = False
+                pygame.time.delay(150)###################not good practice. (remove later)
+
         
         if self.walkCounter == 32:
             #17 animations; 32 tile pixels instead of 34! AH! (in an ideal world. Let there be a few more animations to ensure SYNC between animate and movement.) (animate will be at 0 when position is in center of new tile)
@@ -1626,12 +1643,12 @@ map = [
 51,51,51,51,51,51,52,15,16,15,50,51,51,51,51,51,51,51,60,48,
 51,51,51,51,51,51,52,21,21,21,50,51,51,51,51,51,51,51,51,51,
 54,54,59,51,51,51,52,21,21,21,50,51,51,51,51,51,51,51,51,51,
-6,6,50,51,51,51,52,21,21,21,50,51,51,51,51,51,51,51,51,51,
-10,10,50,51,51,51,52,21,21,21,53,54,54,59,51,51,51,51,51,51,
-16,16,50,51,51,51,52,21,21,21,5,84,5,50,51,51,51,51,51,51,
-21,21,53,59,51,51,52,21,21,21,9,85,9,50,51,51,51,51,51,51,
-21,21,6,53,59,51,52,21,21,21,16,16,16,50,51,51,51,51,51,51,
-21,21,16,6,50,51,60,48,48,48,48,48,48,61,51,51,51,51,51,51,
+6,6,50,51,51,51,52,21,21,21,53,54,54,59,51,51,51,51,51,51,
+10,10,50,51,51,51,52,21,21,21,8,84,8,50,51,51,51,51,51,51,
+16,16,50,51,51,51,52,21,21,21,12,85,12,50,51,51,51,51,51,51,
+21,21,53,59,51,51,52,21,21,21,16,16,16,50,51,51,51,51,51,51,
+21,21,6,53,59,51,60,48,48,48,48,48,48,61,51,51,51,51,51,51,
+21,21,16,6,50,51,51,51,51,51,51,51,51,51,51,51,51,51,51,51,
 ]
 
 map1 = [
@@ -1641,12 +1658,13 @@ map1 = [
 51,51,51,51,51,51,52,15,16,15,50,51,51,51,51,51,51,51,60,48,
 51,51,51,51,51,51,52,21,21,21,50,51,51,51,51,51,51,51,51,51,
 54,54,59,51,51,51,52,21,21,21,50,51,51,51,51,51,51,51,51,51,
-6,6,50,51,51,51,52,21,21,21,50,51,51,51,51,51,51,51,51,51,
-10,10,50,51,51,51,52,21,21,21,53,54,54,59,51,51,51,51,51,51,
-16,16,50,51,51,51,52,21,21,21,5,84,5,50,51,51,51,51,51,51,
-21,21,53,59,51,51,52,21,21,21,9,85,9,50,51,51,51,51,51,51,
-21,21,6,53,59,51,52,21,21,21,16,16,16,50,51,51,51,51,51,51,
-21,21,16,6,50,51,60,48,48,48,48,48,48,61,51,51,51,51,51,51,
+6,6,50,51,51,51,52,21,21,21,53,54,54,59,51,51,51,51,51,51,
+10,10,50,51,51,51,52,21,21,21,8,84,8,50,51,51,51,51,51,51,
+16,16,50,51,51,51,52,21,21,21,12,85,12,50,51,51,51,51,51,51,
+21,21,53,59,51,51,52,21,21,21,16,16,16,50,51,51,51,51,51,51,
+21,21,6,53,59,51,60,48,48,48,48,48,48,61,51,51,51,51,51,51,
+21,21,16,6,50,51,51,51,51,51,51,51,51,51,51,51,51,51,51,51,
+
 ]
 
 map2 = [
@@ -1660,8 +1678,9 @@ map2 = [
 51,51,51,52,21,21,21,21,21,21,21,21,21,50,51,51,51,51,51,51,
 51,51,51,52,21,21,21,21,21,21,21,21,21,50,51,51,51,51,51,51,
 51,51,51,52,21,21,21,21,21,21,21,21,21,50,51,51,51,51,51,51,
-51,51,51,52,21,21,21,21,21,21,21,21,21,50,51,51,51,51,51,51,
-51,51,51,60,48,48,48,49,85,47,48,48,48,61,51,51,51,51,51,51,    
+51,51,51,60,48,48,48,49,21,47,48,48,48,61,51,51,51,51,51,51,
+51,51,51,51,51,51,51,52,85,50,51,51,51,51,51,51,51,51,51,51,
+
 ]
 
 map3 = [
@@ -2023,7 +2042,7 @@ def teleport(teleportTile):
             FloorLevel = 2
             P.teleport(208)
 
-        elif teleportTile == 211:
+        elif teleportTile == 191:
             map = map3
             FloorLevel = 3
             P.teleport(144)
@@ -2038,7 +2057,7 @@ def teleport(teleportTile):
         if teleportTile == 144:
             map = map1
             FloorLevel = 1
-            P.teleport(211)
+            P.teleport(191)
 
 
 playMenu = True
@@ -2084,7 +2103,7 @@ while playGame == True: #Main Menu
 ##########################################################################################
 
     #Search1
-    EnableMapEditor = False
+    EnableMapEditor = True
     if EnableMapEditor == True:
         mousexy = pygame.mouse.get_pos()
         mousex = mousexy[0] / 64
@@ -2705,6 +2724,11 @@ while playGame == True: #Main Menu
     screen.blit(heartImage,(1280 - 50, 0))
     screen.blit(heartImage,(1280 - 40 - 50, 0))
     screen.blit(heartImage,(1280 - 80 - 50, 0))
+
+    if ItemPick == 0:
+        screen.blit(ItemBoxSword, (1280 - (84/2) -64 , 50))
+    elif ItemPick == 1:
+        screen.blit(ItemBoxFishing, (1280 - (84/2) -64 , 50))
 
     if P.getFishing_cast() == True:
         screen.blit(fishingLine_000,(playerX -32,playerY +64))
