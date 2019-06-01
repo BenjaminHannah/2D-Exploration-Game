@@ -5,15 +5,17 @@ pygame.mixer.init()
 pygame.init()
 os.environ['SDL_VIDEO_WINDOW_POS'] = str(50) + "," + str(50)
 
-#screen = pygame.display.set_mode((1280,720)) #Standard
+screen = pygame.display.set_mode((1280,720)) #Standard
 
-screen = pygame.display.set_mode((1780,920)) #Tile_Map Editor
+#screen = pygame.display.set_mode((1780,920)) #Tile_Map Editor
 #screen2 = pygame.surface((1780,920))
 
 screen.fill((255, 255, 255))
 
 #Map Editor
 selectedTile = 0
+worldx = 34
+worldy = 0
 
 clock = pygame.time.Clock()
 
@@ -699,9 +701,9 @@ class Player:
         self.walkCounter = 0
         self.attackCounter = 0
 
-        self.x = (64 * 9 )-32
-        self.y = 64 * 3
-        self.Tile = int(((self.x - 32 + 64) /64) + (((self.y + 64)/ 64) * 20)) #23
+        self.x = (64 * 9)
+        self.y = 64 * 4
+        self.Tile = int(((self.x + 64) /64) + (((self.y + 64)/ 64) * 20)) #23
         self.attackedTile = -1 #out of map
 
         self.rightBorder = [19,39,59,79,99,119,139,159,179,199,219]
@@ -718,10 +720,10 @@ class Player:
 
     def teleport(self,tile):
         self.x = ((tile % 20) * 64) - 32
-        self.y = ((int(tile / 20)) * 64) 
+        self.y = ((int(tile / 20)) * 64)
         
-        if self.direction == 0: 
-            self.y = self.y -64 -64 #minus 64 two times because of character height.
+        if self.direction == 0:
+            self.y = self.y -128 #minus 64 two times because of character height.
 
         self.Tile = int(((self.x - 32 + 64) /64) + (((self.y + 64)/ 64) * 20))
 
@@ -1135,16 +1137,29 @@ class Player:
             #17 animations; 32 tile pixels instead of 34! AH! (in an ideal world. Let there be a few more animations to ensure SYNC between animate and movement.) (animate will be at 0 when position is in center of new tile)
             pass
 
+#        if self.walkCounter > 0:
+#            self.animate = 1
+#            if self.direction == 0: self.y = self.y + 2
+#            elif self.direction == 1: self.x = self.x + 2
+#            elif self.direction == 2: self.y = self.y - 2
+#            elif self.direction == 3: self.x = self.x - 2
+
         if self.walkCounter > 0:
             self.animate = 1
-            if self.direction == 0: self.y = self.y + 2
-            elif self.direction == 1: self.x = self.x + 2
-            elif self.direction == 2: self.y = self.y - 2
-            elif self.direction == 3: self.x = self.x - 2
+            global worldx
+            global worldy
+            if self.direction == 0: worldy = worldy + 2
+            elif self.direction == 1: worldx = worldx + 2
+            elif self.direction == 2: worldy = worldy - 2
+            elif self.direction == 3: worldx = worldx - 2
 
             self.walkCounter = self.walkCounter - 1
             if self.walkCounter == 0:
-                self.Tile = int(((self.x - 32 + 64) /64) + (((self.y + 64)/ 64) * 20))
+                #self.Tile = int(((self.x - 32 + 64) /64) + (((self.y + 64)/ 64) * 20))
+                if self.direction == 0: self.Tile = self.Tile + 20 #s
+                elif self.direction == 1: self.Tile = self.Tile + 1 #d
+                elif self.direction == 2: self.Tile = self.Tile - 20 #w
+                elif self.direction == 3: self.Tile = self.Tile - 1 #a
 
         if self.walkCounter == 0 and pressed[pygame.K_d] == False and pressed[pygame.K_a] == False and pressed[pygame.K_w] == False and pressed[pygame.K_s] == False:
             self.animate = 0
@@ -1176,7 +1191,8 @@ class Player:
 
     def getY(self):
         #return int(self.y / 64)
-        return int((self.y + 55)/ 64)
+        #return int((self.y + 55)/ 64)
+        return int(self.Tile / 20)
 
     def getPos(self):
         return self.x, self.y
@@ -1199,7 +1215,7 @@ class Skeleton:
 
         self.damagedTimer = 0
 
-        self.Tile = int(((self.x - 32 + 64) /64) + (((self.y + 64)/ 64) * 20))
+        self.Tile = int(((self.x + 64) /64) + (((self.y + 64)/ 64) * 20))
 
         self.rightBorder = [19,39,59,79,99,119,139,159,179,199,219]
         self.leftBorder =  [0,20,40,60,80,100,120,140,160,180,200]
@@ -1212,32 +1228,32 @@ class Skeleton:
     def draw(self):
         if self.alive == 1:
             #print(self.Tile, self.attackedTile)
-            screen.blit(Player_Shadow_000,(self.x,self.y))#shadow
+            screen.blit(Player_Shadow_000,(self.x - worldx,self.y -worldy))#shadow
 
             if self.direction == 0: #Front
 
                 if self.animate == 0: #front Idle
                     if self.blinking == False:#front Idle
-                        if int(self.animateCounter) == 0: screen.blit(SfrontIdle_000,(self.x,self.y))
-                        elif int(self.animateCounter) == 1: screen.blit(SfrontIdle_001,(self.x,self.y))
-                        elif int(self.animateCounter) == 2: screen.blit(SfrontIdle_002,(self.x,self.y))
-                        elif int(self.animateCounter) == 3: screen.blit(SfrontIdle_003,(self.x,self.y))
-                        elif int(self.animateCounter) == 4: screen.blit(SfrontIdle_004,(self.x,self.y))
-                        elif int(self.animateCounter) == 5: screen.blit(SfrontIdle_005,(self.x,self.y))
-                        elif int(self.animateCounter) == 6: screen.blit(SfrontIdle_006,(self.x,self.y))
-                        elif int(self.animateCounter) == 7: screen.blit(SfrontIdle_007,(self.x,self.y))
-                        elif int(self.animateCounter) == 8: screen.blit(SfrontIdle_008,(self.x,self.y))
-                        elif int(self.animateCounter) == 9: screen.blit(SfrontIdle_009,(self.x,self.y))
-                        elif int(self.animateCounter) == 10: screen.blit(SfrontIdle_010,(self.x,self.y))
-                        elif int(self.animateCounter) == 11: screen.blit(SfrontIdle_011,(self.x,self.y))
-                        elif int(self.animateCounter) == 12: screen.blit(SfrontIdle_012,(self.x,self.y))
-                        elif int(self.animateCounter) == 13: screen.blit(SfrontIdle_013,(self.x,self.y))
-                        elif int(self.animateCounter) == 14: screen.blit(SfrontIdle_014,(self.x,self.y))
-                        elif int(self.animateCounter) == 15: screen.blit(SfrontIdle_015,(self.x,self.y))
-                        elif int(self.animateCounter) == 16: screen.blit(SfrontIdle_016,(self.x,self.y))
+                        if int(self.animateCounter) == 0: screen.blit(SfrontIdle_000,(self.x - worldx,self.y - worldy))
+                        elif int(self.animateCounter) == 1: screen.blit(SfrontIdle_001,(self.x - worldx,self.y - worldy))
+                        elif int(self.animateCounter) == 2: screen.blit(SfrontIdle_002,(self.x - worldx,self.y - worldy))
+                        elif int(self.animateCounter) == 3: screen.blit(SfrontIdle_003,(self.x - worldx,self.y - worldy))
+                        elif int(self.animateCounter) == 4: screen.blit(SfrontIdle_004,(self.x - worldx,self.y - worldy))
+                        elif int(self.animateCounter) == 5: screen.blit(SfrontIdle_005,(self.x - worldx,self.y - worldy))
+                        elif int(self.animateCounter) == 6: screen.blit(SfrontIdle_006,(self.x - worldx,self.y - worldy))
+                        elif int(self.animateCounter) == 7: screen.blit(SfrontIdle_007,(self.x - worldx,self.y - worldy))
+                        elif int(self.animateCounter) == 8: screen.blit(SfrontIdle_008,(self.x - worldx,self.y - worldy))
+                        elif int(self.animateCounter) == 9: screen.blit(SfrontIdle_009,(self.x - worldx,self.y - worldy))
+                        elif int(self.animateCounter) == 10: screen.blit(SfrontIdle_010,(self.x - worldx,self.y - worldy))
+                        elif int(self.animateCounter) == 11: screen.blit(SfrontIdle_011,(self.x - worldx,self.y - worldy))
+                        elif int(self.animateCounter) == 12: screen.blit(SfrontIdle_012,(self.x - worldx,self.y - worldy))
+                        elif int(self.animateCounter) == 13: screen.blit(SfrontIdle_013,(self.x - worldx,self.y - worldy))
+                        elif int(self.animateCounter) == 14: screen.blit(SfrontIdle_014,(self.x - worldx,self.y - worldy))
+                        elif int(self.animateCounter) == 15: screen.blit(SfrontIdle_015,(self.x - worldx,self.y - worldy))
+                        elif int(self.animateCounter) == 16: screen.blit(SfrontIdle_016,(self.x - worldx,self.y - worldy))
                
                         elif int(self.animateCounter) == 17:
-                                screen.blit(SfrontIdle_017,(self.x,self.y)) 
+                                screen.blit(SfrontIdle_017,(self.x - worldx,self.y - worldy)) 
                                 self.blinkCounter += 1
 
                                 if self.blinkCounter == 10:
@@ -1245,58 +1261,58 @@ class Skeleton:
                 
                     elif self.blinking == True:#front IdleBlinking
                 
-                        if int(self.animateCounter) == 0: screen.blit(SfrontIdleBlinking_000,(self.x,self.y))
-                        elif int(self.animateCounter) == 1: screen.blit(SfrontIdleBlinking_001,(self.x,self.y))
-                        elif int(self.animateCounter) == 2: screen.blit(SfrontIdleBlinking_002,(self.x,self.y))
-                        elif int(self.animateCounter) == 3: screen.blit(SfrontIdleBlinking_003,(self.x,self.y))
-                        elif int(self.animateCounter) == 4: screen.blit(SfrontIdleBlinking_004,(self.x,self.y))
-                        elif int(self.animateCounter) == 5: screen.blit(SfrontIdleBlinking_005,(self.x,self.y))
-                        elif int(self.animateCounter) == 6: screen.blit(SfrontIdleBlinking_006,(self.x,self.y))
-                        elif int(self.animateCounter) == 7: screen.blit(SfrontIdleBlinking_007,(self.x,self.y))
-                        elif int(self.animateCounter) == 8: screen.blit(SfrontIdleBlinking_008,(self.x,self.y))
-                        elif int(self.animateCounter) == 9: screen.blit(SfrontIdleBlinking_009,(self.x,self.y))
-                        elif int(self.animateCounter) == 10: screen.blit(SfrontIdleBlinking_010,(self.x,self.y))
-                        elif int(self.animateCounter) == 11: screen.blit(SfrontIdleBlinking_011,(self.x,self.y))
-                        elif int(self.animateCounter) == 12: screen.blit(SfrontIdleBlinking_012,(self.x,self.y))
-                        elif int(self.animateCounter) == 13: screen.blit(SfrontIdleBlinking_013,(self.x,self.y))
-                        elif int(self.animateCounter) == 14: screen.blit(SfrontIdleBlinking_014,(self.x,self.y))
-                        elif int(self.animateCounter) == 15: screen.blit(SfrontIdleBlinking_015,(self.x,self.y))
-                        elif int(self.animateCounter) == 16: screen.blit(SfrontIdleBlinking_016,(self.x,self.y))
+                        if int(self.animateCounter) == 0: screen.blit(SfrontIdleBlinking_000,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 1: screen.blit(SfrontIdleBlinking_001,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 2: screen.blit(SfrontIdleBlinking_002,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 3: screen.blit(SfrontIdleBlinking_003,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 4: screen.blit(SfrontIdleBlinking_004,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 5: screen.blit(SfrontIdleBlinking_005,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 6: screen.blit(SfrontIdleBlinking_006,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 7: screen.blit(SfrontIdleBlinking_007,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 8: screen.blit(SfrontIdleBlinking_008,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 9: screen.blit(SfrontIdleBlinking_009,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 10: screen.blit(SfrontIdleBlinking_010,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 11: screen.blit(SfrontIdleBlinking_011,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 12: screen.blit(SfrontIdleBlinking_012,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 13: screen.blit(SfrontIdleBlinking_013,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 14: screen.blit(SfrontIdleBlinking_014,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 15: screen.blit(SfrontIdleBlinking_015,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 16: screen.blit(SfrontIdleBlinking_016,(self.x - worldx, self.y - worldy))
                         elif int(self.animateCounter) == 17:
-                            screen.blit(SfrontIdleBlinking_017,(self.x,self.y))
+                            screen.blit(SfrontIdleBlinking_017,(self.x - worldx, self.y - worldy))
                             self.blinkCounter = 0
                             self.blinking = False
 
                 elif self.animate == 1: #front Walking
-                    if int(self.animateCounter) == 0: screen.blit(SfrontWalking_000,(self.x,self.y))
-                    elif int(self.animateCounter) == 1: screen.blit(SfrontWalking_001,(self.x,self.y))
-                    elif int(self.animateCounter) == 2: screen.blit(SfrontWalking_002,(self.x,self.y))
-                    elif int(self.animateCounter) == 3: screen.blit(SfrontWalking_003,(self.x,self.y))
-                    elif int(self.animateCounter) == 4: screen.blit(SfrontWalking_004,(self.x,self.y))
-                    elif int(self.animateCounter) == 5: screen.blit(SfrontWalking_005,(self.x,self.y))
-                    elif int(self.animateCounter) == 6: screen.blit(SfrontWalking_006,(self.x,self.y))
-                    elif int(self.animateCounter) == 7: screen.blit(SfrontWalking_007,(self.x,self.y))
-                    elif int(self.animateCounter) == 8: screen.blit(SfrontWalking_008,(self.x,self.y))
-                    elif int(self.animateCounter) == 9: screen.blit(SfrontWalking_009,(self.x,self.y))
-                    elif int(self.animateCounter) == 10: screen.blit(SfrontWalking_010,(self.x,self.y))
-                    elif int(self.animateCounter) == 11: screen.blit(SfrontWalking_011,(self.x,self.y))
-                    elif int(self.animateCounter) == 12: screen.blit(SfrontWalking_012,(self.x,self.y))
-                    elif int(self.animateCounter) == 13: screen.blit(SfrontWalking_013,(self.x,self.y))
-                    elif int(self.animateCounter) == 14: screen.blit(SfrontWalking_014,(self.x,self.y))
-                    elif int(self.animateCounter) == 15: screen.blit(SfrontWalking_015,(self.x,self.y))
-                    elif int(self.animateCounter) == 16: screen.blit(SfrontWalking_016,(self.x,self.y))
-                    elif int(self.animateCounter) == 17: screen.blit(SfrontWalking_017,(self.x,self.y))
+                    if int(self.animateCounter) == 0: screen.blit(SfrontWalking_000,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 1: screen.blit(SfrontWalking_001,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 2: screen.blit(SfrontWalking_002,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 3: screen.blit(SfrontWalking_003,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 4: screen.blit(SfrontWalking_004,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 5: screen.blit(SfrontWalking_005,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 6: screen.blit(SfrontWalking_006,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 7: screen.blit(SfrontWalking_007,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 8: screen.blit(SfrontWalking_008,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 9: screen.blit(SfrontWalking_009,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 10: screen.blit(SfrontWalking_010,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 11: screen.blit(SfrontWalking_011,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 12: screen.blit(SfrontWalking_012,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 13: screen.blit(SfrontWalking_013,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 14: screen.blit(SfrontWalking_014,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 15: screen.blit(SfrontWalking_015,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 16: screen.blit(SfrontWalking_016,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 17: screen.blit(SfrontWalking_017,(self.x - worldx, self.y - worldy))
 
                 elif self.animate == 2:#front Attack
-                    if int(self.animateCounter) == 0: screen.blit(SfrontSlashing_000,(self.x,self.y))
-                    elif int(self.animateCounter) == 1: screen.blit(SfrontSlashing_001,(self.x,self.y))
-                    elif int(self.animateCounter) == 2: screen.blit(SfrontSlashing_002,(self.x,self.y))
-                    elif int(self.animateCounter) == 3: screen.blit(SfrontSlashing_003,(self.x,self.y))
-                    elif int(self.animateCounter) == 4: screen.blit(SfrontSlashing_004,(self.x,self.y))
-                    elif int(self.animateCounter) == 5: screen.blit(SfrontSlashing_005,(self.x,self.y))
-                    elif int(self.animateCounter) == 6: screen.blit(SfrontSlashing_006,(self.x,self.y))
-                    elif int(self.animateCounter) == 7: screen.blit(SfrontSlashing_007,(self.x,self.y))
-                    elif int(self.animateCounter) == 8: screen.blit(SfrontSlashing_008,(self.x,self.y))
+                    if int(self.animateCounter) == 0: screen.blit(SfrontSlashing_000,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 1: screen.blit(SfrontSlashing_001,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 2: screen.blit(SfrontSlashing_002,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 3: screen.blit(SfrontSlashing_003,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 4: screen.blit(SfrontSlashing_004,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 5: screen.blit(SfrontSlashing_005,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 6: screen.blit(SfrontSlashing_006,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 7: screen.blit(SfrontSlashing_007,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 8: screen.blit(SfrontSlashing_008,(self.x - worldx, self.y - worldy))
 
                     if self.Tile not in self.frontBorder:
                         self.attackedTile = self.Tile + 20
@@ -1306,26 +1322,26 @@ class Skeleton:
 
                 if self.animate == 0: #right Idle
                     if self.blinking == False:
-                        if int(self.animateCounter) == 0: screen.blit(SrightIdle_000,(self.x,self.y))
-                        elif int(self.animateCounter) == 1: screen.blit(SrightIdle_001,(self.x,self.y))
-                        elif int(self.animateCounter) == 2: screen.blit(SrightIdle_002,(self.x,self.y))
-                        elif int(self.animateCounter) == 3: screen.blit(SrightIdle_003,(self.x,self.y))
-                        elif int(self.animateCounter) == 4: screen.blit(SrightIdle_004,(self.x,self.y))
-                        elif int(self.animateCounter) == 5: screen.blit(SrightIdle_005,(self.x,self.y))
-                        elif int(self.animateCounter) == 6: screen.blit(SrightIdle_006,(self.x,self.y))
-                        elif int(self.animateCounter) == 7: screen.blit(SrightIdle_007,(self.x,self.y))
-                        elif int(self.animateCounter) == 8: screen.blit(SrightIdle_008,(self.x,self.y))
-                        elif int(self.animateCounter) == 9: screen.blit(SrightIdle_009,(self.x,self.y))
-                        elif int(self.animateCounter) == 10: screen.blit(SrightIdle_010,(self.x,self.y))
-                        elif int(self.animateCounter) == 11: screen.blit(SrightIdle_011,(self.x,self.y))
-                        elif int(self.animateCounter) == 12: screen.blit(SrightIdle_012,(self.x,self.y))
-                        elif int(self.animateCounter) == 13: screen.blit(SrightIdle_013,(self.x,self.y))
-                        elif int(self.animateCounter) == 14: screen.blit(SrightIdle_014,(self.x,self.y))
-                        elif int(self.animateCounter) == 15: screen.blit(SrightIdle_015,(self.x,self.y))
-                        elif int(self.animateCounter) == 16: screen.blit(SrightIdle_016,(self.x,self.y))
+                        if int(self.animateCounter) == 0: screen.blit(SrightIdle_000,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 1: screen.blit(SrightIdle_001,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 2: screen.blit(SrightIdle_002,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 3: screen.blit(SrightIdle_003,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 4: screen.blit(SrightIdle_004,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 5: screen.blit(SrightIdle_005,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 6: screen.blit(SrightIdle_006,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 7: screen.blit(SrightIdle_007,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 8: screen.blit(SrightIdle_008,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 9: screen.blit(SrightIdle_009,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 10: screen.blit(SrightIdle_010,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 11: screen.blit(SrightIdle_011,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 12: screen.blit(SrightIdle_012,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 13: screen.blit(SrightIdle_013,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 14: screen.blit(SrightIdle_014,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 15: screen.blit(SrightIdle_015,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 16: screen.blit(SrightIdle_016,(self.x - worldx, self.y - worldy))
                     
                         elif int(self.animateCounter) == 17: #switch to blinking
-                            screen.blit(SrightIdle_017,(self.x,self.y)) 
+                            screen.blit(SrightIdle_017,(self.x - worldx, self.y - worldy)) 
                             self.blinkCounter += 1
 
                             if self.blinkCounter == 10:
@@ -1333,59 +1349,59 @@ class Skeleton:
                 
                     elif self.blinking == True:#right IdleBlinking
                 
-                        if int(self.animateCounter) == 0: screen.blit(SrightIdleBlinking_000,(self.x,self.y))
-                        elif int(self.animateCounter) == 1: screen.blit(SrightIdleBlinking_001,(self.x,self.y))
-                        elif int(self.animateCounter) == 2: screen.blit(SrightIdleBlinking_002,(self.x,self.y))
-                        elif int(self.animateCounter) == 3: screen.blit(SrightIdleBlinking_003,(self.x,self.y))
-                        elif int(self.animateCounter) == 4: screen.blit(SrightIdleBlinking_004,(self.x,self.y))
-                        elif int(self.animateCounter) == 5: screen.blit(SrightIdleBlinking_005,(self.x,self.y))
-                        elif int(self.animateCounter) == 6: screen.blit(SrightIdleBlinking_006,(self.x,self.y))
-                        elif int(self.animateCounter) == 7: screen.blit(SrightIdleBlinking_007,(self.x,self.y))
-                        elif int(self.animateCounter) == 8: screen.blit(SrightIdleBlinking_008,(self.x,self.y))
-                        elif int(self.animateCounter) == 9: screen.blit(SrightIdleBlinking_009,(self.x,self.y))
-                        elif int(self.animateCounter) == 10: screen.blit(SrightIdleBlinking_010,(self.x,self.y))
-                        elif int(self.animateCounter) == 11: screen.blit(SrightIdleBlinking_011,(self.x,self.y))
-                        elif int(self.animateCounter) == 12: screen.blit(SrightIdleBlinking_012,(self.x,self.y))
-                        elif int(self.animateCounter) == 13: screen.blit(SrightIdleBlinking_013,(self.x,self.y))
-                        elif int(self.animateCounter) == 14: screen.blit(SrightIdleBlinking_014,(self.x,self.y))
-                        elif int(self.animateCounter) == 15: screen.blit(SrightIdleBlinking_015,(self.x,self.y))
-                        elif int(self.animateCounter) == 16: screen.blit(SrightIdleBlinking_016,(self.x,self.y))
+                        if int(self.animateCounter) == 0: screen.blit(SrightIdleBlinking_000,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 1: screen.blit(SrightIdleBlinking_001,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 2: screen.blit(SrightIdleBlinking_002,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 3: screen.blit(SrightIdleBlinking_003,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 4: screen.blit(SrightIdleBlinking_004,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 5: screen.blit(SrightIdleBlinking_005,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 6: screen.blit(SrightIdleBlinking_006,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 7: screen.blit(SrightIdleBlinking_007,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 8: screen.blit(SrightIdleBlinking_008,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 9: screen.blit(SrightIdleBlinking_009,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 10: screen.blit(SrightIdleBlinking_010,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 11: screen.blit(SrightIdleBlinking_011,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 12: screen.blit(SrightIdleBlinking_012,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 13: screen.blit(SrightIdleBlinking_013,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 14: screen.blit(SrightIdleBlinking_014,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 15: screen.blit(SrightIdleBlinking_015,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 16: screen.blit(SrightIdleBlinking_016,(self.x - worldx, self.y - worldy))
                         elif int(self.animateCounter) == 17:
-                            screen.blit(SrightIdleBlinking_017,(self.x,self.y))
+                            screen.blit(SrightIdleBlinking_017,(self.x - worldx, self.y - worldy))
                             self.blinkCounter = 0
                             self.blinking = False
                 
 
                 elif self.animate == 1: #right Walking
-                    if int(self.animateCounter) == 0: screen.blit(SrightWalking_000,(self.x,self.y))
-                    elif int(self.animateCounter) == 1: screen.blit(SrightWalking_001,(self.x,self.y))
-                    elif int(self.animateCounter) == 2: screen.blit(SrightWalking_002,(self.x,self.y))
-                    elif int(self.animateCounter) == 3: screen.blit(SrightWalking_003,(self.x,self.y))
-                    elif int(self.animateCounter) == 4: screen.blit(SrightWalking_004,(self.x,self.y))
-                    elif int(self.animateCounter) == 5: screen.blit(SrightWalking_005,(self.x,self.y))
-                    elif int(self.animateCounter) == 6: screen.blit(SrightWalking_006,(self.x,self.y))
-                    elif int(self.animateCounter) == 7: screen.blit(SrightWalking_007,(self.x,self.y))
-                    elif int(self.animateCounter) == 8: screen.blit(SrightWalking_008,(self.x,self.y))
-                    elif int(self.animateCounter) == 9: screen.blit(SrightWalking_009,(self.x,self.y))
-                    elif int(self.animateCounter) == 10: screen.blit(SrightWalking_010,(self.x,self.y))
-                    elif int(self.animateCounter) == 11: screen.blit(SrightWalking_011,(self.x,self.y))
-                    elif int(self.animateCounter) == 12: screen.blit(SrightWalking_012,(self.x,self.y))
-                    elif int(self.animateCounter) == 13: screen.blit(SrightWalking_013,(self.x,self.y))
-                    elif int(self.animateCounter) == 14: screen.blit(SrightWalking_014,(self.x,self.y))
-                    elif int(self.animateCounter) == 15: screen.blit(SrightWalking_015,(self.x,self.y))
-                    elif int(self.animateCounter) == 16: screen.blit(SrightWalking_016,(self.x,self.y))
-                    elif int(self.animateCounter) == 17: screen.blit(SrightWalking_017,(self.x,self.y))
+                    if int(self.animateCounter) == 0: screen.blit(SrightWalking_000,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 1: screen.blit(SrightWalking_001,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 2: screen.blit(SrightWalking_002,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 3: screen.blit(SrightWalking_003,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 4: screen.blit(SrightWalking_004,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 5: screen.blit(SrightWalking_005,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 6: screen.blit(SrightWalking_006,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 7: screen.blit(SrightWalking_007,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 8: screen.blit(SrightWalking_008,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 9: screen.blit(SrightWalking_009,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 10: screen.blit(SrightWalking_010,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 11: screen.blit(SrightWalking_011,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 12: screen.blit(SrightWalking_012,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 13: screen.blit(SrightWalking_013,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 14: screen.blit(SrightWalking_014,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 15: screen.blit(SrightWalking_015,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 16: screen.blit(SrightWalking_016,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 17: screen.blit(SrightWalking_017,(self.x - worldx, self.y - worldy))
 
                 elif self.animate == 2:#right Attack
-                    if int(self.animateCounter) == 0: screen.blit(SrightSlashing_000,(self.x,self.y))
-                    elif int(self.animateCounter) == 1: screen.blit(SrightSlashing_001,(self.x,self.y))
-                    elif int(self.animateCounter) == 2: screen.blit(SrightSlashing_002,(self.x,self.y))
-                    elif int(self.animateCounter) == 3: screen.blit(SrightSlashing_003,(self.x,self.y))
-                    elif int(self.animateCounter) == 4: screen.blit(SrightSlashing_004,(self.x,self.y))
-                    elif int(self.animateCounter) == 5: screen.blit(SrightSlashing_005,(self.x,self.y))
-                    elif int(self.animateCounter) == 6: screen.blit(SrightSlashing_006,(self.x,self.y))
-                    elif int(self.animateCounter) == 7: screen.blit(SrightSlashing_007,(self.x,self.y))
-                    elif int(self.animateCounter) == 8: screen.blit(SrightSlashing_008,(self.x,self.y))
+                    if int(self.animateCounter) == 0: screen.blit(SrightSlashing_000,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 1: screen.blit(SrightSlashing_001,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 2: screen.blit(SrightSlashing_002,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 3: screen.blit(SrightSlashing_003,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 4: screen.blit(SrightSlashing_004,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 5: screen.blit(SrightSlashing_005,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 6: screen.blit(SrightSlashing_006,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 7: screen.blit(SrightSlashing_007,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 8: screen.blit(SrightSlashing_008,(self.x - worldx, self.y - worldy))
 
                     if self.Tile not in self.rightBorder:
                         self.attackedTile = self.Tile + 1
@@ -1393,56 +1409,56 @@ class Skeleton:
             elif self.direction == 2: #Back
 
                 if self.animate == 0:#back Idle
-                    if int(self.animateCounter) == 0: screen.blit(SbackIdle_000,(self.x,self.y))
-                    elif int(self.animateCounter) == 1: screen.blit(SbackIdle_001,(self.x,self.y))
-                    elif int(self.animateCounter) == 2: screen.blit(SbackIdle_002,(self.x,self.y))
-                    elif int(self.animateCounter) == 3: screen.blit(SbackIdle_003,(self.x,self.y))
-                    elif int(self.animateCounter) == 4: screen.blit(SbackIdle_004,(self.x,self.y))
-                    elif int(self.animateCounter) == 5: screen.blit(SbackIdle_005,(self.x,self.y))
-                    elif int(self.animateCounter) == 6: screen.blit(SbackIdle_006,(self.x,self.y))
-                    elif int(self.animateCounter) == 7: screen.blit(SbackIdle_007,(self.x,self.y))
-                    elif int(self.animateCounter) == 8: screen.blit(SbackIdle_008,(self.x,self.y))
-                    elif int(self.animateCounter) == 9: screen.blit(SbackIdle_009,(self.x,self.y))
-                    elif int(self.animateCounter) == 10: screen.blit(SbackIdle_010,(self.x,self.y))
-                    elif int(self.animateCounter) == 11: screen.blit(SbackIdle_011,(self.x,self.y))
-                    elif int(self.animateCounter) == 12: screen.blit(SbackIdle_012,(self.x,self.y))
-                    elif int(self.animateCounter) == 13: screen.blit(SbackIdle_013,(self.x,self.y))
-                    elif int(self.animateCounter) == 14: screen.blit(SbackIdle_014,(self.x,self.y))
-                    elif int(self.animateCounter) == 15: screen.blit(SbackIdle_015,(self.x,self.y))
-                    elif int(self.animateCounter) == 16: screen.blit(SbackIdle_016,(self.x,self.y))
-                    elif int(self.animateCounter) == 17: screen.blit(SbackIdle_017,(self.x,self.y))
+                    if int(self.animateCounter) == 0: screen.blit(SbackIdle_000,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 1: screen.blit(SbackIdle_001,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 2: screen.blit(SbackIdle_002,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 3: screen.blit(SbackIdle_003,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 4: screen.blit(SbackIdle_004,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 5: screen.blit(SbackIdle_005,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 6: screen.blit(SbackIdle_006,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 7: screen.blit(SbackIdle_007,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 8: screen.blit(SbackIdle_008,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 9: screen.blit(SbackIdle_009,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 10: screen.blit(SbackIdle_010,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 11: screen.blit(SbackIdle_011,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 12: screen.blit(SbackIdle_012,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 13: screen.blit(SbackIdle_013,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 14: screen.blit(SbackIdle_014,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 15: screen.blit(SbackIdle_015,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 16: screen.blit(SbackIdle_016,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 17: screen.blit(SbackIdle_017,(self.x - worldx, self.y - worldy))
 
 
                 elif self.animate == 1:#back Walking
-                    if int(self.animateCounter) == 0: screen.blit(SbackWalking_000,(self.x,self.y))
-                    elif int(self.animateCounter) == 1: screen.blit(SbackWalking_001,(self.x,self.y))
-                    elif int(self.animateCounter) == 2: screen.blit(SbackWalking_002,(self.x,self.y))
-                    elif int(self.animateCounter) == 3: screen.blit(SbackWalking_003,(self.x,self.y))
-                    elif int(self.animateCounter) == 4: screen.blit(SbackWalking_004,(self.x,self.y))
-                    elif int(self.animateCounter) == 5: screen.blit(SbackWalking_005,(self.x,self.y))
-                    elif int(self.animateCounter) == 6: screen.blit(SbackWalking_006,(self.x,self.y))
-                    elif int(self.animateCounter) == 7: screen.blit(SbackWalking_007,(self.x,self.y))
-                    elif int(self.animateCounter) == 8: screen.blit(SbackWalking_008,(self.x,self.y))
-                    elif int(self.animateCounter) == 9: screen.blit(SbackWalking_009,(self.x,self.y))
-                    elif int(self.animateCounter) == 10: screen.blit(SbackWalking_010,(self.x,self.y))
-                    elif int(self.animateCounter) == 11: screen.blit(SbackWalking_011,(self.x,self.y))
-                    elif int(self.animateCounter) == 12: screen.blit(SbackWalking_012,(self.x,self.y))
-                    elif int(self.animateCounter) == 13: screen.blit(SbackWalking_013,(self.x,self.y))
-                    elif int(self.animateCounter) == 14: screen.blit(SbackWalking_014,(self.x,self.y))
-                    elif int(self.animateCounter) == 15: screen.blit(SbackWalking_015,(self.x,self.y))
-                    elif int(self.animateCounter) == 16: screen.blit(SbackWalking_016,(self.x,self.y))
-                    elif int(self.animateCounter) == 17: screen.blit(SbackWalking_017,(self.x,self.y))
+                    if int(self.animateCounter) == 0: screen.blit(SbackWalking_000,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 1: screen.blit(SbackWalking_001,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 2: screen.blit(SbackWalking_002,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 3: screen.blit(SbackWalking_003,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 4: screen.blit(SbackWalking_004,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 5: screen.blit(SbackWalking_005,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 6: screen.blit(SbackWalking_006,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 7: screen.blit(SbackWalking_007,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 8: screen.blit(SbackWalking_008,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 9: screen.blit(SbackWalking_009,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 10: screen.blit(SbackWalking_010,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 11: screen.blit(SbackWalking_011,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 12: screen.blit(SbackWalking_012,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 13: screen.blit(SbackWalking_013,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 14: screen.blit(SbackWalking_014,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 15: screen.blit(SbackWalking_015,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 16: screen.blit(SbackWalking_016,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 17: screen.blit(SbackWalking_017,(self.x - worldx, self.y - worldy))
 
                 elif self.animate == 2:#back Attack
-                    if int(self.animateCounter) == 0: screen.blit(SbackSlashing_000,(self.x,self.y))
-                    elif int(self.animateCounter) == 1: screen.blit(SbackSlashing_001,(self.x,self.y))
-                    elif int(self.animateCounter) == 2: screen.blit(SbackSlashing_002,(self.x,self.y))
-                    elif int(self.animateCounter) == 3: screen.blit(SbackSlashing_003,(self.x,self.y))
-                    elif int(self.animateCounter) == 4: screen.blit(SbackSlashing_004,(self.x,self.y))
-                    elif int(self.animateCounter) == 5: screen.blit(SbackSlashing_005,(self.x,self.y))
-                    elif int(self.animateCounter) == 6: screen.blit(SbackSlashing_006,(self.x,self.y))
-                    elif int(self.animateCounter) == 7: screen.blit(SbackSlashing_007,(self.x,self.y))
-                    elif int(self.animateCounter) == 8: screen.blit(SbackSlashing_008,(self.x,self.y))
+                    if int(self.animateCounter) == 0: screen.blit(SbackSlashing_000,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 1: screen.blit(SbackSlashing_001,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 2: screen.blit(SbackSlashing_002,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 3: screen.blit(SbackSlashing_003,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 4: screen.blit(SbackSlashing_004,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 5: screen.blit(SbackSlashing_005,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 6: screen.blit(SbackSlashing_006,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 7: screen.blit(SbackSlashing_007,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 8: screen.blit(SbackSlashing_008,(self.x - worldx, self.y - worldy))
                 
                     if self.Tile not in self.backBorder:
                         self.attackedTile = self.Tile - 20
@@ -1451,25 +1467,25 @@ class Skeleton:
 
                 if self.animate == 0: #left Idle
                     if self.blinking == False:#left IdleBlinking
-                        if int(self.animateCounter) == 0: screen.blit(SleftIdle_000,(self.x,self.y))
-                        elif int(self.animateCounter) == 1: screen.blit(SleftIdle_001,(self.x,self.y))
-                        elif int(self.animateCounter) == 2: screen.blit(SleftIdle_002,(self.x,self.y))
-                        elif int(self.animateCounter) == 3: screen.blit(SleftIdle_003,(self.x,self.y))
-                        elif int(self.animateCounter) == 4: screen.blit(SleftIdle_004,(self.x,self.y))
-                        elif int(self.animateCounter) == 5: screen.blit(SleftIdle_005,(self.x,self.y))
-                        elif int(self.animateCounter) == 6: screen.blit(SleftIdle_006,(self.x,self.y))
-                        elif int(self.animateCounter) == 7: screen.blit(SleftIdle_007,(self.x,self.y))
-                        elif int(self.animateCounter) == 8: screen.blit(SleftIdle_008,(self.x,self.y))
-                        elif int(self.animateCounter) == 9: screen.blit(SleftIdle_009,(self.x,self.y))
-                        elif int(self.animateCounter) == 10: screen.blit(SleftIdle_010,(self.x,self.y))
-                        elif int(self.animateCounter) == 11: screen.blit(SleftIdle_011,(self.x,self.y))
-                        elif int(self.animateCounter) == 12: screen.blit(SleftIdle_012,(self.x,self.y))
-                        elif int(self.animateCounter) == 13: screen.blit(SleftIdle_013,(self.x,self.y))
-                        elif int(self.animateCounter) == 14: screen.blit(SleftIdle_014,(self.x,self.y))
-                        elif int(self.animateCounter) == 15: screen.blit(SleftIdle_015,(self.x,self.y))
-                        elif int(self.animateCounter) == 16: screen.blit(SleftIdle_016,(self.x,self.y))
+                        if int(self.animateCounter) == 0: screen.blit(SleftIdle_000,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 1: screen.blit(SleftIdle_001,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 2: screen.blit(SleftIdle_002,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 3: screen.blit(SleftIdle_003,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 4: screen.blit(SleftIdle_004,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 5: screen.blit(SleftIdle_005,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 6: screen.blit(SleftIdle_006,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 7: screen.blit(SleftIdle_007,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 8: screen.blit(SleftIdle_008,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 9: screen.blit(SleftIdle_009,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 10: screen.blit(SleftIdle_010,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 11: screen.blit(SleftIdle_011,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 12: screen.blit(SleftIdle_012,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 13: screen.blit(SleftIdle_013,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 14: screen.blit(SleftIdle_014,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 15: screen.blit(SleftIdle_015,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 16: screen.blit(SleftIdle_016,(self.x - worldx, self.y - worldy))
                         elif int(self.animateCounter) == 17: #switch to blinking
-                                screen.blit(SleftIdle_017,(self.x,self.y)) 
+                                screen.blit(SleftIdle_017,(self.x - worldx, self.y - worldy)) 
                                 self.blinkCounter += 1
 
                                 if self.blinkCounter == 10:
@@ -1477,66 +1493,66 @@ class Skeleton:
                 
                     elif self.blinking == True:#left IdleBlinking
                 
-                        if int(self.animateCounter) == 0: screen.blit(SleftIdleBlinking_000,(self.x,self.y))
-                        elif int(self.animateCounter) == 1: screen.blit(SleftIdleBlinking_001,(self.x,self.y))
-                        elif int(self.animateCounter) == 2: screen.blit(SleftIdleBlinking_002,(self.x,self.y))
-                        elif int(self.animateCounter) == 3: screen.blit(SleftIdleBlinking_003,(self.x,self.y))
-                        elif int(self.animateCounter) == 4: screen.blit(SleftIdleBlinking_004,(self.x,self.y))
-                        elif int(self.animateCounter) == 5: screen.blit(SleftIdleBlinking_005,(self.x,self.y))
-                        elif int(self.animateCounter) == 6: screen.blit(SleftIdleBlinking_006,(self.x,self.y))
-                        elif int(self.animateCounter) == 7: screen.blit(SleftIdleBlinking_007,(self.x,self.y))
-                        elif int(self.animateCounter) == 8: screen.blit(SleftIdleBlinking_008,(self.x,self.y))
-                        elif int(self.animateCounter) == 9: screen.blit(SleftIdleBlinking_009,(self.x,self.y))
-                        elif int(self.animateCounter) == 10: screen.blit(SleftIdleBlinking_010,(self.x,self.y))
-                        elif int(self.animateCounter) == 11: screen.blit(SleftIdleBlinking_011,(self.x,self.y))
-                        elif int(self.animateCounter) == 12: screen.blit(SleftIdleBlinking_012,(self.x,self.y))
-                        elif int(self.animateCounter) == 13: screen.blit(SleftIdleBlinking_013,(self.x,self.y))
-                        elif int(self.animateCounter) == 14: screen.blit(SleftIdleBlinking_014,(self.x,self.y))
-                        elif int(self.animateCounter) == 15: screen.blit(SleftIdleBlinking_015,(self.x,self.y))
-                        elif int(self.animateCounter) == 16: screen.blit(SleftIdleBlinking_016,(self.x,self.y))
+                        if int(self.animateCounter) == 0: screen.blit(SleftIdleBlinking_000,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 1: screen.blit(SleftIdleBlinking_001,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 2: screen.blit(SleftIdleBlinking_002,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 3: screen.blit(SleftIdleBlinking_003,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 4: screen.blit(SleftIdleBlinking_004,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 5: screen.blit(SleftIdleBlinking_005,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 6: screen.blit(SleftIdleBlinking_006,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 7: screen.blit(SleftIdleBlinking_007,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 8: screen.blit(SleftIdleBlinking_008,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 9: screen.blit(SleftIdleBlinking_009,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 10: screen.blit(SleftIdleBlinking_010,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 11: screen.blit(SleftIdleBlinking_011,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 12: screen.blit(SleftIdleBlinking_012,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 13: screen.blit(SleftIdleBlinking_013,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 14: screen.blit(SleftIdleBlinking_014,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 15: screen.blit(SleftIdleBlinking_015,(self.x - worldx, self.y - worldy))
+                        elif int(self.animateCounter) == 16: screen.blit(SleftIdleBlinking_016,(self.x - worldx, self.y - worldy))
                         elif int(self.animateCounter) == 17:
-                            screen.blit(SleftIdleBlinking_017,(self.x,self.y))
+                            screen.blit(SleftIdleBlinking_017,(self.x - worldx, self.y - worldy))
                             self.blinkCounter = 0
                             self.blinking = False
                 
 
                 elif self.animate == 1: #left Walking
-                    if int(self.animateCounter) == 0: screen.blit(SleftWalking_000,(self.x,self.y))
-                    elif int(self.animateCounter) == 1: screen.blit(SleftWalking_001,(self.x,self.y))
-                    elif int(self.animateCounter) == 2: screen.blit(SleftWalking_002,(self.x,self.y))
-                    elif int(self.animateCounter) == 3: screen.blit(SleftWalking_003,(self.x,self.y))
-                    elif int(self.animateCounter) == 4: screen.blit(SleftWalking_004,(self.x,self.y))
-                    elif int(self.animateCounter) == 5: screen.blit(SleftWalking_005,(self.x,self.y))
-                    elif int(self.animateCounter) == 6: screen.blit(SleftWalking_006,(self.x,self.y))
-                    elif int(self.animateCounter) == 7: screen.blit(SleftWalking_007,(self.x,self.y))
-                    elif int(self.animateCounter) == 8: screen.blit(SleftWalking_008,(self.x,self.y))
-                    elif int(self.animateCounter) == 9: screen.blit(SleftWalking_009,(self.x,self.y))
-                    elif int(self.animateCounter) == 10: screen.blit(SleftWalking_010,(self.x,self.y))
-                    elif int(self.animateCounter) == 11: screen.blit(SleftWalking_011,(self.x,self.y))
-                    elif int(self.animateCounter) == 12: screen.blit(SleftWalking_012,(self.x,self.y))
-                    elif int(self.animateCounter) == 13: screen.blit(SleftWalking_013,(self.x,self.y))
-                    elif int(self.animateCounter) == 14: screen.blit(SleftWalking_014,(self.x,self.y))
-                    elif int(self.animateCounter) == 15: screen.blit(SleftWalking_015,(self.x,self.y))
-                    elif int(self.animateCounter) == 16: screen.blit(SleftWalking_016,(self.x,self.y))
-                    elif int(self.animateCounter) == 17: screen.blit(SleftWalking_017,(self.x,self.y))
+                    if int(self.animateCounter) == 0: screen.blit(SleftWalking_000,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 1: screen.blit(SleftWalking_001,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 2: screen.blit(SleftWalking_002,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 3: screen.blit(SleftWalking_003,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 4: screen.blit(SleftWalking_004,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 5: screen.blit(SleftWalking_005,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 6: screen.blit(SleftWalking_006,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 7: screen.blit(SleftWalking_007,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 8: screen.blit(SleftWalking_008,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 9: screen.blit(SleftWalking_009,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 10: screen.blit(SleftWalking_010,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 11: screen.blit(SleftWalking_011,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 12: screen.blit(SleftWalking_012,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 13: screen.blit(SleftWalking_013,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 14: screen.blit(SleftWalking_014,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 15: screen.blit(SleftWalking_015,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 16: screen.blit(SleftWalking_016,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 17: screen.blit(SleftWalking_017,(self.x - worldx, self.y - worldy))
 
                 elif self.animate == 2:#left Attack
-                    if int(self.animateCounter) == 0: screen.blit(SleftSlashing_000,(self.x,self.y))
-                    elif int(self.animateCounter) == 1: screen.blit(SleftSlashing_001,(self.x,self.y))
-                    elif int(self.animateCounter) == 2: screen.blit(SleftSlashing_002,(self.x,self.y))
-                    elif int(self.animateCounter) == 3: screen.blit(SleftSlashing_003,(self.x,self.y))
-                    elif int(self.animateCounter) == 4: screen.blit(SleftSlashing_004,(self.x,self.y))
-                    elif int(self.animateCounter) == 5: screen.blit(SleftSlashing_005,(self.x,self.y))
-                    elif int(self.animateCounter) == 6: screen.blit(SleftSlashing_006,(self.x,self.y))
-                    elif int(self.animateCounter) == 7: screen.blit(SleftSlashing_007,(self.x,self.y))
-                    elif int(self.animateCounter) == 8: screen.blit(SleftSlashing_008,(self.x,self.y))
+                    if int(self.animateCounter) == 0: screen.blit(SleftSlashing_000,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 1: screen.blit(SleftSlashing_001,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 2: screen.blit(SleftSlashing_002,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 3: screen.blit(SleftSlashing_003,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 4: screen.blit(SleftSlashing_004,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 5: screen.blit(SleftSlashing_005,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 6: screen.blit(SleftSlashing_006,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 7: screen.blit(SleftSlashing_007,(self.x - worldx, self.y - worldy))
+                    elif int(self.animateCounter) == 8: screen.blit(SleftSlashing_008,(self.x - worldx, self.y - worldy))
 
                     if self.Tile not in self.leftBorder:
                         self.attackedTile = self.Tile - 1
               
     def movement(self):
         if self.alive == 1:
-            safeTiles = [13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,33,34,35,36,37,38,80,81,82,83,85,87]
+            safeTiles = [13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,33,34,35,36,37,38,80,81,82,83,87]
 
             BasicAI = random.randint(1,1000) #1-8 = actions
             #Left, Right, Up, Down#
@@ -1627,7 +1643,8 @@ class Skeleton:
     
     def getY(self):
         #return int(self.y / 64)
-        return int((self.y + 55)/ 64)
+        #return int((self.y + 55)/ 64)
+        return int(self.Tile / 20)
 
         #print(playerAttack, self.Tile)
 ##########################################################################################
@@ -1707,316 +1724,319 @@ def draw_Tile(i,layer,type):
 
     i = map[i + (layer * 20)]
 
+    global worldx
+    global worldy
+
     if type == 0:
 
         if i == 0:
-            screen.blit(tile_underground1_0,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_0,(counter * 64 - worldx, counter2 * 64 - worldy))
         elif i == 1:
-            screen.blit(tile_underground1_1,(counter * 64, counter2 * 64)) #overlay_tile
+            screen.blit(tile_underground1_1,(counter * 64 - worldx, counter2 * 64 - worldy)) #overlay_tile
             #screen.blit(tile_underground1_87,(counter * 64, counter2 * 64))#87 is a unique tile used for the underlay of transparent walls.
             #screen.blit(tile_underground1_21,(counter * 64, counter2 * 64))
         elif i == 2:
-            screen.blit(tile_underground1_2,(counter * 64, counter2 * 64)) #overlay_tile
+            screen.blit(tile_underground1_2,(counter * 64 - worldx, counter2 * 64 - worldy)) #overlay_tile
             #screen.blit(tile_underground1_87,(counter * 64, counter2 * 64))#87 is a unique tile used for the underlay of transparent walls.
             #screen.blit(tile_underground1_21,(counter * 64, counter2 * 64))
         elif i == 3:
-            screen.blit(tile_underground1_3,(counter * 64, counter2 * 64)) #overlay_tile
+            screen.blit(tile_underground1_3,(counter * 64 - worldx, counter2 * 64 - worldy)) #overlay_tile
             #screen.blit(tile_underground1_87,(counter * 64, counter2 * 64))#87 is a unique tile used for the underlay of transparent walls.
             #screen.blit(tile_underground1_21,(counter * 64, counter2 * 64))
         elif i == 4:
-            screen.blit(tile_underground1_4,(counter * 64, counter2 * 64)) #overlay_tile
+            screen.blit(tile_underground1_4,(counter * 64 - worldx, counter2 * 64 - worldy)) #overlay_tile
             #screen.blit(tile_underground1_87,(counter * 64, counter2 * 64))#87 is a unique tile used for the underlay of transparent walls.
         elif i == 5:
-            screen.blit(tile_underground1_5,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_5,(counter * 64 - worldx, counter2 * 64 - worldy))
         elif i == 6:
-            screen.blit(tile_underground1_6,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_6,(counter * 64 - worldx, counter2 * 64 - worldy))
         elif i == 7:
-            screen.blit(tile_underground1_7,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_7,(counter * 64 - worldx, counter2 * 64 - worldy))
         elif i == 8:
-            screen.blit(tile_underground1_8,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_8,(counter * 64 - worldx, counter2 * 64 - worldy))
         elif i == 9:
-            screen.blit(tile_underground1_9,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_9,(counter * 64 - worldx, counter2 * 64 - worldy))
 
         elif i == 10:
-            screen.blit(tile_underground1_10,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_10,(counter * 64 - worldx, counter2 * 64 - worldy))
         elif i == 11:
-            screen.blit(tile_underground1_11,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_11,(counter * 64 - worldx, counter2 * 64 - worldy))
         elif i == 12:
-            screen.blit(tile_underground1_12,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_12,(counter * 64 - worldx, counter2 * 64 - worldy))
         elif i == 13:
-            screen.blit(tile_underground1_13,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_13,(counter * 64 - worldx, counter2 * 64 - worldy))
         elif i == 14:
-            screen.blit(tile_underground1_14,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_14,(counter * 64 - worldx, counter2 * 64 - worldy))
         elif i == 15:
-            screen.blit(tile_underground1_15,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_15,(counter * 64 - worldx, counter2 * 64 - worldy))
         elif i == 16:
-            screen.blit(tile_underground1_16,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_16,(counter * 64 - worldx, counter2 * 64 - worldy))
         elif i == 17:
-            screen.blit(tile_underground1_17,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_17,(counter * 64 - worldx, counter2 * 64 - worldy))
         elif i == 18:
-            screen.blit(tile_underground1_18,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_18,(counter * 64 - worldx, counter2 * 64 - worldy))
         elif i == 19:
-            screen.blit(tile_underground1_19,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_19,(counter * 64 - worldx, counter2 * 64 - worldy))
 
 
         elif i == 20:
-            screen.blit(tile_underground1_20,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_20,(counter * 64 - worldx, counter2 * 64 - worldy))
         elif i == 21:
-            screen.blit(tile_underground1_21,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_21,(counter * 64 - worldx, counter2 * 64 - worldy))
         elif i == 22:
-            screen.blit(tile_underground1_22,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_22,(counter * 64 - worldx, counter2 * 64 - worldy))
         elif i == 23:
-            screen.blit(tile_underground1_23,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_23,(counter * 64 - worldx, counter2 * 64 - worldy))
         elif i == 24:
-            screen.blit(tile_underground1_24,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_24,(counter * 64 - worldx, counter2 * 64 - worldy))
         elif i == 25:
-            screen.blit(tile_underground1_25,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_25,(counter * 64 - worldx, counter2 * 64 - worldy))
         elif i == 26:
-            screen.blit(tile_underground1_26,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_26,(counter * 64 - worldx, counter2 * 64 - worldy))
         elif i == 27:
-            screen.blit(tile_underground1_27,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_27,(counter * 64 - worldx, counter2 * 64 - worldy))
         elif i == 28:
-            screen.blit(tile_underground1_28,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_28,(counter * 64 - worldx, counter2 * 64 - worldy))
         elif i == 29:
-            screen.blit(tile_underground1_29,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_29,(counter * 64 - worldx, counter2 * 64 - worldy))
             
         elif i == 30:
-            screen.blit(tile_underground1_30,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_30,(counter * 64 - worldx, counter2 * 64 - worldy))
         elif i == 31:
-            screen.blit(tile_underground1_31,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_31,(counter * 64 - worldx, counter2 * 64 - worldy))
         elif i == 32:
-            screen.blit(tile_underground1_32,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_32,(counter * 64 - worldx, counter2 * 64 - worldy))
         elif i == 33:
-            screen.blit(tile_underground1_33,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_33,(counter * 64 - worldx, counter2 * 64 - worldy))
         elif i == 34:
-            screen.blit(tile_underground1_34,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_34,(counter * 64 - worldx, counter2 * 64 - worldy))
         elif i == 35:
-            screen.blit(tile_underground1_35,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_35,(counter * 64 - worldx, counter2 * 64 - worldy))
         elif i == 36:
-            screen.blit(tile_underground1_36,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_36,(counter * 64 - worldx, counter2 * 64 - worldy))
         elif i == 37:
-            screen.blit(tile_underground1_37,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_37,(counter * 64 - worldx, counter2 * 64 - worldy))
         elif i == 38:
-            screen.blit(tile_underground1_38,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_38,(counter * 64 - worldx, counter2 * 64 - worldy))
         elif i == 39:
-            screen.blit(tile_underground1_39,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_39,(counter * 64 - worldx, counter2 * 64 - worldy))
             
         elif i == 40:
-            screen.blit(tile_underground1_40,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_40,(counter * 64 - worldx, counter2 * 64 - worldy))
         elif i == 41:
-            screen.blit(tile_underground1_41,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_41,(counter * 64 - worldx, counter2 * 64 - worldy))
         elif i == 42:
-            screen.blit(tile_underground1_42,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_42,(counter * 64 - worldx, counter2 * 64 - worldy))
         elif i == 43:
-            screen.blit(tile_underground1_43,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_43,(counter * 64 - worldx, counter2 * 64 - worldy))
         elif i == 44:
-            screen.blit(tile_underground1_44,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_44,(counter * 64 - worldx, counter2 * 64 - worldy))
         elif i == 45:
-            screen.blit(tile_underground1_45,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_45,(counter * 64 - worldx, counter2 * 64 - worldy))
         elif i == 46:
-            screen.blit(tile_underground1_46,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_46,(counter * 64 - worldx, counter2 * 64 - worldy))
         elif i == 47:
-            screen.blit(tile_underground1_47,(counter * 64, counter2 * 64)) #overlay_tile
+            screen.blit(tile_underground1_47,(counter * 64 - worldx, counter2 * 64 - worldy)) #overlay_tile
             #screen.blit(tile_underground1_21,(counter * 64, counter2 * 64))
         elif i == 48:
             #screen.blit(tile_underground1_87,(counter * 64, counter2 * 64))#87 is a unique tile used for the underlay of transparent walls.
-            screen.blit(tile_underground1_48,(counter * 64, counter2 * 64)) #overlay_tile
+            screen.blit(tile_underground1_48,(counter * 64 - worldx, counter2 * 64 - worldy)) #overlay_tile
             #screen.blit(tile_underground1_21,(counter * 64, counter2 * 64))
         elif i == 49:
-            screen.blit(tile_underground1_49,(counter * 64, counter2 * 64)) #overlay_tile
+            screen.blit(tile_underground1_49,(counter * 64 - worldx, counter2 * 64 - worldy)) #overlay_tile
             #screen.blit(tile_underground1_21,(counter * 64, counter2 * 64))
 
         elif i == 50:
-            screen.blit(tile_underground1_50,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_50,(counter * 64 - worldx, counter2 * 64 - worldy))
         elif i == 51:
-            screen.blit(tile_underground1_51,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_51,(counter * 64 - worldx, counter2 * 64 - worldy))
         elif i == 52:
-            screen.blit(tile_underground1_52,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_52,(counter * 64 - worldx, counter2 * 64 - worldy))
         elif i == 53:
-            screen.blit(tile_underground1_53,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_53,(counter * 64 - worldx, counter2 * 64 - worldy))
         elif i == 54:
-            screen.blit(tile_underground1_54,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_54,(counter * 64 - worldx, counter2 * 64 - worldy))
         elif i == 55:
-            screen.blit(tile_underground1_55,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_55,(counter * 64 - worldx, counter2 * 64 - worldy))
         elif i == 56:
-            screen.blit(tile_underground1_56,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_56,(counter * 64 - worldx, counter2 * 64 - worldy))
         elif i == 57:
-            screen.blit(tile_underground1_57,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_57,(counter * 64 - worldx, counter2 * 64 - worldy))
             #screen.blit(tile_underground1_21,(counter * 64, counter2 * 64))#overlay_tile
         elif i == 58:
-            screen.blit(tile_underground1_58,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_58,(counter * 64 - worldx, counter2 * 64 - worldy))
         elif i == 59:
-            screen.blit(tile_underground1_59,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_59,(counter * 64 - worldx, counter2 * 64 - worldy))
             
         elif i == 60:
-            screen.blit(tile_underground1_60,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_60,(counter * 64 - worldx, counter2 * 64 - worldy))
         elif i == 61:
-            screen.blit(tile_underground1_61,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_61,(counter * 64 - worldx, counter2 * 64 - worldy))
         elif i == 62:
-            screen.blit(tile_underground1_62,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_62,(counter * 64 - worldx, counter2 * 64 - worldy))
         elif i == 63:
-            screen.blit(tile_underground1_63,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_63,(counter * 64 - worldx, counter2 * 64 - worldy))
         elif i == 64:
-            screen.blit(tile_underground1_64,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_64,(counter * 64 - worldx, counter2 * 64 - worldy))
         elif i == 65:
-            screen.blit(tile_underground1_65,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_65,(counter * 64 - worldx, counter2 * 64 - worldy))
         elif i == 66:
             #screen.blit(tile_underground1_87,(counter * 64, counter2 * 64))#87 is a unique tile used for the underlay of transparent walls.
-            screen.blit(tile_underground1_66,(counter * 64, counter2 * 64))#overlay_tile
+            screen.blit(tile_underground1_66,(counter * 64 - worldx, counter2 * 64 - worldy))#overlay_tile
         elif i == 67:
-            screen.blit(tile_underground1_67,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_67,(counter * 64 - worldx, counter2 * 64 - worldy))
         elif i == 68:
-            screen.blit(tile_underground1_68,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_68,(counter * 64 - worldx, counter2 * 64 - worldy))
         elif i == 69:
-            screen.blit(tile_underground1_69,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_69,(counter * 64 - worldx, counter2 * 64 - worldy))
 
         elif i == 70:
-            screen.blit(tile_underground1_70,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_70,(counter * 64 - worldx, counter2 * 64 - worldy))
         elif i == 71:
-            screen.blit(tile_underground1_71,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_71,(counter * 64 - worldx, counter2 * 64 - worldy))
         elif i == 72:
-            screen.blit(tile_underground1_72,(counter * 64, counter2 * 64))#overlay_tile
+            screen.blit(tile_underground1_72,(counter * 64 - worldx, counter2 * 64 - worldy))#overlay_tile
             #screen.blit(tile_underground1_21,(counter * 64, counter2 * 64))
         elif i == 73:
-            screen.blit(tile_underground1_73,(counter * 64, counter2 * 64))#overlay_tile
+            screen.blit(tile_underground1_73,(counter * 64 - worldx, counter2 * 64 - worldy))#overlay_tile
             #screen.blit(tile_underground1_21,(counter * 64, counter2 * 64))
         elif i == 74:
-            screen.blit(tile_underground1_74,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_74,(counter * 64 - worldx, counter2 * 64 - worldy))
         elif i == 75:
-            screen.blit(tile_underground1_75,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_75,(counter * 64 - worldx, counter2 * 64 - worldy))
         elif i == 76:
-            screen.blit(tile_underground1_76,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_76,(counter * 64 - worldx, counter2 * 64 - worldy))
         elif i == 77:
-            screen.blit(tile_underground1_77,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_77,(counter * 64 - worldx, counter2 * 64 - worldy))
         elif i == 78:
-            screen.blit(tile_underground1_78,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_78,(counter * 64 - worldx, counter2 * 64 - worldy))
         elif i == 79:
-            screen.blit(tile_underground1_21,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_21,(counter * 64, counter2 * 64 - worldy))
             #screen.blit(tile_underground1_79,(counter * 64, counter2 * 64))#overlay_tile
 
         elif i == 80:
-            screen.blit(tile_underground1_80,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_80,(counter * 64 - worldx, counter2 * 64 - worldy))
         elif i == 81:
-            screen.blit(tile_underground1_81,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_81,(counter * 64 - worldx, counter2 * 64 - worldy))
         elif i == 82:
-            screen.blit(tile_underground1_82,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_82,(counter * 64 - worldx, counter2 * 64 - worldy))
         elif i == 83:
-            screen.blit(tile_underground1_83,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_83,(counter * 64 - worldx, counter2 * 64 - worldy))
 
         elif i == 84: #Passage Tile
-            screen.blit(tile_underground1_0,(counter * 64, counter2 * 64))  ##### Changed to 0 for visual overlay
+            screen.blit(tile_underground1_0,(counter * 64 - worldx, counter2 * 64 - worldy))  ##### Changed to 0 for visual overlay
         elif i == 85: #Passage Tile
-            screen.blit(tile_underground1_85,(counter * 64, counter2 * 64))  
+            screen.blit(tile_underground1_85,(counter * 64 - worldx, counter2 * 64 - worldy))  
         elif i == 86:
-            screen.blit(tile_underground1_86,(counter * 64, counter2 * 64))
+            screen.blit(tile_underground1_86,(counter * 64 - worldx, counter2 * 64 - worldy))
 
     ######################################################
     #OVERWORLD#
 
         elif i == 87:
-            screen.blit(tile_overworld1_1,(counter * 64, counter2 * 64))
+            screen.blit(tile_overworld1_1,(counter * 64 - worldx, counter2 * 64 - worldy))
 
         elif i == 88:
-            screen.blit(tile_overworld1_2,(counter * 64, counter2 * 64))
+            screen.blit(tile_overworld1_2,(counter * 64 - worldx, counter2 * 64 - worldy))
 
         elif i == 89:
-            screen.blit(tile_overworld1_3,(counter * 64, counter2 * 64))
+            screen.blit(tile_overworld1_3,(counter * 64 - worldx, counter2 * 64 - worldy))
 
         elif i == 90:
-            screen.blit(tile_overworld1_4,(counter * 64, counter2 * 64))
+            screen.blit(tile_overworld1_4,(counter * 64 - worldx, counter2 * 64 - worldy))
 
         elif i == 91:
-            screen.blit(tile_overworld1_5,(counter * 64, counter2 * 64))
+            screen.blit(tile_overworld1_5,(counter * 64 - worldx, counter2 * 64 - worldy))
 
         elif i == 92:
-            screen.blit(tile_overworld1_6,(counter * 64, counter2 * 64))
+            screen.blit(tile_overworld1_6,(counter * 64 - worldx, counter2 * 64 - worldy))
 
         elif i == 93:
-            screen.blit(tile_overworld1_7,(counter * 64, counter2 * 64))
+            screen.blit(tile_overworld1_7,(counter * 64 - worldx, counter2 * 64 - worldy))
 
         elif i == 94:
-            screen.blit(tile_overworld1_8,(counter * 64, counter2 * 64))
+            screen.blit(tile_overworld1_8,(counter * 64 - worldx, counter2 * 64 - worldy))
 
         elif i == 95:
-            screen.blit(tile_overworld1_9,(counter * 64, counter2 * 64))
+            screen.blit(tile_overworld1_9,(counter * 64 - worldx, counter2 * 64 - worldy))
 
         elif i == 96:
-            screen.blit(tile_overworld1_10,(counter * 64, counter2 * 64))
+            screen.blit(tile_overworld1_10,(counter * 64 - worldx, counter2 * 64 - worldy))
 
         elif i == 97:
-            screen.blit(tile_overworld1_11,(counter * 64, counter2 * 64))
+            screen.blit(tile_overworld1_11,(counter * 64 - worldx, counter2 * 64 - worldy))
 
         elif i == 98:
-            screen.blit(tile_overworld1_50,(counter * 64, counter2 * 64))
+            screen.blit(tile_overworld1_50,(counter * 64 - worldx, counter2 * 64 - worldy))
 
         elif i == 99:
-            screen.blit(tile_overworld1_51,(counter * 64, counter2 * 64))
+            screen.blit(tile_overworld1_51,(counter * 64 - worldx, counter2 * 64 - worldy))
 
         elif i == 100:
-            screen.blit(tile_overworld1_52,(counter * 64, counter2 * 64))
+            screen.blit(tile_overworld1_52,(counter * 64 - worldx, counter2 * 64 - worldy))
 
         elif i == 101:
-            screen.blit(tile_overworld1_53,(counter * 64, counter2 * 64))
+            screen.blit(tile_overworld1_53,(counter * 64 - worldx, counter2 * 64 - worldy))
 
         elif i == 102:
-            screen.blit(tile_overworld1_54,(counter * 64, counter2 * 64))
+            screen.blit(tile_overworld1_54,(counter * 64 - worldx, counter2 * 64 - worldy))
 
         elif i == 103:
-            screen.blit(tile_overworld1_55,(counter * 64, counter2 * 64))
+            screen.blit(tile_overworld1_55,(counter * 64 - worldx, counter2 * 64 - worldy))
 
         elif i == 104:
-            screen.blit(tile_overworld1_56,(counter * 64, counter2 * 64))
+            screen.blit(tile_overworld1_56,(counter * 64 - worldx, counter2 * 64 - worldy))
 
         elif i == 105:
-            screen.blit(tile_overworld1_57,(counter * 64, counter2 * 64))
+            screen.blit(tile_overworld1_57,(counter * 64 - worldx, counter2 * 64 - worldy))
 
         elif i == 106:
-            screen.blit(tile_overworld1_58,(counter * 64, counter2 * 64))
+            screen.blit(tile_overworld1_58,(counter * 64 - worldx, counter2 * 64 - worldy))
 
         elif i == 107:
-            screen.blit(tile_overworld1_59,(counter * 64, counter2 * 64))
+            screen.blit(tile_overworld1_59,(counter * 64 - worldx, counter2 * 64 - worldy))
 
         elif i == 108:
-            screen.blit(tile_overworld1_60,(counter * 64, counter2 * 64))
+            screen.blit(tile_overworld1_60,(counter * 64 - worldx, counter2 * 64 - worldy))
 
         elif i == 109:
-            screen.blit(tile_overworld1_61,(counter * 64, counter2 * 64))
+            screen.blit(tile_overworld1_61,(counter * 64 - worldx, counter2 * 64 - worldy))
 
         elif i == 110:
-            screen.blit(tile_overworld1_62,(counter * 64, counter2 * 64))
+            screen.blit(tile_overworld1_62,(counter * 64 - worldx, counter2 * 64 - worldy))
 
         elif i == 111:
-            screen.blit(tile_overworld1_63,(counter * 64, counter2 * 64))
+            screen.blit(tile_overworld1_63,(counter * 64 - worldx, counter2 * 64 - worldy))
 
         elif i == 112:
-            screen.blit(tile_overworld1_64,(counter * 64, counter2 * 64))
+            screen.blit(tile_overworld1_64,(counter * 64 - worldx, counter2 * 64 - worldy))
 
         elif i == 113:
-            screen.blit(tile_overworld1_65,(counter * 64, counter2 * 64))
+            screen.blit(tile_overworld1_65,(counter * 64 - worldx, counter2 * 64 - worldy))
 
         elif i == 114:
-            screen.blit(tile_overworld1_66,(counter * 64, counter2 * 64))
+            screen.blit(tile_overworld1_66,(counter * 64 - worldx, counter2 * 64 - worldy))
 
         elif i == 115:
-            screen.blit(tile_overworld1_67,(counter * 64, counter2 * 64))
+            screen.blit(tile_overworld1_67,(counter * 64 - worldx, counter2 * 64 - worldy))
 
         elif i == 116:
-            screen.blit(tile_overworld1_68,(counter * 64, counter2 * 64))
+            screen.blit(tile_overworld1_68,(counter * 64 - worldx, counter2 * 64 - worldy))
 
         elif i == 117:
-            screen.blit(tile_overworld1_69,(counter * 64, counter2 * 64))
+            screen.blit(tile_overworld1_69,(counter * 64 - worldx, counter2 * 64 - worldy))
 
         elif i == 118:
-            screen.blit(tile_overworld1_70,(counter * 64, counter2 * 64))
+            screen.blit(tile_overworld1_70,(counter * 64 - worldx, counter2 * 64 - worldy))
 
         elif i == 119:
-            screen.blit(tile_overworld1_71,(counter * 64, counter2 * 64))
+            screen.blit(tile_overworld1_71,(counter * 64 - worldx, counter2 * 64 - worldy))
 
         elif i == 120:
-            screen.blit(tile_overworld1_72,(counter * 64, counter2 * 64))
+            screen.blit(tile_overworld1_72,(counter * 64 - worldx, counter2 * 64 - worldy))
 
         elif i == 121:
-            screen.blit(tile_overworld1_73,(counter * 64, counter2 * 64))
+            screen.blit(tile_overworld1_73,(counter * 64 - worldx, counter2 * 64 - worldy))
 
 ###################
 
@@ -2024,14 +2044,13 @@ def draw_Tile(i,layer,type):
 
         #
         if i == 84: #Passage Tile
-            screen.blit(tile_underground1_84,(counter * 64, counter2 * 64)) 
+            screen.blit(tile_underground1_84,(counter * 64 - worldx, counter2 * 64 - worldy)) 
     
     counter += 1
     if counter == 20:
         counter = 0
 
 def teleport(teleportTile):
-    print (teleportTile)
     global map
     global map1
     global map2
@@ -2105,7 +2124,7 @@ while playGame == True: #Main Menu
 ##########################################################################################
 
     #Search1
-    EnableMapEditor = True
+    EnableMapEditor = False
     if EnableMapEditor == True:
         mousexy = pygame.mouse.get_pos()
         mousex = mousexy[0] / 64
@@ -2493,8 +2512,8 @@ while playGame == True: #Main Menu
 ##########################################################################################
     if oneTime == True:
 
-        sk = Skeleton((64 * 8) - 32,64 * 3,0)
-        s1 = Skeleton((64 * 8) - 32,64 * 8,2)
+        sk = Skeleton((64 * 8) -32,64 * 3,0)
+        s1 = Skeleton((64 * 8) -32,64 * 8,2)
         P = Player()
         
         #pygame.mixer.music.load('mainMusic.mp3')
