@@ -1210,415 +1210,417 @@ class Skeleton:
         self.blinking = False
 
     def draw(self):
+        if self.alive == 1:
+            #print(self.Tile, self.attackedTile)
+            screen.blit(Player_Shadow_000,(self.x,self.y))#shadow
 
-        #print(self.Tile, self.attackedTile)
-        screen.blit(Player_Shadow_000,(self.x,self.y))#shadow
+            if self.direction == 0: #Front
 
-        if self.direction == 0: #Front
-
-            if self.animate == 0: #front Idle
-                if self.blinking == False:#front Idle
-                    if int(self.animateCounter) == 0: screen.blit(SfrontIdle_000,(self.x,self.y))
-                    elif int(self.animateCounter) == 1: screen.blit(SfrontIdle_001,(self.x,self.y))
-                    elif int(self.animateCounter) == 2: screen.blit(SfrontIdle_002,(self.x,self.y))
-                    elif int(self.animateCounter) == 3: screen.blit(SfrontIdle_003,(self.x,self.y))
-                    elif int(self.animateCounter) == 4: screen.blit(SfrontIdle_004,(self.x,self.y))
-                    elif int(self.animateCounter) == 5: screen.blit(SfrontIdle_005,(self.x,self.y))
-                    elif int(self.animateCounter) == 6: screen.blit(SfrontIdle_006,(self.x,self.y))
-                    elif int(self.animateCounter) == 7: screen.blit(SfrontIdle_007,(self.x,self.y))
-                    elif int(self.animateCounter) == 8: screen.blit(SfrontIdle_008,(self.x,self.y))
-                    elif int(self.animateCounter) == 9: screen.blit(SfrontIdle_009,(self.x,self.y))
-                    elif int(self.animateCounter) == 10: screen.blit(SfrontIdle_010,(self.x,self.y))
-                    elif int(self.animateCounter) == 11: screen.blit(SfrontIdle_011,(self.x,self.y))
-                    elif int(self.animateCounter) == 12: screen.blit(SfrontIdle_012,(self.x,self.y))
-                    elif int(self.animateCounter) == 13: screen.blit(SfrontIdle_013,(self.x,self.y))
-                    elif int(self.animateCounter) == 14: screen.blit(SfrontIdle_014,(self.x,self.y))
-                    elif int(self.animateCounter) == 15: screen.blit(SfrontIdle_015,(self.x,self.y))
-                    elif int(self.animateCounter) == 16: screen.blit(SfrontIdle_016,(self.x,self.y))
+                if self.animate == 0: #front Idle
+                    if self.blinking == False:#front Idle
+                        if int(self.animateCounter) == 0: screen.blit(SfrontIdle_000,(self.x,self.y))
+                        elif int(self.animateCounter) == 1: screen.blit(SfrontIdle_001,(self.x,self.y))
+                        elif int(self.animateCounter) == 2: screen.blit(SfrontIdle_002,(self.x,self.y))
+                        elif int(self.animateCounter) == 3: screen.blit(SfrontIdle_003,(self.x,self.y))
+                        elif int(self.animateCounter) == 4: screen.blit(SfrontIdle_004,(self.x,self.y))
+                        elif int(self.animateCounter) == 5: screen.blit(SfrontIdle_005,(self.x,self.y))
+                        elif int(self.animateCounter) == 6: screen.blit(SfrontIdle_006,(self.x,self.y))
+                        elif int(self.animateCounter) == 7: screen.blit(SfrontIdle_007,(self.x,self.y))
+                        elif int(self.animateCounter) == 8: screen.blit(SfrontIdle_008,(self.x,self.y))
+                        elif int(self.animateCounter) == 9: screen.blit(SfrontIdle_009,(self.x,self.y))
+                        elif int(self.animateCounter) == 10: screen.blit(SfrontIdle_010,(self.x,self.y))
+                        elif int(self.animateCounter) == 11: screen.blit(SfrontIdle_011,(self.x,self.y))
+                        elif int(self.animateCounter) == 12: screen.blit(SfrontIdle_012,(self.x,self.y))
+                        elif int(self.animateCounter) == 13: screen.blit(SfrontIdle_013,(self.x,self.y))
+                        elif int(self.animateCounter) == 14: screen.blit(SfrontIdle_014,(self.x,self.y))
+                        elif int(self.animateCounter) == 15: screen.blit(SfrontIdle_015,(self.x,self.y))
+                        elif int(self.animateCounter) == 16: screen.blit(SfrontIdle_016,(self.x,self.y))
                
-                    elif int(self.animateCounter) == 17:
-                            screen.blit(SfrontIdle_017,(self.x,self.y)) 
-                            self.blinkCounter += 1
+                        elif int(self.animateCounter) == 17:
+                                screen.blit(SfrontIdle_017,(self.x,self.y)) 
+                                self.blinkCounter += 1
 
-                            if self.blinkCounter == 10:
-                                self.blinking = True
+                                if self.blinkCounter == 10:
+                                    self.blinking = True
                 
-                elif self.blinking == True:#front IdleBlinking
+                    elif self.blinking == True:#front IdleBlinking
                 
-                    if int(self.animateCounter) == 0: screen.blit(SfrontIdleBlinking_000,(self.x,self.y))
-                    elif int(self.animateCounter) == 1: screen.blit(SfrontIdleBlinking_001,(self.x,self.y))
-                    elif int(self.animateCounter) == 2: screen.blit(SfrontIdleBlinking_002,(self.x,self.y))
-                    elif int(self.animateCounter) == 3: screen.blit(SfrontIdleBlinking_003,(self.x,self.y))
-                    elif int(self.animateCounter) == 4: screen.blit(SfrontIdleBlinking_004,(self.x,self.y))
-                    elif int(self.animateCounter) == 5: screen.blit(SfrontIdleBlinking_005,(self.x,self.y))
-                    elif int(self.animateCounter) == 6: screen.blit(SfrontIdleBlinking_006,(self.x,self.y))
-                    elif int(self.animateCounter) == 7: screen.blit(SfrontIdleBlinking_007,(self.x,self.y))
-                    elif int(self.animateCounter) == 8: screen.blit(SfrontIdleBlinking_008,(self.x,self.y))
-                    elif int(self.animateCounter) == 9: screen.blit(SfrontIdleBlinking_009,(self.x,self.y))
-                    elif int(self.animateCounter) == 10: screen.blit(SfrontIdleBlinking_010,(self.x,self.y))
-                    elif int(self.animateCounter) == 11: screen.blit(SfrontIdleBlinking_011,(self.x,self.y))
-                    elif int(self.animateCounter) == 12: screen.blit(SfrontIdleBlinking_012,(self.x,self.y))
-                    elif int(self.animateCounter) == 13: screen.blit(SfrontIdleBlinking_013,(self.x,self.y))
-                    elif int(self.animateCounter) == 14: screen.blit(SfrontIdleBlinking_014,(self.x,self.y))
-                    elif int(self.animateCounter) == 15: screen.blit(SfrontIdleBlinking_015,(self.x,self.y))
-                    elif int(self.animateCounter) == 16: screen.blit(SfrontIdleBlinking_016,(self.x,self.y))
-                    elif int(self.animateCounter) == 17:
-                        screen.blit(SfrontIdleBlinking_017,(self.x,self.y))
-                        self.blinkCounter = 0
-                        self.blinking = False
+                        if int(self.animateCounter) == 0: screen.blit(SfrontIdleBlinking_000,(self.x,self.y))
+                        elif int(self.animateCounter) == 1: screen.blit(SfrontIdleBlinking_001,(self.x,self.y))
+                        elif int(self.animateCounter) == 2: screen.blit(SfrontIdleBlinking_002,(self.x,self.y))
+                        elif int(self.animateCounter) == 3: screen.blit(SfrontIdleBlinking_003,(self.x,self.y))
+                        elif int(self.animateCounter) == 4: screen.blit(SfrontIdleBlinking_004,(self.x,self.y))
+                        elif int(self.animateCounter) == 5: screen.blit(SfrontIdleBlinking_005,(self.x,self.y))
+                        elif int(self.animateCounter) == 6: screen.blit(SfrontIdleBlinking_006,(self.x,self.y))
+                        elif int(self.animateCounter) == 7: screen.blit(SfrontIdleBlinking_007,(self.x,self.y))
+                        elif int(self.animateCounter) == 8: screen.blit(SfrontIdleBlinking_008,(self.x,self.y))
+                        elif int(self.animateCounter) == 9: screen.blit(SfrontIdleBlinking_009,(self.x,self.y))
+                        elif int(self.animateCounter) == 10: screen.blit(SfrontIdleBlinking_010,(self.x,self.y))
+                        elif int(self.animateCounter) == 11: screen.blit(SfrontIdleBlinking_011,(self.x,self.y))
+                        elif int(self.animateCounter) == 12: screen.blit(SfrontIdleBlinking_012,(self.x,self.y))
+                        elif int(self.animateCounter) == 13: screen.blit(SfrontIdleBlinking_013,(self.x,self.y))
+                        elif int(self.animateCounter) == 14: screen.blit(SfrontIdleBlinking_014,(self.x,self.y))
+                        elif int(self.animateCounter) == 15: screen.blit(SfrontIdleBlinking_015,(self.x,self.y))
+                        elif int(self.animateCounter) == 16: screen.blit(SfrontIdleBlinking_016,(self.x,self.y))
+                        elif int(self.animateCounter) == 17:
+                            screen.blit(SfrontIdleBlinking_017,(self.x,self.y))
+                            self.blinkCounter = 0
+                            self.blinking = False
 
-            elif self.animate == 1: #front Walking
-                if int(self.animateCounter) == 0: screen.blit(SfrontWalking_000,(self.x,self.y))
-                elif int(self.animateCounter) == 1: screen.blit(SfrontWalking_001,(self.x,self.y))
-                elif int(self.animateCounter) == 2: screen.blit(SfrontWalking_002,(self.x,self.y))
-                elif int(self.animateCounter) == 3: screen.blit(SfrontWalking_003,(self.x,self.y))
-                elif int(self.animateCounter) == 4: screen.blit(SfrontWalking_004,(self.x,self.y))
-                elif int(self.animateCounter) == 5: screen.blit(SfrontWalking_005,(self.x,self.y))
-                elif int(self.animateCounter) == 6: screen.blit(SfrontWalking_006,(self.x,self.y))
-                elif int(self.animateCounter) == 7: screen.blit(SfrontWalking_007,(self.x,self.y))
-                elif int(self.animateCounter) == 8: screen.blit(SfrontWalking_008,(self.x,self.y))
-                elif int(self.animateCounter) == 9: screen.blit(SfrontWalking_009,(self.x,self.y))
-                elif int(self.animateCounter) == 10: screen.blit(SfrontWalking_010,(self.x,self.y))
-                elif int(self.animateCounter) == 11: screen.blit(SfrontWalking_011,(self.x,self.y))
-                elif int(self.animateCounter) == 12: screen.blit(SfrontWalking_012,(self.x,self.y))
-                elif int(self.animateCounter) == 13: screen.blit(SfrontWalking_013,(self.x,self.y))
-                elif int(self.animateCounter) == 14: screen.blit(SfrontWalking_014,(self.x,self.y))
-                elif int(self.animateCounter) == 15: screen.blit(SfrontWalking_015,(self.x,self.y))
-                elif int(self.animateCounter) == 16: screen.blit(SfrontWalking_016,(self.x,self.y))
-                elif int(self.animateCounter) == 17: screen.blit(SfrontWalking_017,(self.x,self.y))
+                elif self.animate == 1: #front Walking
+                    if int(self.animateCounter) == 0: screen.blit(SfrontWalking_000,(self.x,self.y))
+                    elif int(self.animateCounter) == 1: screen.blit(SfrontWalking_001,(self.x,self.y))
+                    elif int(self.animateCounter) == 2: screen.blit(SfrontWalking_002,(self.x,self.y))
+                    elif int(self.animateCounter) == 3: screen.blit(SfrontWalking_003,(self.x,self.y))
+                    elif int(self.animateCounter) == 4: screen.blit(SfrontWalking_004,(self.x,self.y))
+                    elif int(self.animateCounter) == 5: screen.blit(SfrontWalking_005,(self.x,self.y))
+                    elif int(self.animateCounter) == 6: screen.blit(SfrontWalking_006,(self.x,self.y))
+                    elif int(self.animateCounter) == 7: screen.blit(SfrontWalking_007,(self.x,self.y))
+                    elif int(self.animateCounter) == 8: screen.blit(SfrontWalking_008,(self.x,self.y))
+                    elif int(self.animateCounter) == 9: screen.blit(SfrontWalking_009,(self.x,self.y))
+                    elif int(self.animateCounter) == 10: screen.blit(SfrontWalking_010,(self.x,self.y))
+                    elif int(self.animateCounter) == 11: screen.blit(SfrontWalking_011,(self.x,self.y))
+                    elif int(self.animateCounter) == 12: screen.blit(SfrontWalking_012,(self.x,self.y))
+                    elif int(self.animateCounter) == 13: screen.blit(SfrontWalking_013,(self.x,self.y))
+                    elif int(self.animateCounter) == 14: screen.blit(SfrontWalking_014,(self.x,self.y))
+                    elif int(self.animateCounter) == 15: screen.blit(SfrontWalking_015,(self.x,self.y))
+                    elif int(self.animateCounter) == 16: screen.blit(SfrontWalking_016,(self.x,self.y))
+                    elif int(self.animateCounter) == 17: screen.blit(SfrontWalking_017,(self.x,self.y))
 
-            elif self.animate == 2:#front Attack
-                if int(self.animateCounter) == 0: screen.blit(SfrontSlashing_000,(self.x,self.y))
-                elif int(self.animateCounter) == 1: screen.blit(SfrontSlashing_001,(self.x,self.y))
-                elif int(self.animateCounter) == 2: screen.blit(SfrontSlashing_002,(self.x,self.y))
-                elif int(self.animateCounter) == 3: screen.blit(SfrontSlashing_003,(self.x,self.y))
-                elif int(self.animateCounter) == 4: screen.blit(SfrontSlashing_004,(self.x,self.y))
-                elif int(self.animateCounter) == 5: screen.blit(SfrontSlashing_005,(self.x,self.y))
-                elif int(self.animateCounter) == 6: screen.blit(SfrontSlashing_006,(self.x,self.y))
-                elif int(self.animateCounter) == 7: screen.blit(SfrontSlashing_007,(self.x,self.y))
-                elif int(self.animateCounter) == 8: screen.blit(SfrontSlashing_008,(self.x,self.y))
+                elif self.animate == 2:#front Attack
+                    if int(self.animateCounter) == 0: screen.blit(SfrontSlashing_000,(self.x,self.y))
+                    elif int(self.animateCounter) == 1: screen.blit(SfrontSlashing_001,(self.x,self.y))
+                    elif int(self.animateCounter) == 2: screen.blit(SfrontSlashing_002,(self.x,self.y))
+                    elif int(self.animateCounter) == 3: screen.blit(SfrontSlashing_003,(self.x,self.y))
+                    elif int(self.animateCounter) == 4: screen.blit(SfrontSlashing_004,(self.x,self.y))
+                    elif int(self.animateCounter) == 5: screen.blit(SfrontSlashing_005,(self.x,self.y))
+                    elif int(self.animateCounter) == 6: screen.blit(SfrontSlashing_006,(self.x,self.y))
+                    elif int(self.animateCounter) == 7: screen.blit(SfrontSlashing_007,(self.x,self.y))
+                    elif int(self.animateCounter) == 8: screen.blit(SfrontSlashing_008,(self.x,self.y))
 
-                if self.Tile not in self.frontBorder:
-                    self.attackedTile = self.Tile + 20
+                    if self.Tile not in self.frontBorder:
+                        self.attackedTile = self.Tile + 20
     
 
-        elif self.direction == 1: #Right
+            elif self.direction == 1: #Right
 
-            if self.animate == 0: #right Idle
-                if self.blinking == False:
-                    if int(self.animateCounter) == 0: screen.blit(SrightIdle_000,(self.x,self.y))
-                    elif int(self.animateCounter) == 1: screen.blit(SrightIdle_001,(self.x,self.y))
-                    elif int(self.animateCounter) == 2: screen.blit(SrightIdle_002,(self.x,self.y))
-                    elif int(self.animateCounter) == 3: screen.blit(SrightIdle_003,(self.x,self.y))
-                    elif int(self.animateCounter) == 4: screen.blit(SrightIdle_004,(self.x,self.y))
-                    elif int(self.animateCounter) == 5: screen.blit(SrightIdle_005,(self.x,self.y))
-                    elif int(self.animateCounter) == 6: screen.blit(SrightIdle_006,(self.x,self.y))
-                    elif int(self.animateCounter) == 7: screen.blit(SrightIdle_007,(self.x,self.y))
-                    elif int(self.animateCounter) == 8: screen.blit(SrightIdle_008,(self.x,self.y))
-                    elif int(self.animateCounter) == 9: screen.blit(SrightIdle_009,(self.x,self.y))
-                    elif int(self.animateCounter) == 10: screen.blit(SrightIdle_010,(self.x,self.y))
-                    elif int(self.animateCounter) == 11: screen.blit(SrightIdle_011,(self.x,self.y))
-                    elif int(self.animateCounter) == 12: screen.blit(SrightIdle_012,(self.x,self.y))
-                    elif int(self.animateCounter) == 13: screen.blit(SrightIdle_013,(self.x,self.y))
-                    elif int(self.animateCounter) == 14: screen.blit(SrightIdle_014,(self.x,self.y))
-                    elif int(self.animateCounter) == 15: screen.blit(SrightIdle_015,(self.x,self.y))
-                    elif int(self.animateCounter) == 16: screen.blit(SrightIdle_016,(self.x,self.y))
+                if self.animate == 0: #right Idle
+                    if self.blinking == False:
+                        if int(self.animateCounter) == 0: screen.blit(SrightIdle_000,(self.x,self.y))
+                        elif int(self.animateCounter) == 1: screen.blit(SrightIdle_001,(self.x,self.y))
+                        elif int(self.animateCounter) == 2: screen.blit(SrightIdle_002,(self.x,self.y))
+                        elif int(self.animateCounter) == 3: screen.blit(SrightIdle_003,(self.x,self.y))
+                        elif int(self.animateCounter) == 4: screen.blit(SrightIdle_004,(self.x,self.y))
+                        elif int(self.animateCounter) == 5: screen.blit(SrightIdle_005,(self.x,self.y))
+                        elif int(self.animateCounter) == 6: screen.blit(SrightIdle_006,(self.x,self.y))
+                        elif int(self.animateCounter) == 7: screen.blit(SrightIdle_007,(self.x,self.y))
+                        elif int(self.animateCounter) == 8: screen.blit(SrightIdle_008,(self.x,self.y))
+                        elif int(self.animateCounter) == 9: screen.blit(SrightIdle_009,(self.x,self.y))
+                        elif int(self.animateCounter) == 10: screen.blit(SrightIdle_010,(self.x,self.y))
+                        elif int(self.animateCounter) == 11: screen.blit(SrightIdle_011,(self.x,self.y))
+                        elif int(self.animateCounter) == 12: screen.blit(SrightIdle_012,(self.x,self.y))
+                        elif int(self.animateCounter) == 13: screen.blit(SrightIdle_013,(self.x,self.y))
+                        elif int(self.animateCounter) == 14: screen.blit(SrightIdle_014,(self.x,self.y))
+                        elif int(self.animateCounter) == 15: screen.blit(SrightIdle_015,(self.x,self.y))
+                        elif int(self.animateCounter) == 16: screen.blit(SrightIdle_016,(self.x,self.y))
                     
-                    elif int(self.animateCounter) == 17: #switch to blinking
-                        screen.blit(SrightIdle_017,(self.x,self.y)) 
-                        self.blinkCounter += 1
-
-                        if self.blinkCounter == 10:
-                            self.blinking = True
-                
-                elif self.blinking == True:#right IdleBlinking
-                
-                    if int(self.animateCounter) == 0: screen.blit(SrightIdleBlinking_000,(self.x,self.y))
-                    elif int(self.animateCounter) == 1: screen.blit(SrightIdleBlinking_001,(self.x,self.y))
-                    elif int(self.animateCounter) == 2: screen.blit(SrightIdleBlinking_002,(self.x,self.y))
-                    elif int(self.animateCounter) == 3: screen.blit(SrightIdleBlinking_003,(self.x,self.y))
-                    elif int(self.animateCounter) == 4: screen.blit(SrightIdleBlinking_004,(self.x,self.y))
-                    elif int(self.animateCounter) == 5: screen.blit(SrightIdleBlinking_005,(self.x,self.y))
-                    elif int(self.animateCounter) == 6: screen.blit(SrightIdleBlinking_006,(self.x,self.y))
-                    elif int(self.animateCounter) == 7: screen.blit(SrightIdleBlinking_007,(self.x,self.y))
-                    elif int(self.animateCounter) == 8: screen.blit(SrightIdleBlinking_008,(self.x,self.y))
-                    elif int(self.animateCounter) == 9: screen.blit(SrightIdleBlinking_009,(self.x,self.y))
-                    elif int(self.animateCounter) == 10: screen.blit(SrightIdleBlinking_010,(self.x,self.y))
-                    elif int(self.animateCounter) == 11: screen.blit(SrightIdleBlinking_011,(self.x,self.y))
-                    elif int(self.animateCounter) == 12: screen.blit(SrightIdleBlinking_012,(self.x,self.y))
-                    elif int(self.animateCounter) == 13: screen.blit(SrightIdleBlinking_013,(self.x,self.y))
-                    elif int(self.animateCounter) == 14: screen.blit(SrightIdleBlinking_014,(self.x,self.y))
-                    elif int(self.animateCounter) == 15: screen.blit(SrightIdleBlinking_015,(self.x,self.y))
-                    elif int(self.animateCounter) == 16: screen.blit(SrightIdleBlinking_016,(self.x,self.y))
-                    elif int(self.animateCounter) == 17:
-                        screen.blit(SrightIdleBlinking_017,(self.x,self.y))
-                        self.blinkCounter = 0
-                        self.blinking = False
-                
-
-            elif self.animate == 1: #right Walking
-                if int(self.animateCounter) == 0: screen.blit(SrightWalking_000,(self.x,self.y))
-                elif int(self.animateCounter) == 1: screen.blit(SrightWalking_001,(self.x,self.y))
-                elif int(self.animateCounter) == 2: screen.blit(SrightWalking_002,(self.x,self.y))
-                elif int(self.animateCounter) == 3: screen.blit(SrightWalking_003,(self.x,self.y))
-                elif int(self.animateCounter) == 4: screen.blit(SrightWalking_004,(self.x,self.y))
-                elif int(self.animateCounter) == 5: screen.blit(SrightWalking_005,(self.x,self.y))
-                elif int(self.animateCounter) == 6: screen.blit(SrightWalking_006,(self.x,self.y))
-                elif int(self.animateCounter) == 7: screen.blit(SrightWalking_007,(self.x,self.y))
-                elif int(self.animateCounter) == 8: screen.blit(SrightWalking_008,(self.x,self.y))
-                elif int(self.animateCounter) == 9: screen.blit(SrightWalking_009,(self.x,self.y))
-                elif int(self.animateCounter) == 10: screen.blit(SrightWalking_010,(self.x,self.y))
-                elif int(self.animateCounter) == 11: screen.blit(SrightWalking_011,(self.x,self.y))
-                elif int(self.animateCounter) == 12: screen.blit(SrightWalking_012,(self.x,self.y))
-                elif int(self.animateCounter) == 13: screen.blit(SrightWalking_013,(self.x,self.y))
-                elif int(self.animateCounter) == 14: screen.blit(SrightWalking_014,(self.x,self.y))
-                elif int(self.animateCounter) == 15: screen.blit(SrightWalking_015,(self.x,self.y))
-                elif int(self.animateCounter) == 16: screen.blit(SrightWalking_016,(self.x,self.y))
-                elif int(self.animateCounter) == 17: screen.blit(SrightWalking_017,(self.x,self.y))
-
-            elif self.animate == 2:#right Attack
-                if int(self.animateCounter) == 0: screen.blit(SrightSlashing_000,(self.x,self.y))
-                elif int(self.animateCounter) == 1: screen.blit(SrightSlashing_001,(self.x,self.y))
-                elif int(self.animateCounter) == 2: screen.blit(SrightSlashing_002,(self.x,self.y))
-                elif int(self.animateCounter) == 3: screen.blit(SrightSlashing_003,(self.x,self.y))
-                elif int(self.animateCounter) == 4: screen.blit(SrightSlashing_004,(self.x,self.y))
-                elif int(self.animateCounter) == 5: screen.blit(SrightSlashing_005,(self.x,self.y))
-                elif int(self.animateCounter) == 6: screen.blit(SrightSlashing_006,(self.x,self.y))
-                elif int(self.animateCounter) == 7: screen.blit(SrightSlashing_007,(self.x,self.y))
-                elif int(self.animateCounter) == 8: screen.blit(SrightSlashing_008,(self.x,self.y))
-
-                if self.Tile not in self.rightBorder:
-                    self.attackedTile = self.Tile + 1
-
-        elif self.direction == 2: #Back
-
-            if self.animate == 0:#back Idle
-                if int(self.animateCounter) == 0: screen.blit(SbackIdle_000,(self.x,self.y))
-                elif int(self.animateCounter) == 1: screen.blit(SbackIdle_001,(self.x,self.y))
-                elif int(self.animateCounter) == 2: screen.blit(SbackIdle_002,(self.x,self.y))
-                elif int(self.animateCounter) == 3: screen.blit(SbackIdle_003,(self.x,self.y))
-                elif int(self.animateCounter) == 4: screen.blit(SbackIdle_004,(self.x,self.y))
-                elif int(self.animateCounter) == 5: screen.blit(SbackIdle_005,(self.x,self.y))
-                elif int(self.animateCounter) == 6: screen.blit(SbackIdle_006,(self.x,self.y))
-                elif int(self.animateCounter) == 7: screen.blit(SbackIdle_007,(self.x,self.y))
-                elif int(self.animateCounter) == 8: screen.blit(SbackIdle_008,(self.x,self.y))
-                elif int(self.animateCounter) == 9: screen.blit(SbackIdle_009,(self.x,self.y))
-                elif int(self.animateCounter) == 10: screen.blit(SbackIdle_010,(self.x,self.y))
-                elif int(self.animateCounter) == 11: screen.blit(SbackIdle_011,(self.x,self.y))
-                elif int(self.animateCounter) == 12: screen.blit(SbackIdle_012,(self.x,self.y))
-                elif int(self.animateCounter) == 13: screen.blit(SbackIdle_013,(self.x,self.y))
-                elif int(self.animateCounter) == 14: screen.blit(SbackIdle_014,(self.x,self.y))
-                elif int(self.animateCounter) == 15: screen.blit(SbackIdle_015,(self.x,self.y))
-                elif int(self.animateCounter) == 16: screen.blit(SbackIdle_016,(self.x,self.y))
-                elif int(self.animateCounter) == 17: screen.blit(SbackIdle_017,(self.x,self.y))
-
-
-            elif self.animate == 1:#back Walking
-                if int(self.animateCounter) == 0: screen.blit(SbackWalking_000,(self.x,self.y))
-                elif int(self.animateCounter) == 1: screen.blit(SbackWalking_001,(self.x,self.y))
-                elif int(self.animateCounter) == 2: screen.blit(SbackWalking_002,(self.x,self.y))
-                elif int(self.animateCounter) == 3: screen.blit(SbackWalking_003,(self.x,self.y))
-                elif int(self.animateCounter) == 4: screen.blit(SbackWalking_004,(self.x,self.y))
-                elif int(self.animateCounter) == 5: screen.blit(SbackWalking_005,(self.x,self.y))
-                elif int(self.animateCounter) == 6: screen.blit(SbackWalking_006,(self.x,self.y))
-                elif int(self.animateCounter) == 7: screen.blit(SbackWalking_007,(self.x,self.y))
-                elif int(self.animateCounter) == 8: screen.blit(SbackWalking_008,(self.x,self.y))
-                elif int(self.animateCounter) == 9: screen.blit(SbackWalking_009,(self.x,self.y))
-                elif int(self.animateCounter) == 10: screen.blit(SbackWalking_010,(self.x,self.y))
-                elif int(self.animateCounter) == 11: screen.blit(SbackWalking_011,(self.x,self.y))
-                elif int(self.animateCounter) == 12: screen.blit(SbackWalking_012,(self.x,self.y))
-                elif int(self.animateCounter) == 13: screen.blit(SbackWalking_013,(self.x,self.y))
-                elif int(self.animateCounter) == 14: screen.blit(SbackWalking_014,(self.x,self.y))
-                elif int(self.animateCounter) == 15: screen.blit(SbackWalking_015,(self.x,self.y))
-                elif int(self.animateCounter) == 16: screen.blit(SbackWalking_016,(self.x,self.y))
-                elif int(self.animateCounter) == 17: screen.blit(SbackWalking_017,(self.x,self.y))
-
-            elif self.animate == 2:#back Attack
-                if int(self.animateCounter) == 0: screen.blit(SbackSlashing_000,(self.x,self.y))
-                elif int(self.animateCounter) == 1: screen.blit(SbackSlashing_001,(self.x,self.y))
-                elif int(self.animateCounter) == 2: screen.blit(SbackSlashing_002,(self.x,self.y))
-                elif int(self.animateCounter) == 3: screen.blit(SbackSlashing_003,(self.x,self.y))
-                elif int(self.animateCounter) == 4: screen.blit(SbackSlashing_004,(self.x,self.y))
-                elif int(self.animateCounter) == 5: screen.blit(SbackSlashing_005,(self.x,self.y))
-                elif int(self.animateCounter) == 6: screen.blit(SbackSlashing_006,(self.x,self.y))
-                elif int(self.animateCounter) == 7: screen.blit(SbackSlashing_007,(self.x,self.y))
-                elif int(self.animateCounter) == 8: screen.blit(SbackSlashing_008,(self.x,self.y))
-                
-                if self.Tile not in self.backBorder:
-                    self.attackedTile = self.Tile - 20
-
-        elif self.direction == 3: #Left
-
-            if self.animate == 0: #left Idle
-                if self.blinking == False:#left IdleBlinking
-                    if int(self.animateCounter) == 0: screen.blit(SleftIdle_000,(self.x,self.y))
-                    elif int(self.animateCounter) == 1: screen.blit(SleftIdle_001,(self.x,self.y))
-                    elif int(self.animateCounter) == 2: screen.blit(SleftIdle_002,(self.x,self.y))
-                    elif int(self.animateCounter) == 3: screen.blit(SleftIdle_003,(self.x,self.y))
-                    elif int(self.animateCounter) == 4: screen.blit(SleftIdle_004,(self.x,self.y))
-                    elif int(self.animateCounter) == 5: screen.blit(SleftIdle_005,(self.x,self.y))
-                    elif int(self.animateCounter) == 6: screen.blit(SleftIdle_006,(self.x,self.y))
-                    elif int(self.animateCounter) == 7: screen.blit(SleftIdle_007,(self.x,self.y))
-                    elif int(self.animateCounter) == 8: screen.blit(SleftIdle_008,(self.x,self.y))
-                    elif int(self.animateCounter) == 9: screen.blit(SleftIdle_009,(self.x,self.y))
-                    elif int(self.animateCounter) == 10: screen.blit(SleftIdle_010,(self.x,self.y))
-                    elif int(self.animateCounter) == 11: screen.blit(SleftIdle_011,(self.x,self.y))
-                    elif int(self.animateCounter) == 12: screen.blit(SleftIdle_012,(self.x,self.y))
-                    elif int(self.animateCounter) == 13: screen.blit(SleftIdle_013,(self.x,self.y))
-                    elif int(self.animateCounter) == 14: screen.blit(SleftIdle_014,(self.x,self.y))
-                    elif int(self.animateCounter) == 15: screen.blit(SleftIdle_015,(self.x,self.y))
-                    elif int(self.animateCounter) == 16: screen.blit(SleftIdle_016,(self.x,self.y))
-                    elif int(self.animateCounter) == 17: #switch to blinking
-                            screen.blit(SleftIdle_017,(self.x,self.y)) 
+                        elif int(self.animateCounter) == 17: #switch to blinking
+                            screen.blit(SrightIdle_017,(self.x,self.y)) 
                             self.blinkCounter += 1
 
                             if self.blinkCounter == 10:
                                 self.blinking = True
                 
-                elif self.blinking == True:#left IdleBlinking
+                    elif self.blinking == True:#right IdleBlinking
                 
-                    if int(self.animateCounter) == 0: screen.blit(SleftIdleBlinking_000,(self.x,self.y))
-                    elif int(self.animateCounter) == 1: screen.blit(SleftIdleBlinking_001,(self.x,self.y))
-                    elif int(self.animateCounter) == 2: screen.blit(SleftIdleBlinking_002,(self.x,self.y))
-                    elif int(self.animateCounter) == 3: screen.blit(SleftIdleBlinking_003,(self.x,self.y))
-                    elif int(self.animateCounter) == 4: screen.blit(SleftIdleBlinking_004,(self.x,self.y))
-                    elif int(self.animateCounter) == 5: screen.blit(SleftIdleBlinking_005,(self.x,self.y))
-                    elif int(self.animateCounter) == 6: screen.blit(SleftIdleBlinking_006,(self.x,self.y))
-                    elif int(self.animateCounter) == 7: screen.blit(SleftIdleBlinking_007,(self.x,self.y))
-                    elif int(self.animateCounter) == 8: screen.blit(SleftIdleBlinking_008,(self.x,self.y))
-                    elif int(self.animateCounter) == 9: screen.blit(SleftIdleBlinking_009,(self.x,self.y))
-                    elif int(self.animateCounter) == 10: screen.blit(SleftIdleBlinking_010,(self.x,self.y))
-                    elif int(self.animateCounter) == 11: screen.blit(SleftIdleBlinking_011,(self.x,self.y))
-                    elif int(self.animateCounter) == 12: screen.blit(SleftIdleBlinking_012,(self.x,self.y))
-                    elif int(self.animateCounter) == 13: screen.blit(SleftIdleBlinking_013,(self.x,self.y))
-                    elif int(self.animateCounter) == 14: screen.blit(SleftIdleBlinking_014,(self.x,self.y))
-                    elif int(self.animateCounter) == 15: screen.blit(SleftIdleBlinking_015,(self.x,self.y))
-                    elif int(self.animateCounter) == 16: screen.blit(SleftIdleBlinking_016,(self.x,self.y))
-                    elif int(self.animateCounter) == 17:
-                        screen.blit(SleftIdleBlinking_017,(self.x,self.y))
-                        self.blinkCounter = 0
-                        self.blinking = False
+                        if int(self.animateCounter) == 0: screen.blit(SrightIdleBlinking_000,(self.x,self.y))
+                        elif int(self.animateCounter) == 1: screen.blit(SrightIdleBlinking_001,(self.x,self.y))
+                        elif int(self.animateCounter) == 2: screen.blit(SrightIdleBlinking_002,(self.x,self.y))
+                        elif int(self.animateCounter) == 3: screen.blit(SrightIdleBlinking_003,(self.x,self.y))
+                        elif int(self.animateCounter) == 4: screen.blit(SrightIdleBlinking_004,(self.x,self.y))
+                        elif int(self.animateCounter) == 5: screen.blit(SrightIdleBlinking_005,(self.x,self.y))
+                        elif int(self.animateCounter) == 6: screen.blit(SrightIdleBlinking_006,(self.x,self.y))
+                        elif int(self.animateCounter) == 7: screen.blit(SrightIdleBlinking_007,(self.x,self.y))
+                        elif int(self.animateCounter) == 8: screen.blit(SrightIdleBlinking_008,(self.x,self.y))
+                        elif int(self.animateCounter) == 9: screen.blit(SrightIdleBlinking_009,(self.x,self.y))
+                        elif int(self.animateCounter) == 10: screen.blit(SrightIdleBlinking_010,(self.x,self.y))
+                        elif int(self.animateCounter) == 11: screen.blit(SrightIdleBlinking_011,(self.x,self.y))
+                        elif int(self.animateCounter) == 12: screen.blit(SrightIdleBlinking_012,(self.x,self.y))
+                        elif int(self.animateCounter) == 13: screen.blit(SrightIdleBlinking_013,(self.x,self.y))
+                        elif int(self.animateCounter) == 14: screen.blit(SrightIdleBlinking_014,(self.x,self.y))
+                        elif int(self.animateCounter) == 15: screen.blit(SrightIdleBlinking_015,(self.x,self.y))
+                        elif int(self.animateCounter) == 16: screen.blit(SrightIdleBlinking_016,(self.x,self.y))
+                        elif int(self.animateCounter) == 17:
+                            screen.blit(SrightIdleBlinking_017,(self.x,self.y))
+                            self.blinkCounter = 0
+                            self.blinking = False
                 
 
-            elif self.animate == 1: #left Walking
-                if int(self.animateCounter) == 0: screen.blit(SleftWalking_000,(self.x,self.y))
-                elif int(self.animateCounter) == 1: screen.blit(SleftWalking_001,(self.x,self.y))
-                elif int(self.animateCounter) == 2: screen.blit(SleftWalking_002,(self.x,self.y))
-                elif int(self.animateCounter) == 3: screen.blit(SleftWalking_003,(self.x,self.y))
-                elif int(self.animateCounter) == 4: screen.blit(SleftWalking_004,(self.x,self.y))
-                elif int(self.animateCounter) == 5: screen.blit(SleftWalking_005,(self.x,self.y))
-                elif int(self.animateCounter) == 6: screen.blit(SleftWalking_006,(self.x,self.y))
-                elif int(self.animateCounter) == 7: screen.blit(SleftWalking_007,(self.x,self.y))
-                elif int(self.animateCounter) == 8: screen.blit(SleftWalking_008,(self.x,self.y))
-                elif int(self.animateCounter) == 9: screen.blit(SleftWalking_009,(self.x,self.y))
-                elif int(self.animateCounter) == 10: screen.blit(SleftWalking_010,(self.x,self.y))
-                elif int(self.animateCounter) == 11: screen.blit(SleftWalking_011,(self.x,self.y))
-                elif int(self.animateCounter) == 12: screen.blit(SleftWalking_012,(self.x,self.y))
-                elif int(self.animateCounter) == 13: screen.blit(SleftWalking_013,(self.x,self.y))
-                elif int(self.animateCounter) == 14: screen.blit(SleftWalking_014,(self.x,self.y))
-                elif int(self.animateCounter) == 15: screen.blit(SleftWalking_015,(self.x,self.y))
-                elif int(self.animateCounter) == 16: screen.blit(SleftWalking_016,(self.x,self.y))
-                elif int(self.animateCounter) == 17: screen.blit(SleftWalking_017,(self.x,self.y))
+                elif self.animate == 1: #right Walking
+                    if int(self.animateCounter) == 0: screen.blit(SrightWalking_000,(self.x,self.y))
+                    elif int(self.animateCounter) == 1: screen.blit(SrightWalking_001,(self.x,self.y))
+                    elif int(self.animateCounter) == 2: screen.blit(SrightWalking_002,(self.x,self.y))
+                    elif int(self.animateCounter) == 3: screen.blit(SrightWalking_003,(self.x,self.y))
+                    elif int(self.animateCounter) == 4: screen.blit(SrightWalking_004,(self.x,self.y))
+                    elif int(self.animateCounter) == 5: screen.blit(SrightWalking_005,(self.x,self.y))
+                    elif int(self.animateCounter) == 6: screen.blit(SrightWalking_006,(self.x,self.y))
+                    elif int(self.animateCounter) == 7: screen.blit(SrightWalking_007,(self.x,self.y))
+                    elif int(self.animateCounter) == 8: screen.blit(SrightWalking_008,(self.x,self.y))
+                    elif int(self.animateCounter) == 9: screen.blit(SrightWalking_009,(self.x,self.y))
+                    elif int(self.animateCounter) == 10: screen.blit(SrightWalking_010,(self.x,self.y))
+                    elif int(self.animateCounter) == 11: screen.blit(SrightWalking_011,(self.x,self.y))
+                    elif int(self.animateCounter) == 12: screen.blit(SrightWalking_012,(self.x,self.y))
+                    elif int(self.animateCounter) == 13: screen.blit(SrightWalking_013,(self.x,self.y))
+                    elif int(self.animateCounter) == 14: screen.blit(SrightWalking_014,(self.x,self.y))
+                    elif int(self.animateCounter) == 15: screen.blit(SrightWalking_015,(self.x,self.y))
+                    elif int(self.animateCounter) == 16: screen.blit(SrightWalking_016,(self.x,self.y))
+                    elif int(self.animateCounter) == 17: screen.blit(SrightWalking_017,(self.x,self.y))
 
-            elif self.animate == 2:#left Attack
-                if int(self.animateCounter) == 0: screen.blit(SleftSlashing_000,(self.x,self.y))
-                elif int(self.animateCounter) == 1: screen.blit(SleftSlashing_001,(self.x,self.y))
-                elif int(self.animateCounter) == 2: screen.blit(SleftSlashing_002,(self.x,self.y))
-                elif int(self.animateCounter) == 3: screen.blit(SleftSlashing_003,(self.x,self.y))
-                elif int(self.animateCounter) == 4: screen.blit(SleftSlashing_004,(self.x,self.y))
-                elif int(self.animateCounter) == 5: screen.blit(SleftSlashing_005,(self.x,self.y))
-                elif int(self.animateCounter) == 6: screen.blit(SleftSlashing_006,(self.x,self.y))
-                elif int(self.animateCounter) == 7: screen.blit(SleftSlashing_007,(self.x,self.y))
-                elif int(self.animateCounter) == 8: screen.blit(SleftSlashing_008,(self.x,self.y))
+                elif self.animate == 2:#right Attack
+                    if int(self.animateCounter) == 0: screen.blit(SrightSlashing_000,(self.x,self.y))
+                    elif int(self.animateCounter) == 1: screen.blit(SrightSlashing_001,(self.x,self.y))
+                    elif int(self.animateCounter) == 2: screen.blit(SrightSlashing_002,(self.x,self.y))
+                    elif int(self.animateCounter) == 3: screen.blit(SrightSlashing_003,(self.x,self.y))
+                    elif int(self.animateCounter) == 4: screen.blit(SrightSlashing_004,(self.x,self.y))
+                    elif int(self.animateCounter) == 5: screen.blit(SrightSlashing_005,(self.x,self.y))
+                    elif int(self.animateCounter) == 6: screen.blit(SrightSlashing_006,(self.x,self.y))
+                    elif int(self.animateCounter) == 7: screen.blit(SrightSlashing_007,(self.x,self.y))
+                    elif int(self.animateCounter) == 8: screen.blit(SrightSlashing_008,(self.x,self.y))
 
-                if self.Tile not in self.leftBorder:
-                    self.attackedTile = self.Tile - 1
+                    if self.Tile not in self.rightBorder:
+                        self.attackedTile = self.Tile + 1
+
+            elif self.direction == 2: #Back
+
+                if self.animate == 0:#back Idle
+                    if int(self.animateCounter) == 0: screen.blit(SbackIdle_000,(self.x,self.y))
+                    elif int(self.animateCounter) == 1: screen.blit(SbackIdle_001,(self.x,self.y))
+                    elif int(self.animateCounter) == 2: screen.blit(SbackIdle_002,(self.x,self.y))
+                    elif int(self.animateCounter) == 3: screen.blit(SbackIdle_003,(self.x,self.y))
+                    elif int(self.animateCounter) == 4: screen.blit(SbackIdle_004,(self.x,self.y))
+                    elif int(self.animateCounter) == 5: screen.blit(SbackIdle_005,(self.x,self.y))
+                    elif int(self.animateCounter) == 6: screen.blit(SbackIdle_006,(self.x,self.y))
+                    elif int(self.animateCounter) == 7: screen.blit(SbackIdle_007,(self.x,self.y))
+                    elif int(self.animateCounter) == 8: screen.blit(SbackIdle_008,(self.x,self.y))
+                    elif int(self.animateCounter) == 9: screen.blit(SbackIdle_009,(self.x,self.y))
+                    elif int(self.animateCounter) == 10: screen.blit(SbackIdle_010,(self.x,self.y))
+                    elif int(self.animateCounter) == 11: screen.blit(SbackIdle_011,(self.x,self.y))
+                    elif int(self.animateCounter) == 12: screen.blit(SbackIdle_012,(self.x,self.y))
+                    elif int(self.animateCounter) == 13: screen.blit(SbackIdle_013,(self.x,self.y))
+                    elif int(self.animateCounter) == 14: screen.blit(SbackIdle_014,(self.x,self.y))
+                    elif int(self.animateCounter) == 15: screen.blit(SbackIdle_015,(self.x,self.y))
+                    elif int(self.animateCounter) == 16: screen.blit(SbackIdle_016,(self.x,self.y))
+                    elif int(self.animateCounter) == 17: screen.blit(SbackIdle_017,(self.x,self.y))
+
+
+                elif self.animate == 1:#back Walking
+                    if int(self.animateCounter) == 0: screen.blit(SbackWalking_000,(self.x,self.y))
+                    elif int(self.animateCounter) == 1: screen.blit(SbackWalking_001,(self.x,self.y))
+                    elif int(self.animateCounter) == 2: screen.blit(SbackWalking_002,(self.x,self.y))
+                    elif int(self.animateCounter) == 3: screen.blit(SbackWalking_003,(self.x,self.y))
+                    elif int(self.animateCounter) == 4: screen.blit(SbackWalking_004,(self.x,self.y))
+                    elif int(self.animateCounter) == 5: screen.blit(SbackWalking_005,(self.x,self.y))
+                    elif int(self.animateCounter) == 6: screen.blit(SbackWalking_006,(self.x,self.y))
+                    elif int(self.animateCounter) == 7: screen.blit(SbackWalking_007,(self.x,self.y))
+                    elif int(self.animateCounter) == 8: screen.blit(SbackWalking_008,(self.x,self.y))
+                    elif int(self.animateCounter) == 9: screen.blit(SbackWalking_009,(self.x,self.y))
+                    elif int(self.animateCounter) == 10: screen.blit(SbackWalking_010,(self.x,self.y))
+                    elif int(self.animateCounter) == 11: screen.blit(SbackWalking_011,(self.x,self.y))
+                    elif int(self.animateCounter) == 12: screen.blit(SbackWalking_012,(self.x,self.y))
+                    elif int(self.animateCounter) == 13: screen.blit(SbackWalking_013,(self.x,self.y))
+                    elif int(self.animateCounter) == 14: screen.blit(SbackWalking_014,(self.x,self.y))
+                    elif int(self.animateCounter) == 15: screen.blit(SbackWalking_015,(self.x,self.y))
+                    elif int(self.animateCounter) == 16: screen.blit(SbackWalking_016,(self.x,self.y))
+                    elif int(self.animateCounter) == 17: screen.blit(SbackWalking_017,(self.x,self.y))
+
+                elif self.animate == 2:#back Attack
+                    if int(self.animateCounter) == 0: screen.blit(SbackSlashing_000,(self.x,self.y))
+                    elif int(self.animateCounter) == 1: screen.blit(SbackSlashing_001,(self.x,self.y))
+                    elif int(self.animateCounter) == 2: screen.blit(SbackSlashing_002,(self.x,self.y))
+                    elif int(self.animateCounter) == 3: screen.blit(SbackSlashing_003,(self.x,self.y))
+                    elif int(self.animateCounter) == 4: screen.blit(SbackSlashing_004,(self.x,self.y))
+                    elif int(self.animateCounter) == 5: screen.blit(SbackSlashing_005,(self.x,self.y))
+                    elif int(self.animateCounter) == 6: screen.blit(SbackSlashing_006,(self.x,self.y))
+                    elif int(self.animateCounter) == 7: screen.blit(SbackSlashing_007,(self.x,self.y))
+                    elif int(self.animateCounter) == 8: screen.blit(SbackSlashing_008,(self.x,self.y))
+                
+                    if self.Tile not in self.backBorder:
+                        self.attackedTile = self.Tile - 20
+
+            elif self.direction == 3: #Left
+
+                if self.animate == 0: #left Idle
+                    if self.blinking == False:#left IdleBlinking
+                        if int(self.animateCounter) == 0: screen.blit(SleftIdle_000,(self.x,self.y))
+                        elif int(self.animateCounter) == 1: screen.blit(SleftIdle_001,(self.x,self.y))
+                        elif int(self.animateCounter) == 2: screen.blit(SleftIdle_002,(self.x,self.y))
+                        elif int(self.animateCounter) == 3: screen.blit(SleftIdle_003,(self.x,self.y))
+                        elif int(self.animateCounter) == 4: screen.blit(SleftIdle_004,(self.x,self.y))
+                        elif int(self.animateCounter) == 5: screen.blit(SleftIdle_005,(self.x,self.y))
+                        elif int(self.animateCounter) == 6: screen.blit(SleftIdle_006,(self.x,self.y))
+                        elif int(self.animateCounter) == 7: screen.blit(SleftIdle_007,(self.x,self.y))
+                        elif int(self.animateCounter) == 8: screen.blit(SleftIdle_008,(self.x,self.y))
+                        elif int(self.animateCounter) == 9: screen.blit(SleftIdle_009,(self.x,self.y))
+                        elif int(self.animateCounter) == 10: screen.blit(SleftIdle_010,(self.x,self.y))
+                        elif int(self.animateCounter) == 11: screen.blit(SleftIdle_011,(self.x,self.y))
+                        elif int(self.animateCounter) == 12: screen.blit(SleftIdle_012,(self.x,self.y))
+                        elif int(self.animateCounter) == 13: screen.blit(SleftIdle_013,(self.x,self.y))
+                        elif int(self.animateCounter) == 14: screen.blit(SleftIdle_014,(self.x,self.y))
+                        elif int(self.animateCounter) == 15: screen.blit(SleftIdle_015,(self.x,self.y))
+                        elif int(self.animateCounter) == 16: screen.blit(SleftIdle_016,(self.x,self.y))
+                        elif int(self.animateCounter) == 17: #switch to blinking
+                                screen.blit(SleftIdle_017,(self.x,self.y)) 
+                                self.blinkCounter += 1
+
+                                if self.blinkCounter == 10:
+                                    self.blinking = True
+                
+                    elif self.blinking == True:#left IdleBlinking
+                
+                        if int(self.animateCounter) == 0: screen.blit(SleftIdleBlinking_000,(self.x,self.y))
+                        elif int(self.animateCounter) == 1: screen.blit(SleftIdleBlinking_001,(self.x,self.y))
+                        elif int(self.animateCounter) == 2: screen.blit(SleftIdleBlinking_002,(self.x,self.y))
+                        elif int(self.animateCounter) == 3: screen.blit(SleftIdleBlinking_003,(self.x,self.y))
+                        elif int(self.animateCounter) == 4: screen.blit(SleftIdleBlinking_004,(self.x,self.y))
+                        elif int(self.animateCounter) == 5: screen.blit(SleftIdleBlinking_005,(self.x,self.y))
+                        elif int(self.animateCounter) == 6: screen.blit(SleftIdleBlinking_006,(self.x,self.y))
+                        elif int(self.animateCounter) == 7: screen.blit(SleftIdleBlinking_007,(self.x,self.y))
+                        elif int(self.animateCounter) == 8: screen.blit(SleftIdleBlinking_008,(self.x,self.y))
+                        elif int(self.animateCounter) == 9: screen.blit(SleftIdleBlinking_009,(self.x,self.y))
+                        elif int(self.animateCounter) == 10: screen.blit(SleftIdleBlinking_010,(self.x,self.y))
+                        elif int(self.animateCounter) == 11: screen.blit(SleftIdleBlinking_011,(self.x,self.y))
+                        elif int(self.animateCounter) == 12: screen.blit(SleftIdleBlinking_012,(self.x,self.y))
+                        elif int(self.animateCounter) == 13: screen.blit(SleftIdleBlinking_013,(self.x,self.y))
+                        elif int(self.animateCounter) == 14: screen.blit(SleftIdleBlinking_014,(self.x,self.y))
+                        elif int(self.animateCounter) == 15: screen.blit(SleftIdleBlinking_015,(self.x,self.y))
+                        elif int(self.animateCounter) == 16: screen.blit(SleftIdleBlinking_016,(self.x,self.y))
+                        elif int(self.animateCounter) == 17:
+                            screen.blit(SleftIdleBlinking_017,(self.x,self.y))
+                            self.blinkCounter = 0
+                            self.blinking = False
+                
+
+                elif self.animate == 1: #left Walking
+                    if int(self.animateCounter) == 0: screen.blit(SleftWalking_000,(self.x,self.y))
+                    elif int(self.animateCounter) == 1: screen.blit(SleftWalking_001,(self.x,self.y))
+                    elif int(self.animateCounter) == 2: screen.blit(SleftWalking_002,(self.x,self.y))
+                    elif int(self.animateCounter) == 3: screen.blit(SleftWalking_003,(self.x,self.y))
+                    elif int(self.animateCounter) == 4: screen.blit(SleftWalking_004,(self.x,self.y))
+                    elif int(self.animateCounter) == 5: screen.blit(SleftWalking_005,(self.x,self.y))
+                    elif int(self.animateCounter) == 6: screen.blit(SleftWalking_006,(self.x,self.y))
+                    elif int(self.animateCounter) == 7: screen.blit(SleftWalking_007,(self.x,self.y))
+                    elif int(self.animateCounter) == 8: screen.blit(SleftWalking_008,(self.x,self.y))
+                    elif int(self.animateCounter) == 9: screen.blit(SleftWalking_009,(self.x,self.y))
+                    elif int(self.animateCounter) == 10: screen.blit(SleftWalking_010,(self.x,self.y))
+                    elif int(self.animateCounter) == 11: screen.blit(SleftWalking_011,(self.x,self.y))
+                    elif int(self.animateCounter) == 12: screen.blit(SleftWalking_012,(self.x,self.y))
+                    elif int(self.animateCounter) == 13: screen.blit(SleftWalking_013,(self.x,self.y))
+                    elif int(self.animateCounter) == 14: screen.blit(SleftWalking_014,(self.x,self.y))
+                    elif int(self.animateCounter) == 15: screen.blit(SleftWalking_015,(self.x,self.y))
+                    elif int(self.animateCounter) == 16: screen.blit(SleftWalking_016,(self.x,self.y))
+                    elif int(self.animateCounter) == 17: screen.blit(SleftWalking_017,(self.x,self.y))
+
+                elif self.animate == 2:#left Attack
+                    if int(self.animateCounter) == 0: screen.blit(SleftSlashing_000,(self.x,self.y))
+                    elif int(self.animateCounter) == 1: screen.blit(SleftSlashing_001,(self.x,self.y))
+                    elif int(self.animateCounter) == 2: screen.blit(SleftSlashing_002,(self.x,self.y))
+                    elif int(self.animateCounter) == 3: screen.blit(SleftSlashing_003,(self.x,self.y))
+                    elif int(self.animateCounter) == 4: screen.blit(SleftSlashing_004,(self.x,self.y))
+                    elif int(self.animateCounter) == 5: screen.blit(SleftSlashing_005,(self.x,self.y))
+                    elif int(self.animateCounter) == 6: screen.blit(SleftSlashing_006,(self.x,self.y))
+                    elif int(self.animateCounter) == 7: screen.blit(SleftSlashing_007,(self.x,self.y))
+                    elif int(self.animateCounter) == 8: screen.blit(SleftSlashing_008,(self.x,self.y))
+
+                    if self.Tile not in self.leftBorder:
+                        self.attackedTile = self.Tile - 1
               
     def movement(self):
-        safeTiles = [13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,33,34,35,36,37,38,80,81,82,83,85,87]
+        if self.alive == 1:
+            safeTiles = [13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,33,34,35,36,37,38,80,81,82,83,85,87]
 
-        BasicAI = random.randint(1,1000) #1-8 = actions
-        #Left, Right, Up, Down#
-        #Walk 1, Walk 3, Walk 3, Walk 4#
+            BasicAI = random.randint(1,1000) #1-8 = actions
+            #Left, Right, Up, Down#
+            #Walk 1, Walk 3, Walk 3, Walk 4#
 
-#        if pressed[pygame.K_SPACE]  and self.walkCounter == 0 and self.attackCounter == 0 and self.attackDelay == 0: #attack
-#            self.animateCounter = 0
-#            self.attackCounter = 8
-#            self.attackDelay = 15
-        if BasicAI <= 8:
-            if BasicAI == 1 and self.walkCounter == 0 and self.attackCounter == 0:
-                self.direction = 0
-                if map[self.Tile + 20] in safeTiles and self.Tile not in self.frontBorder:
-                    self.walkCounter = 32
-                    self.Tile += 20
+    #        if pressed[pygame.K_SPACE]  and self.walkCounter == 0 and self.attackCounter == 0 and self.attackDelay == 0: #attack
+    #            self.animateCounter = 0
+    #            self.attackCounter = 8
+    #            self.attackDelay = 15
+            if BasicAI <= 8:
+                if BasicAI == 1 and self.walkCounter == 0 and self.attackCounter == 0:
+                    self.direction = 0
+                    if map[self.Tile + 20] in safeTiles and self.Tile not in self.frontBorder:
+                        self.walkCounter = 32
+                        self.Tile += 20
 
-            elif BasicAI == 2 and self.walkCounter == 0 and self.attackCounter == 0:
-                self.direction = 1
-                if map[self.Tile + 1] in safeTiles and self.Tile not in self.rightBorder:
-                    self.walkCounter = 32
-                    self.Tile += 1
+                elif BasicAI == 2 and self.walkCounter == 0 and self.attackCounter == 0:
+                    self.direction = 1
+                    if map[self.Tile + 1] in safeTiles and self.Tile not in self.rightBorder:
+                        self.walkCounter = 32
+                        self.Tile += 1
 
-            elif BasicAI == 3 and self.walkCounter == 0 and self.attackCounter == 0:
-                self.direction = 2
-                if map[self.Tile - 20] in safeTiles and self.Tile not in self.backBorder:
-                    self.walkCounter = 32
-                    self.Tile -= 20
+                elif BasicAI == 3 and self.walkCounter == 0 and self.attackCounter == 0:
+                    self.direction = 2
+                    if map[self.Tile - 20] in safeTiles and self.Tile not in self.backBorder:
+                        self.walkCounter = 32
+                        self.Tile -= 20
 
-            elif BasicAI == 4 and self.walkCounter == 0 and self.attackCounter == 0:
-                self.direction = 3
-                if map[self.Tile - 1] in safeTiles and self.Tile not in self.leftBorder:
-                    self.walkCounter = 32
-                    self.Tile -= 1
+                elif BasicAI == 4 and self.walkCounter == 0 and self.attackCounter == 0:
+                    self.direction = 3
+                    if map[self.Tile - 1] in safeTiles and self.Tile not in self.leftBorder:
+                        self.walkCounter = 32
+                        self.Tile -= 1
     
-            #Face different Directions
-            elif BasicAI == 5 and self.walkCounter == 0 and self.attackCounter == 0:
-                self.direction = 0
-            elif BasicAI == 6 and self.walkCounter == 0 and self.attackCounter == 0:
-                self.direction = 1
-            elif BasicAI == 7 and self.walkCounter == 0 and self.attackCounter == 0:
-                self.direction = 2
-            elif BasicAI == 8 and self.walkCounter == 0 and self.attackCounter == 0:
-                self.direction = 3
+                #Face different Directions
+                elif BasicAI == 5 and self.walkCounter == 0 and self.attackCounter == 0:
+                    self.direction = 0
+                elif BasicAI == 6 and self.walkCounter == 0 and self.attackCounter == 0:
+                    self.direction = 1
+                elif BasicAI == 7 and self.walkCounter == 0 and self.attackCounter == 0:
+                    self.direction = 2
+                elif BasicAI == 8 and self.walkCounter == 0 and self.attackCounter == 0:
+                    self.direction = 3
 
-        if self.walkCounter > 0:
-            self.animate = 1
-            if self.direction == 0: self.y = self.y + 2
-            elif self.direction == 1: self.x = self.x + 2
-            elif self.direction == 2: self.y = self.y - 2
-            elif self.direction == 3: self.x = self.x - 2
+            if self.walkCounter > 0:
+                self.animate = 1
+                if self.direction == 0: self.y = self.y + 2
+                elif self.direction == 1: self.x = self.x + 2
+                elif self.direction == 2: self.y = self.y - 2
+                elif self.direction == 3: self.x = self.x - 2
 
-            self.walkCounter = self.walkCounter - 1
-            if self.walkCounter == 0: #maybe beef up this statement to check for "if moving" to clean up walk animation
-                self.animate = 0
+                self.walkCounter = self.walkCounter - 1
+                if self.walkCounter == 0: #maybe beef up this statement to check for "if moving" to clean up walk animation
+                    self.animate = 0
 
-        if self.attackCounter == 8: #play slash sound.
-            slashSound.play()
+            if self.attackCounter == 8: #play slash sound.
+                slashSound.play()
 
-        if self.attackCounter > 0:
-            self.animate = 2
-            self.attackCounter = self.attackCounter - 1
-            if self.attackCounter == 0:
-                self.animate = 0
-                self.attackedTile = -1
-        elif self.attackDelay > 0:
-            self.attackDelay = self.attackDelay - 1
+            if self.attackCounter > 0:
+                self.animate = 2
+                self.attackCounter = self.attackCounter - 1
+                if self.attackCounter == 0:
+                    self.animate = 0
+                    self.attackedTile = -1
+            elif self.attackDelay > 0:
+                self.attackDelay = self.attackDelay - 1
 
     def animateObject(self):
-        self.animateCounter += .5
+        if self.alive == 1:
+            self.animateCounter += .5
 
-        if int(self.animateCounter) == 18:
-            self.animateCounter = 0
+            if int(self.animateCounter) == 18:
+                self.animateCounter = 0
 
-        if self.damagedTimer > 0:
-            self.damagedTimer -= 1
+            if self.damagedTimer > 0:
+                self.damagedTimer -= 1
 
     def checkDamage(self,playerAttack):
-        if self.Tile == playerAttack:
-            if self.damagedTimer == 0: 
-                self.alive = 0
-                self.y = -320
-                self.damagedTimer = 15
-                print ("died")
+        if self.alive == 1:
+            if self.Tile == playerAttack:
+                if self.damagedTimer == 0: 
+                    self.alive = 0
+                    self.damagedTimer = 15
+                    print ("died")
 
     def checkAlive(self):
         return self.alive
