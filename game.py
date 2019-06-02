@@ -719,13 +719,34 @@ class Player:
         self.fishing_cast = False
 
     def teleport(self,tile):
-        self.x = ((tile % 20) * 64) - 32
-        self.y = ((int(tile / 20)) * 64)
-        
-        if self.direction == 0:
-            self.y = self.y -128 #minus 64 two times because of character height.
+        #self.x = ((tile % 20) * 64) - 32
+        #self.y = ((int(tile / 20)) * 64)
+        global worldx
+        global worldy
 
-        self.Tile = int(((self.x - 32 + 64) /64) + (((self.y + 64)/ 64) * 20))
+        #worldx = ((tile % 20) * 64) - 32
+        #worldy = (64 * 11)
+        self.Tile = tile
+
+        if self.direction == 0: #s
+                worldy = ((int((tile * - 1) / 20)) * 64) - (64 * 6)
+                self.Tile = self.Tile - 20
+
+                for i in range(60):
+                    worldy = worldy + 6.4
+                    drawMap()
+                    pygame.display.update()
+
+        elif self.direction == 2:
+                worldy = ((int(tile / 20)) * 64)
+                self.Tile = self.Tile + 20
+
+                for i in range((60 - 20)):
+                    worldy = worldy - 6.4
+                    drawMap()
+                    pygame.display.update()
+
+        #self.Tile = int(((self.x - 32 + 64) /64) + (((self.y + 64)/ 64) * 20))
 
     def draw(self):
         #
@@ -1729,7 +1750,13 @@ def draw_Tile(i,layer,type):
 
     if type == 0:
 
-        if i == 0:
+        if i == 51: #Added for optimization
+            screen.blit(tile_underground1_51,(counter * 64 - worldx, counter2 * 64 - worldy))
+        
+        elif i == 21: #ADDED FOR OPTIMIZATION
+            screen.blit(tile_underground1_21,(counter * 64 - worldx, counter2 * 64 - worldy))
+
+        elif i == 0:
             screen.blit(tile_underground1_0,(counter * 64 - worldx, counter2 * 64 - worldy))
         elif i == 1:
             screen.blit(tile_underground1_1,(counter * 64 - worldx, counter2 * 64 - worldy)) #overlay_tile
@@ -2505,6 +2532,196 @@ while playGame == True: #Main Menu
             print ("SAVED THE MAP!")
             pygame.time.delay(100)
 ##########################################################################################
+    def drawMap():
+        global sk
+        global s1
+        global P
+    ##############################
+        #Create an array for each possible enemy#
+
+        #NPC[0,1,2,3,4,5,6,7,8,9,10... etc]
+
+        #use this for the drawing and spawning and dying of enemies / NPC's#
+
+        #sort by y pos. draw by y pos. //
+        drawZ = [sk.getY() , "sk.draw()",s1.getY() , "s1.draw()", P.getY() , "P.draw()"]
+
+        #DRAW UNDERLAYER #START OUT THE DRAWING WITH THE TOP MOST
+        for i in range(20):
+            draw_Tile(i,0,0)
+    
+
+        #DRAW UNDERLAYER
+        for i in range(20):
+            draw_Tile(i,1,0)
+
+        if drawZ[0] == 0: #NEED TO CHECK IF THE obj IS ALIVE OR NOT!
+            eval(drawZ[1])#Uses the DrawZ to know what to draw in each order.
+        if drawZ[2] == 0:
+            eval(drawZ[3])
+        if drawZ[4] == 0:
+            eval(drawZ[5])
+
+        #DRAW OVERLAYER
+        for i in range(20):
+            draw_Tile(i,0,1)
+
+     ########################################################################################   
+        #DRAW UNDERLAYER
+        for i in range(20):
+            draw_Tile(i,2,0)
+
+        if drawZ[0] == 1:
+            eval(drawZ[1])
+        if drawZ[2] == 1:
+            eval(drawZ[3])
+        if drawZ[4] == 1:
+            eval(drawZ[5])
+
+        #DRAW OVERLAYER
+        for i in range(20):
+            draw_Tile(i,1,1)
+
+    ########################################################################################
+        #DRAW UNDERLAYER
+        for i in range(20):
+            draw_Tile(i,3,0)
+
+        if drawZ[0] == 2:
+            eval(drawZ[1])
+        if drawZ[2] == 2:
+            eval(drawZ[3])
+        if drawZ[4] == 2:
+            eval(drawZ[5])
+
+        #DRAW OVERLAYER
+        for i in range(20):
+            draw_Tile(i,2,1)
+
+     ########################################################################################   
+        #DRAW UNDERLAYER
+        for i in range(20):
+            draw_Tile(i,4,0)
+
+        if drawZ[0] == 3:
+            eval(drawZ[1])
+        if drawZ[2] == 3:
+            eval(drawZ[3])
+        if drawZ[4] == 3:
+            eval(drawZ[5])
+
+        #DRAW OVERLAYER
+        for i in range(20):
+            draw_Tile(i,3,1)
+
+     ########################################################################################    
+         #DRAW UNDERLAYER
+        for i in range(20):
+            draw_Tile(i,5,0)
+
+        if drawZ[0] == 4:
+            eval(drawZ[1])
+        if drawZ[2] == 4:
+            eval(drawZ[3])
+        if drawZ[4] == 4:
+            eval(drawZ[5])
+
+        #DRAW OVERLAYER
+        for i in range(20):
+            draw_Tile(i,4,1)
+
+     ########################################################################################
+         #DRAW UNDERLAYER
+        for i in range(20):
+            draw_Tile(i,6,0) 
+
+        if drawZ[0] == 5:
+            eval(drawZ[1])
+        if drawZ[2] == 5:
+            eval(drawZ[3])
+        if drawZ[4] == 5:
+            eval(drawZ[5])
+
+        #DRAW OVERLAYER
+        for i in range(20):
+            draw_Tile(i,5,1)
+
+     ########################################################################################    
+         #DRAW UNDERLAYER
+        for i in range(20):
+            draw_Tile(i,7,0)
+
+        if drawZ[0] == 6:
+            eval(drawZ[1])
+        if drawZ[2] == 6:
+            eval(drawZ[3])
+        if drawZ[4] == 6:
+            eval(drawZ[5])
+
+        #DRAW OVERLAYER
+        for i in range(20):
+            draw_Tile(i,6,1)
+
+     ########################################################################################    
+         #DRAW UNDERLAYER
+        for i in range(20):
+            draw_Tile(i,8,0)
+
+        if drawZ[0] == 7:
+            eval(drawZ[1])
+        if drawZ[2] == 7:
+            eval(drawZ[3])
+        if drawZ[4] == 7:
+            eval(drawZ[5])
+
+        #DRAW OVERLAYER
+        for i in range(20):
+            draw_Tile(i,7,1)
+     ########################################################################################    
+         #DRAW UNDERLAYER
+        for i in range(20):
+            draw_Tile(i,9,0)
+
+        if drawZ[0] == 8:
+            eval(drawZ[1])
+        if drawZ[2] == 8:
+            eval(drawZ[3])
+        if drawZ[4] == 8:
+            eval(drawZ[5])
+
+        #DRAW OVERLAYER
+        for i in range(20):
+            draw_Tile(i,8,1)
+
+     ########################################################################################    
+        #DRAW UNDERLAYER
+        for i in range(20):
+            draw_Tile(i,10,0)
+
+        if drawZ[0] == 9:
+            eval(drawZ[1])
+        if drawZ[2] == 9:
+            eval(drawZ[3])
+        if drawZ[4] == 9:
+            eval(drawZ[5])
+
+        #DRAW OVERLAYER
+        for i in range(20):
+            draw_Tile(i,9,1)
+
+        #DRAW UNDERLAYER
+        for i in range(20):
+            draw_Tile(i,11,0)
+
+        #DRAW OVERLAYER
+        for i in range(20):
+            draw_Tile(i,10,1)
+
+        #DRAW UNDERLAYER? Overlay? (all the comments may be backwards for the overlay underlay ^
+        for i in range(20):
+            draw_Tile(i,11,1)
+
+    ##########################################
 
 ##########################################################################################
    
@@ -2536,196 +2753,7 @@ while playGame == True: #Main Menu
     s1.checkDamage(P.getAttack())
 
     ##ENEMIES MOVE##
-
-
-
-
-    ##############################
-    #Create an array for each possible enemy#
-
-    #NPC[0,1,2,3,4,5,6,7,8,9,10... etc]
-
-    #use this for the drawing and spawning and dying of enemies / NPC's#
-
-    #sort by y pos. draw by y pos. //
-    drawZ = [sk.getY() , "sk.draw()",s1.getY() , "s1.draw()", P.getY() , "P.draw()"]
-
-    #DRAW UNDERLAYER #START OUT THE DRAWING WITH THE TOP MOST
-    for i in range(20):
-        draw_Tile(i,0,0)
-    
-
-    #DRAW UNDERLAYER
-    for i in range(20):
-        draw_Tile(i,1,0)
-
-    if drawZ[0] == 0: #NEED TO CHECK IF THE obj IS ALIVE OR NOT!
-        eval(drawZ[1])#Uses the DrawZ to know what to draw in each order.
-    if drawZ[2] == 0:
-        eval(drawZ[3])
-    if drawZ[4] == 0:
-        eval(drawZ[5])
-
-    #DRAW OVERLAYER
-    for i in range(20):
-        draw_Tile(i,0,1)
-
- ########################################################################################   
-    #DRAW UNDERLAYER
-    for i in range(20):
-        draw_Tile(i,2,0)
-
-    if drawZ[0] == 1:
-        eval(drawZ[1])
-    if drawZ[2] == 1:
-        eval(drawZ[3])
-    if drawZ[4] == 1:
-        eval(drawZ[5])
-
-    #DRAW OVERLAYER
-    for i in range(20):
-        draw_Tile(i,1,1)
-
-########################################################################################
-    #DRAW UNDERLAYER
-    for i in range(20):
-        draw_Tile(i,3,0)
-
-    if drawZ[0] == 2:
-        eval(drawZ[1])
-    if drawZ[2] == 2:
-        eval(drawZ[3])
-    if drawZ[4] == 2:
-        eval(drawZ[5])
-
-    #DRAW OVERLAYER
-    for i in range(20):
-        draw_Tile(i,2,1)
-
- ########################################################################################   
-    #DRAW UNDERLAYER
-    for i in range(20):
-        draw_Tile(i,4,0)
-
-    if drawZ[0] == 3:
-        eval(drawZ[1])
-    if drawZ[2] == 3:
-        eval(drawZ[3])
-    if drawZ[4] == 3:
-        eval(drawZ[5])
-
-    #DRAW OVERLAYER
-    for i in range(20):
-        draw_Tile(i,3,1)
-
- ########################################################################################    
-     #DRAW UNDERLAYER
-    for i in range(20):
-        draw_Tile(i,5,0)
-
-    if drawZ[0] == 4:
-        eval(drawZ[1])
-    if drawZ[2] == 4:
-        eval(drawZ[3])
-    if drawZ[4] == 4:
-        eval(drawZ[5])
-
-    #DRAW OVERLAYER
-    for i in range(20):
-        draw_Tile(i,4,1)
-
- ########################################################################################
-     #DRAW UNDERLAYER
-    for i in range(20):
-        draw_Tile(i,6,0) 
-
-    if drawZ[0] == 5:
-        eval(drawZ[1])
-    if drawZ[2] == 5:
-        eval(drawZ[3])
-    if drawZ[4] == 5:
-        eval(drawZ[5])
-
-    #DRAW OVERLAYER
-    for i in range(20):
-        draw_Tile(i,5,1)
-
- ########################################################################################    
-     #DRAW UNDERLAYER
-    for i in range(20):
-        draw_Tile(i,7,0)
-
-    if drawZ[0] == 6:
-        eval(drawZ[1])
-    if drawZ[2] == 6:
-        eval(drawZ[3])
-    if drawZ[4] == 6:
-        eval(drawZ[5])
-
-    #DRAW OVERLAYER
-    for i in range(20):
-        draw_Tile(i,6,1)
-
- ########################################################################################    
-     #DRAW UNDERLAYER
-    for i in range(20):
-        draw_Tile(i,8,0)
-
-    if drawZ[0] == 7:
-        eval(drawZ[1])
-    if drawZ[2] == 7:
-        eval(drawZ[3])
-    if drawZ[4] == 7:
-        eval(drawZ[5])
-
-    #DRAW OVERLAYER
-    for i in range(20):
-        draw_Tile(i,7,1)
- ########################################################################################    
-     #DRAW UNDERLAYER
-    for i in range(20):
-        draw_Tile(i,9,0)
-
-    if drawZ[0] == 8:
-        eval(drawZ[1])
-    if drawZ[2] == 8:
-        eval(drawZ[3])
-    if drawZ[4] == 8:
-        eval(drawZ[5])
-
-    #DRAW OVERLAYER
-    for i in range(20):
-        draw_Tile(i,8,1)
-
- ########################################################################################    
-    #DRAW UNDERLAYER
-    for i in range(20):
-        draw_Tile(i,10,0)
-
-    if drawZ[0] == 9:
-        eval(drawZ[1])
-    if drawZ[2] == 9:
-        eval(drawZ[3])
-    if drawZ[4] == 9:
-        eval(drawZ[5])
-
-    #DRAW OVERLAYER
-    for i in range(20):
-        draw_Tile(i,9,1)
-
-    #DRAW UNDERLAYER
-    for i in range(20):
-        draw_Tile(i,11,0)
-
-    #DRAW OVERLAYER
-    for i in range(20):
-        draw_Tile(i,10,1)
-
-    #DRAW UNDERLAYER? Overlay? (all the comments may be backwards for the overlay underlay ^
-    for i in range(20):
-        draw_Tile(i,11,1)
-
-##########################################
+    drawMap()
 
     playerPos = P.getPos()
     playerX = playerPos[0]
