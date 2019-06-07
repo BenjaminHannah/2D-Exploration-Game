@@ -5,19 +5,18 @@ pygame.mixer.init()
 pygame.init()
 os.environ['SDL_VIDEO_WINDOW_POS'] = str(50) + "," + str(50)
 
-#screen = pygame.display.set_mode((1280,720)) #Standard
+screen = pygame.display.set_mode((1280,720),pygame.DOUBLEBUF) #Standard
 
-screen = pygame.display.set_mode((1780,920)) #Tile_Map Editor
-#screen2 = pygame.surface((1780,920))
+#screen = pygame.display.set_mode((1780,920),pygame.DOUBLEBUF) #Tile_Map Editor
+#screen2 = pygame.surface((1780,920),pygame.DOUBLEBUF)
 
-screen.fill((255, 255, 255))
+font = pygame.font.SysFont('impact', 15)
+clock = pygame.time.Clock()
 
 #Map Editor
 selectedTile = 0
 worldx = 32
 worldy = 0
-
-clock = pygame.time.Clock()
 
 FloorLevel = 1
 
@@ -720,27 +719,25 @@ class Player:
         self.fishing_cast = False
 
     def teleport(self,tile):
-        #self.x = ((tile % 20) * 64) - 32
-        #self.y = ((int(tile / 20)) * 64)
         global worldx
         global worldy
 
-        #worldx = ((tile % 20) * 64) - 32
-        #worldy = (64 * 11)
         self.Tile = tile
 
         self.visible = False
+        self.teleport_destination_down = ((int((tile * 1) / 20)) * 64) - (64 * 6)
+        self.teleport_destination_up = ((int(tile / 20)) * 64) -256
 
         if self.direction == 0: #s
-                worldy = ((int((tile * - 1) / 20)) * 64) - (64 * 6)
+                worldy = ((int((tile * 1) / 20)) * 64) - (64 * 6)
                 worldx = (((tile % 20) * 64) + 32) - 640
                 self.Tile = self.Tile - 20
 
-                #for i in range(150): #screen move animation
-                for i in range(int(1)): #screen move animation
-                    #worldy = worldy + (.64 * 4)
-                    worldy = ((int((tile * 1) / 20)) * 64) - (64 * 6)#384 #18 #6
-                    screen.fill((40, 37, 34))
+                worldy = self.teleport_destination_down * 2
+
+                for i in range(int(100)): #screen move animation
+                    worldy = worldy - (self.teleport_destination_down / 100)
+                    screen.fill((40,37,34))
                     drawMap()
                     pygame.display.update()
 
@@ -751,11 +748,11 @@ class Player:
                 worldx = (((tile % 20) * 64) + 32) - 640
                 self.Tile = self.Tile + 20
 
-                #for i in range((150 - 50)): #scren move animation
-                for i in range(int(1)): #screen move animation
-                    #worldy = worldy - (.64 * 4)
-                    worldy = ((int(tile / 20)) * 64) -256
-                    screen.fill((40, 37, 34))
+                worldy = self.teleport_destination_up * 2
+
+                for i in range(int(100)): #screen move animation
+                    worldy = worldy - (self.teleport_destination_up / 100)
+                    screen.fill((40,37,34))
                     drawMap()
                     pygame.display.update()
                 
@@ -1101,7 +1098,7 @@ class Player:
         if pressed[pygame.K_s] and self.walkCounter == 0 and self.attackCounter == 0:
             self.direction = 0
             if map[self.Tile + 20] in safeTiles and self.Tile not in self.frontBorder:
-                self.walkCounter = 32
+                self.walkCounter = 16
 
                 if map[self.Tile + 20] == 85:
                     teleport(self.Tile)
@@ -1109,7 +1106,7 @@ class Player:
         elif pressed[pygame.K_d] and self.walkCounter == 0 and self.attackCounter == 0:
             self.direction = 1
             if map[self.Tile + 1] in safeTiles and self.Tile not in self.rightBorder:
-                self.walkCounter = 32
+                self.walkCounter = 16
 
                 if map[self.Tile + 1] == 85:
                     teleport(self.Tile)
@@ -1117,16 +1114,15 @@ class Player:
         elif pressed[pygame.K_w] and self.walkCounter == 0 and self.attackCounter == 0:
             self.direction = 2
             if map[self.Tile - 20] in safeTiles and self.Tile not in self.backBorder:
-                self.walkCounter = 32
+                self.walkCounter = 16
 
                 if map[self.Tile - 20] == 85:
-                    print (self.Tile)
                     teleport(self.Tile)
 
         elif pressed[pygame.K_a] and self.walkCounter == 0 and self.attackCounter == 0:
             self.direction = 3
             if map[self.Tile - 1] in safeTiles and self.Tile not in self.leftBorder:
-                self.walkCounter = 32
+                self.walkCounter = 16
 
                 if map[self.Tile - 1] == 85:
                     teleport(self.Tile)
@@ -1142,9 +1138,8 @@ class Player:
                 
         elif pressed[pygame.K_SPACE] and self.walkCounter == 0 and self.attackCounter == 0 and self.attackDelay == 0: #attack
             self.animateCounter = 0
-            self.attackCounter = 8
-            self.attackDelay = 15
-            print ("Slash!!")
+            self.attackCounter = 4
+            self.attackDelay = 7
 
         #Face different Directions
         elif pressed[pygame.K_DOWN] and self.walkCounter == 0 and self.attackCounter == 0:
@@ -1183,10 +1178,10 @@ class Player:
             self.animate = 1
             global worldx
             global worldy
-            if self.direction == 0: worldy = worldy + 2
-            elif self.direction == 1: worldx = worldx + 2
-            elif self.direction == 2: worldy = worldy - 2
-            elif self.direction == 3: worldx = worldx - 2
+            if self.direction == 0: worldy = worldy + 4
+            elif self.direction == 1: worldx = worldx + 4
+            elif self.direction == 2: worldy = worldy - 4
+            elif self.direction == 3: worldx = worldx - 4
 
             self.walkCounter = self.walkCounter - 1
             if self.walkCounter == 0:
@@ -1199,7 +1194,7 @@ class Player:
         if self.walkCounter == 0 and pressed[pygame.K_d] == False and pressed[pygame.K_a] == False and pressed[pygame.K_w] == False and pressed[pygame.K_s] == False:
             self.animate = 0
 
-        if self.attackCounter == 8: #play slash sound.
+        if self.attackCounter == 4: #play slash sound.
             #slashSound.play()
             pass
 
@@ -1213,7 +1208,7 @@ class Player:
             self.attackDelay = self.attackDelay - 1
 
     def animateObject(self):
-        self.animateCounter += .5
+        self.animateCounter += 1
 
         if self.animateCounter == 18:
             self.animateCounter = 0
@@ -1671,7 +1666,7 @@ class Skeleton:
                 if self.damagedTimer == 0: 
                     self.alive = 0
                     self.damagedTimer = 15
-                    print ("died")
+                    #print ("died")
 
     def checkAlive(self):
         return self.alive
@@ -1778,8 +1773,9 @@ def draw_Tile(i,layer,type):
     if type == 0:
 
         if i == 51: #Added for optimization
-            screen.blit(tile_underground1_51,(counter * 64 - worldx, counter2 * 64 - worldy))
-        
+            #screen.blit(tile_underground1_51,(counter * 64 - worldx, counter2 * 64 - worldy))
+            pass
+
         elif i == 21: #ADDED FOR OPTIMIZATION
             screen.blit(tile_underground1_21,(counter * 64 - worldx, counter2 * 64 - worldy))
 
@@ -2183,7 +2179,7 @@ while playGame == True: #Main Menu
 ##########################################################################################
 
     #Search1
-    EnableMapEditor = True
+    EnableMapEditor = False
     if EnableMapEditor == True:
         mousexy = pygame.mouse.get_pos()
         mousex = mousexy[0] / 64
@@ -2830,7 +2826,20 @@ while playGame == True: #Main Menu
     if P.getFishing_cast() == True:
         screen.blit(fishingLine_000,(playerX -32,playerY +64))
 
+    fps = font.render("FPS: " + str(int(clock.get_fps())), True, pygame.Color('white'))
+
+    screen.blit(fps, (50, 50))
+
+    textHover = "BEN"
+
+    text_width, text_height = font.size(str(textHover))
+    message = font.render(str(textHover), True, pygame.Color('white'))
+    centeredText = (576 + 64 - (text_width / 2))
+    screen.blit(message, (centeredText, 246))
+
     pygame.display.update()
 
+    screen.fill((40,37,34))
+
 ##########################################################################################
-    clock.tick(60)
+    clock.tick(30)
