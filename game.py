@@ -13,6 +13,8 @@ screen = pygame.display.set_mode((1280,720),pygame.DOUBLEBUF) #Standard
 font = pygame.font.SysFont('impact', 15)
 clock = pygame.time.Clock()
 
+gameState = 0
+
 #Map Editor
 selectedTile = 0
 worldx = 32
@@ -1095,46 +1097,48 @@ class Player:
     def movement(self):
         safeTiles = [13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,33,34,35,36,37,38,80,81,82,83,85,87]
     
-        if pressed[pygame.K_s] and self.walkCounter == 0 and self.attackCounter == 0:
+        if pressed[pygame.K_s] and self.walkCounter == 0 and self.attackCounter == 0 and not pressed[pygame.K_w] and not pressed[pygame.K_a] and not pressed[pygame.K_d]:
             self.direction = 0
             if map[self.Tile + 20] in safeTiles and self.Tile not in self.frontBorder:
-                self.walkCounter = 16
+                self.walkCounter = 17
 
                 if map[self.Tile + 20] == 85:
                     teleport(self.Tile)
 
-        elif pressed[pygame.K_d] and self.walkCounter == 0 and self.attackCounter == 0:
+        if pressed[pygame.K_d] and self.walkCounter == 0 and self.attackCounter == 0 and not pressed[pygame.K_a] and not pressed[pygame.K_s] and not pressed[pygame.K_w]:
             self.direction = 1
             if map[self.Tile + 1] in safeTiles and self.Tile not in self.rightBorder:
-                self.walkCounter = 16
+                self.walkCounter = 17
 
                 if map[self.Tile + 1] == 85:
                     teleport(self.Tile)
 
-        elif pressed[pygame.K_w] and self.walkCounter == 0 and self.attackCounter == 0:
+        if pressed[pygame.K_w] and self.walkCounter == 0 and self.attackCounter == 0 and not pressed[pygame.K_s] and not pressed[pygame.K_a] and not pressed[pygame.K_d]:
             self.direction = 2
             if map[self.Tile - 20] in safeTiles and self.Tile not in self.backBorder:
-                self.walkCounter = 16
+                self.walkCounter = 17
 
                 if map[self.Tile - 20] == 85:
                     teleport(self.Tile)
 
-        elif pressed[pygame.K_a] and self.walkCounter == 0 and self.attackCounter == 0:
+        if pressed[pygame.K_a] and self.walkCounter == 0 and self.attackCounter == 0 and not pressed[pygame.K_d] and not pressed[pygame.K_s] and not pressed[pygame.K_w]:
             self.direction = 3
             if map[self.Tile - 1] in safeTiles and self.Tile not in self.leftBorder:
-                self.walkCounter = 16
+                self.walkCounter = 17
 
                 if map[self.Tile - 1] == 85:
                     teleport(self.Tile)
+
+###############################################
     
         elif pressed[pygame.K_SPACE] and self.walkCounter == 0 and self.attackCounter == 0 and self.attackDelay == 0 and self.fishing == True: #fishing
             if self.fishing_cast == True:
                 self.fishing_cast = False
-                pygame.time.delay(150)###################not good practice. (remove later)
+                pygame.time.delay(150)################### not good practice. (remove later)
 
             elif self.fishing_cast == False:
                 self.fishing_cast = True
-                pygame.time.delay(150)###################not good practice. (remove later)
+                pygame.time.delay(150)################### not good practice. (remove later)
                 
         elif pressed[pygame.K_SPACE] and self.walkCounter == 0 and self.attackCounter == 0 and self.attackDelay == 0: #attack
             self.animateCounter = 0
@@ -1157,24 +1161,14 @@ class Player:
                 ItemPick = 1
                 self.fishing = True
                 pygame.time.delay(150)###################not good practice. (remove later)
+
             elif ItemPick == 1: #fish
                 ItemPick = 0
                 self.fishing = False
                 pygame.time.delay(150)###################not good practice. (remove later)
 
-        
-        if self.walkCounter == 32:
-            #17 animations; 32 tile pixels instead of 34! AH! (in an ideal world. Let there be a few more animations to ensure SYNC between animate and movement.) (animate will be at 0 when position is in center of new tile)
-            pass
 
-#        if self.walkCounter > 0:
-#            self.animate = 1
-#            if self.direction == 0: self.y = self.y + 2
-#            elif self.direction == 1: self.x = self.x + 2
-#            elif self.direction == 2: self.y = self.y - 2
-#            elif self.direction == 3: self.x = self.x - 2
-
-        if self.walkCounter > 0:
+        if self.walkCounter > 0 and self.walkCounter <= 16:
             self.animate = 1
             global worldx
             global worldy
@@ -1190,6 +1184,15 @@ class Player:
                 elif self.direction == 1: self.Tile = self.Tile + 1 #d
                 elif self.direction == 2: self.Tile = self.Tile - 20 #w
                 elif self.direction == 3: self.Tile = self.Tile - 1 #a
+                self.animate = 0
+
+                global gameState
+                gameState = 1
+
+        if self.walkCounter == 17:
+            self.animateCounter = 0
+            self.walkCounter = 16
+
 
         if self.walkCounter == 0 and pressed[pygame.K_d] == False and pressed[pygame.K_a] == False and pressed[pygame.K_w] == False and pressed[pygame.K_s] == False:
             self.animate = 0
@@ -1204,6 +1207,9 @@ class Player:
             if self.attackCounter == 0:
                 self.animate = 0
                 self.attackedTile = -1
+
+                gameState = 1
+
         elif self.attackDelay > 0:
             self.attackDelay = self.attackDelay - 1
 
@@ -1254,6 +1260,8 @@ class Skeleton:
 
         self.blinkCounter = 0
         self.blinking = False
+
+        self.BasicAI = random.randint(1,4)
 
     def draw(self):
         if self.alive == 1:
@@ -1584,7 +1592,7 @@ class Skeleton:
         if self.alive == 1:
             safeTiles = [13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,33,34,35,36,37,38,80,81,82,83,87]
 
-            BasicAI = random.randint(1,1000) #1-8 = actions
+             #1-8 = actions
             #Left, Right, Up, Down#
             #Walk 1, Walk 3, Walk 3, Walk 4#
 
@@ -1592,51 +1600,47 @@ class Skeleton:
     #            self.animateCounter = 0
     #            self.attackCounter = 8
     #            self.attackDelay = 15
-            if BasicAI <= 8:
-                if BasicAI == 1 and self.walkCounter == 0 and self.attackCounter == 0:
+            if self.BasicAI <= 8:
+                if self.BasicAI == 1 and self.walkCounter == 0 and self.attackCounter == 0:
                     self.direction = 0
                     if map[self.Tile + 20] in safeTiles and self.Tile not in self.frontBorder:
-                        self.walkCounter = 32
+                        self.walkCounter = 16
                         self.Tile += 20
 
-                elif BasicAI == 2 and self.walkCounter == 0 and self.attackCounter == 0:
+                elif self.BasicAI == 2 and self.walkCounter == 0 and self.attackCounter == 0:
                     self.direction = 1
                     if map[self.Tile + 1] in safeTiles and self.Tile not in self.rightBorder:
-                        self.walkCounter = 32
+                        self.walkCounter = 16
                         self.Tile += 1
 
-                elif BasicAI == 3 and self.walkCounter == 0 and self.attackCounter == 0:
+                elif self.BasicAI == 3 and self.walkCounter == 0 and self.attackCounter == 0:
                     self.direction = 2
                     if map[self.Tile - 20] in safeTiles and self.Tile not in self.backBorder:
-                        self.walkCounter = 32
+                        self.walkCounter = 16
                         self.Tile -= 20
 
-                elif BasicAI == 4 and self.walkCounter == 0 and self.attackCounter == 0:
+                elif self.BasicAI == 4 and self.walkCounter == 0 and self.attackCounter == 0:
                     self.direction = 3
                     if map[self.Tile - 1] in safeTiles and self.Tile not in self.leftBorder:
-                        self.walkCounter = 32
+                        self.walkCounter = 16
                         self.Tile -= 1
-    
-                #Face different Directions
-                elif BasicAI == 5 and self.walkCounter == 0 and self.attackCounter == 0:
-                    self.direction = 0
-                elif BasicAI == 6 and self.walkCounter == 0 and self.attackCounter == 0:
-                    self.direction = 1
-                elif BasicAI == 7 and self.walkCounter == 0 and self.attackCounter == 0:
-                    self.direction = 2
-                elif BasicAI == 8 and self.walkCounter == 0 and self.attackCounter == 0:
-                    self.direction = 3
 
             if self.walkCounter > 0:
                 self.animate = 1
-                if self.direction == 0: self.y = self.y + 2
-                elif self.direction == 1: self.x = self.x + 2
-                elif self.direction == 2: self.y = self.y - 2
-                elif self.direction == 3: self.x = self.x - 2
+                if self.direction == 0: self.y = self.y + 4
+                elif self.direction == 1: self.x = self.x + 4
+                elif self.direction == 2: self.y = self.y - 4
+                elif self.direction == 3: self.x = self.x - 4
 
                 self.walkCounter = self.walkCounter - 1
+
                 if self.walkCounter == 0: #maybe beef up this statement to check for "if moving" to clean up walk animation
                     self.animate = 0
+
+                    self.BasicAI = random.randint(1,4)
+
+                    global gameState
+                    gameState = 0
 
             if self.attackCounter == 8: #play slash sound.
                 slashSound.play()
@@ -1686,33 +1690,33 @@ class Skeleton:
 newTile = 0
 
 map = [
-51,51,51,51,51,51,58,56,54,56,59,51,51,51,51,51,52,21,21,21,
-51,51,51,51,51,51,52,7,84,7,50,51,51,51,51,51,52,21,21,21,
-51,51,51,51,51,51,52,11,85,11,50,51,51,51,51,51,60,48,49,21,
-51,51,51,51,51,51,52,15,16,15,50,51,51,51,51,51,51,51,60,48,
-51,51,51,51,51,51,52,21,21,21,50,51,51,51,51,51,51,51,51,51,
-54,54,59,51,51,51,52,21,21,21,50,51,51,51,51,51,51,51,51,51,
-6,6,50,51,51,51,52,21,21,21,53,54,54,59,51,51,51,51,51,51,
-10,10,50,51,51,51,52,21,21,21,8,84,8,50,51,51,51,51,51,51,
-16,16,50,51,51,51,52,21,21,21,12,85,12,50,51,51,51,51,51,51,
-21,21,53,59,51,51,52,21,21,21,16,16,16,50,51,51,51,51,51,51,
-21,21,6,53,59,51,60,48,48,48,48,48,48,61,51,51,51,51,51,51,
-21,21,16,6,50,51,51,51,51,51,51,51,51,51,51,51,51,51,51,51,
+51,51,51,51,51,51,51,58,56,54,56,59,51,51,51,51,51,52,21,21,
+51,51,51,51,51,51,51,52,7,84,7,50,51,51,51,51,51,52,21,21,
+51,51,51,51,51,51,51,52,11,85,11,50,51,51,51,51,51,60,48,49,
+51,51,51,51,51,51,51,52,15,16,15,50,51,51,51,51,51,51,51,60,
+51,51,51,51,51,51,51,52,21,21,21,50,51,51,51,51,51,51,51,51,
+54,54,54,59,51,51,51,52,21,21,21,50,51,51,51,51,51,51,51,51,
+6,6,6,50,51,51,51,52,21,21,21,53,54,54,59,51,51,51,51,51,
+10,10,10,50,51,51,51,52,21,21,21,8,84,8,50,51,51,51,51,51,
+16,16,16,50,51,51,51,52,21,21,21,12,85,12,50,51,51,51,51,51,
+21,21,21,53,59,51,51,52,21,21,21,16,16,16,50,51,51,51,51,51,
+21,21,21,6,53,59,51,60,48,48,48,48,48,48,61,51,51,51,51,51,
+21,21,21,16,6,50,51,51,51,51,51,51,51,51,51,51,51,51,51,51,
 ]
 
 map1 = [
-51,51,51,51,51,51,58,56,54,56,59,51,51,51,51,51,52,21,21,21,
-51,51,51,51,51,51,52,7,84,7,50,51,51,51,51,51,52,21,21,21,
-51,51,51,51,51,51,52,11,85,11,50,51,51,51,51,51,60,48,49,21,
-51,51,51,51,51,51,52,15,16,15,50,51,51,51,51,51,51,51,60,48,
-51,51,51,51,51,51,52,21,21,21,50,51,51,51,51,51,51,51,51,51,
-54,54,59,51,51,51,52,21,21,21,50,51,51,51,51,51,51,51,51,51,
-6,6,50,51,51,51,52,21,21,21,53,54,54,59,51,51,51,51,51,51,
-10,10,50,51,51,51,52,21,21,21,8,84,8,50,51,51,51,51,51,51,
-16,16,50,51,51,51,52,21,21,21,12,85,12,50,51,51,51,51,51,51,
-21,21,53,59,51,51,52,21,21,21,16,16,16,50,51,51,51,51,51,51,
-21,21,6,53,59,51,60,48,48,48,48,48,48,61,51,51,51,51,51,51,
-21,21,16,6,50,51,51,51,51,51,51,51,51,51,51,51,51,51,51,51,
+51,51,51,51,51,51,51,58,56,54,56,59,51,51,51,51,51,52,21,21,
+51,51,51,51,51,51,51,52,7,84,7,50,51,51,51,51,51,52,21,21,
+51,51,51,51,51,51,51,52,11,85,11,50,51,51,51,51,51,60,48,49,
+51,51,51,51,51,51,51,52,15,16,15,50,51,51,51,51,51,51,51,60,
+51,51,51,51,51,51,51,52,21,21,21,50,51,51,51,51,51,51,51,51,
+54,54,54,59,51,51,51,52,21,21,21,50,51,51,51,51,51,51,51,51,
+6,6,6,50,51,51,51,52,21,21,21,53,54,54,59,51,51,51,51,51,
+10,10,10,50,51,51,51,52,21,21,21,8,84,8,50,51,51,51,51,51,
+16,16,16,50,51,51,51,52,21,21,21,12,85,12,50,51,51,51,51,51,
+21,21,21,53,59,51,51,52,21,21,21,16,16,16,50,51,51,51,51,51,
+21,21,21,6,53,59,51,60,48,48,48,48,48,48,61,51,51,51,51,51,
+21,21,21,16,6,50,51,51,51,51,51,51,51,51,51,51,51,51,51,51,
 ]
 
 map2 = [
@@ -2094,7 +2098,7 @@ def draw_Tile(i,layer,type):
 
         #
         if i == 84: #Passage Tile
-            screen.blit(tile_underground1_84,(counter * 64 - worldx, counter2 * 64 - worldy)) 
+            screen.blit(tile_underground1_84,(counter * 64 - worldx, counter2 * 64 - worldy))
     
     counter += 1
     if counter == 20:
@@ -2108,12 +2112,12 @@ def teleport(teleportTile):
     global FloorLevel
 
     if FloorLevel == 1:
-        if teleportTile == 68:
+        if teleportTile == 69:
             map = map2
             FloorLevel = 2
             P.teleport(208)
 
-        elif teleportTile == 191:
+        elif teleportTile == 192:
             map = map3
             FloorLevel = 3
             P.teleport(144)
@@ -2122,13 +2126,13 @@ def teleport(teleportTile):
         if teleportTile == 208:
             map = map1
             FloorLevel = 1
-            P.teleport(68)
+            P.teleport(69)
 
     elif FloorLevel == 3:
         if teleportTile == 144:
             map = map1
             FloorLevel = 1
-            P.teleport(191)
+            P.teleport(192)
         
         if teleportTile == 84:
             map = map4
@@ -2782,36 +2786,42 @@ while playGame == True: #Main Menu
 
         oneTime = False
     
-    P.movement()
+    if gameState == 0:
+
+        P.movement()
+        P.getAttack()
+
+    elif gameState == 1:
+
+        sk.movement()
+        s1.movement()
+
+        
+
+
+    drawMap()
     P.animateObject()
-    P.getAttack()
-
-    sk.movement()
     sk.animateObject()
-
-    s1.movement()
     s1.animateObject()
 
     #Check to see if any damage happens
     sk.checkDamage(P.getAttack()) 
     s1.checkDamage(P.getAttack())
 
-    ##ENEMIES MOVE##
-    drawMap()
-
     playerPos = P.getPos()
     playerX = playerPos[0]
     playerY = playerPos[1]
+    
 
     #Darkness layer looks good but is very laggy...
-    #if darknessCounter >= 0 and darknessCounter < 5: screen.blit(darkness000,(playerX + 64 - 1280,playerY + 64 - 720))
-    #elif darknessCounter >= 5 and darknessCounter < 10: screen.blit(darkness001,(playerX + 64 - 1280,playerY + 64 - 720))
-    #elif darknessCounter >= 10 and darknessCounter < 15: screen.blit(darkness002,(playerX + 64 - 1280,playerY + 64 - 720))
-    #elif darknessCounter >= 15 and darknessCounter < 20: screen.blit(darkness001,(playerX + 64 - 1280,playerY + 64 - 720))
+    if darknessCounter >= 0 and darknessCounter < 4: screen.blit(darkness000,(playerX + 64 - 1280,playerY + 64 - 720))
+    elif darknessCounter >= 4 and darknessCounter < 8: screen.blit(darkness001,(playerX + 64 - 1280,playerY + 64 - 720))
+    elif darknessCounter >= 8 and darknessCounter < 12: screen.blit(darkness002,(playerX + 64 - 1280,playerY + 64 - 720))
+    elif darknessCounter >= 12 and darknessCounter < 16: screen.blit(darkness001,(playerX + 64 - 1280,playerY + 64 - 720))
 
     darknessCounter += 1
     
-    if darknessCounter == 20:
+    if darknessCounter == 16:
         darknessCounter = 0
         
     screen.blit(heartImage,(1280 - 50, 0))
