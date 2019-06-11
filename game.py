@@ -1608,31 +1608,31 @@ class Skeleton:
             
             playerx = (P.getX() -1) * 64
             playery = (P.getY() -1) * 64
+            playerTile = int(((playerx + 64) /64) + (((playery + 64)/ 64) * 20))
 
-            if self.walkCounter == 0 and self.attackCounter == 0 and self.y < playery:
+            if self.walkCounter == 0 and self.attackCounter == 0 and self.y < playery and self.Tile - 20 != playerTile:
                 self.direction = 0
                 if map[self.Tile + 20] in safeTiles and self.Tile not in self.frontBorder:
                     self.walkCounter = 16
                     self.Tile += 20
 
-            elif self.walkCounter == 0 and self.attackCounter == 0 and self.x < playerx:
+            elif self.walkCounter == 0 and self.attackCounter == 0 and self.x < playerx -32 and self.Tile + 1 != playerTile:
                 self.direction = 1
                 if map[self.Tile + 1] in safeTiles and self.Tile not in self.rightBorder:
                     self.walkCounter = 16
                     self.Tile += 1
 
-            elif self.walkCounter == 0 and self.attackCounter == 0 and self.y > playery:
+            elif self.walkCounter == 0 and self.attackCounter == 0 and self.y > playery and self.Tile - 20 != playerTile:
                 self.direction = 2
                 if map[self.Tile - 20] in safeTiles and self.Tile not in self.backBorder:
                     self.walkCounter = 16
                     self.Tile -= 20         
 
-            elif self.walkCounter == 0 and self.attackCounter == 0 and self.x > playerx:
+            elif self.walkCounter == 0 and self.attackCounter == 0 and self.x > playerx +32 and self.Tile - 1 != playerTile:
                 self.direction = 3
                 if map[self.Tile - 1] in safeTiles and self.Tile not in self.leftBorder:
                     self.walkCounter = 16
                     self.Tile -= 1
-
                     
 
             if self.walkCounter > 0:
@@ -1647,7 +1647,11 @@ class Skeleton:
                 if self.walkCounter == 0: #maybe beef up this statement to check for "if moving" to clean up walk animation
                     self.animate = 0
 
-                    self.BasicAI = random.randint(1,4)
+                    if playery > self.y:
+                        self.direction = 0
+
+                    elif playery < self.y:
+                        self.direction = 2
 
                     gameState = 0
 
