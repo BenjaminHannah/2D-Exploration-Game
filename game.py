@@ -22,6 +22,9 @@ worldy = 0
 
 FloorLevel = 1
 
+npcObjectArray  = []
+npcOccupiedTiles = []
+
 #
 oneTime = True
 darknessCounter = 0
@@ -1095,11 +1098,13 @@ class Player:
 
 
     def movement(self):
+        global npcOccupiedTiles
+
         safeTiles = [13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,33,34,35,36,37,38,80,81,82,83,85,87]
     
         if pressed[pygame.K_s] and self.walkCounter == 0 and self.attackCounter == 0 and not pressed[pygame.K_w] and not pressed[pygame.K_a] and not pressed[pygame.K_d]:
             self.direction = 0
-            if map[self.Tile + 20] in safeTiles and self.Tile not in self.frontBorder:
+            if map[self.Tile + 20] in safeTiles and self.Tile not in self.frontBorder and self.Tile + 20 not in npcOccupiedTiles:
                 self.walkCounter = 17
 
                 if map[self.Tile + 20] == 85:
@@ -1107,7 +1112,7 @@ class Player:
 
         if pressed[pygame.K_d] and self.walkCounter == 0 and self.attackCounter == 0 and not pressed[pygame.K_a] and not pressed[pygame.K_s] and not pressed[pygame.K_w]:
             self.direction = 1
-            if map[self.Tile + 1] in safeTiles and self.Tile not in self.rightBorder:
+            if map[self.Tile + 1] in safeTiles and self.Tile not in self.rightBorder and self.Tile + 1 not in npcOccupiedTiles:
                 self.walkCounter = 17
 
                 if map[self.Tile + 1] == 85:
@@ -1115,7 +1120,7 @@ class Player:
 
         if pressed[pygame.K_w] and self.walkCounter == 0 and self.attackCounter == 0 and not pressed[pygame.K_s] and not pressed[pygame.K_a] and not pressed[pygame.K_d]:
             self.direction = 2
-            if map[self.Tile - 20] in safeTiles and self.Tile not in self.backBorder:
+            if map[self.Tile - 20] in safeTiles and self.Tile not in self.backBorder and self.Tile - 20 not in npcOccupiedTiles:
                 self.walkCounter = 17
 
                 if map[self.Tile - 20] == 85:
@@ -1123,7 +1128,7 @@ class Player:
 
         if pressed[pygame.K_a] and self.walkCounter == 0 and self.attackCounter == 0 and not pressed[pygame.K_d] and not pressed[pygame.K_s] and not pressed[pygame.K_w]:
             self.direction = 3
-            if map[self.Tile - 1] in safeTiles and self.Tile not in self.leftBorder:
+            if map[self.Tile - 1] in safeTiles and self.Tile not in self.leftBorder and self.Tile - 1 not in npcOccupiedTiles:
                 self.walkCounter = 17
 
                 if map[self.Tile - 1] == 85:
@@ -1593,6 +1598,8 @@ class Skeleton:
               
     def movement(self):
         global gameState
+        global npcOccupiedTiles
+
         if self.alive == 1:
             safeTiles = [13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,33,34,35,36,37,38,80,81,82,83,87]
 
@@ -1612,25 +1619,25 @@ class Skeleton:
 
             if self.walkCounter == 0 and self.attackCounter == 0 and self.y < playery and self.Tile - 20 != playerTile:
                 self.direction = 0
-                if map[self.Tile + 20] in safeTiles and self.Tile not in self.frontBorder:
+                if map[self.Tile + 20] in safeTiles and self.Tile not in self.frontBorder and self.Tile + 20 not in npcOccupiedTiles:
                     self.walkCounter = 16
                     self.Tile += 20
 
             elif self.walkCounter == 0 and self.attackCounter == 0 and self.x < playerx -32 and self.Tile + 1 != playerTile:
                 self.direction = 1
-                if map[self.Tile + 1] in safeTiles and self.Tile not in self.rightBorder:
+                if map[self.Tile + 1] in safeTiles and self.Tile not in self.rightBorder and self.Tile + 1 not in npcOccupiedTiles:
                     self.walkCounter = 16
                     self.Tile += 1
 
             elif self.walkCounter == 0 and self.attackCounter == 0 and self.y > playery and self.Tile - 20 != playerTile:
                 self.direction = 2
-                if map[self.Tile - 20] in safeTiles and self.Tile not in self.backBorder:
+                if map[self.Tile - 20] in safeTiles and self.Tile not in self.backBorder and self.Tile - 20 not in npcOccupiedTiles:
                     self.walkCounter = 16
                     self.Tile -= 20         
 
             elif self.walkCounter == 0 and self.attackCounter == 0 and self.x > playerx +32 and self.Tile - 1 != playerTile:
                 self.direction = 3
-                if map[self.Tile - 1] in safeTiles and self.Tile not in self.leftBorder:
+                if map[self.Tile - 1] in safeTiles and self.Tile not in self.leftBorder and self.Tile - 1 not in npcOccupiedTiles:
                     self.walkCounter = 16
                     self.Tile -= 1
                     
@@ -1681,20 +1688,30 @@ class Skeleton:
         if self.alive == 1:
             if self.Tile == playerAttack:
                 if self.damagedTimer == 0: 
+                    global npcOccupiedTiles
+                    global npcObjectArray
+                    npcOccupiedTiles.remove(self.Tile)
+                    npcObjectArray.remove(self)
+
                     self.alive = 0
                     self.damagedTimer = 15
+                    
                     #print ("died")
 
     def checkAlive(self):
         return self.alive
 
     def getX(self):
-        return int(self.Tile % 20)
+        if self.alive == 1:
+            return int(self.Tile % 20)
+
     
     def getY(self):
         #return int(self.y / 64)
         #return int((self.y + 55)/ 64)
-        return int(self.Tile / 20)
+        if self.alive == 1:
+            return int(self.Tile / 20)
+
 
         #print(playerAttack, self.Tile)
 ##########################################################################################
@@ -2120,6 +2137,17 @@ def draw_Tile(i,layer,type):
     if counter == 20:
         counter = 0
 
+def npcHandler():
+    global npcObjectArray
+    global npcOccupiedTiles
+
+    npcOccupiedTiles = []
+
+    for npc in npcObjectArray:
+        occupiedTile = int((((npc.getX()*64)) /64) + ((((npc.getY()*64))/ 64) * 20))
+        npcOccupiedTiles.append(occupiedTile)
+
+
 def teleport(teleportTile):
     global map
     global map1
@@ -2413,6 +2441,11 @@ while playGame == True: #Main Menu
 
         sk = Skeleton((64 * 8) -32,64 * 3,0)
         s1 = Skeleton((64 * 8) -32,64 * 8,2)
+
+        npcObjectArray.append(sk)
+        npcObjectArray.append(s1)
+
+
         P = Player()
         
         #pygame.mixer.music.load('mainMusic.mp3')
@@ -2420,15 +2453,17 @@ while playGame == True: #Main Menu
 
         oneTime = False
     
-    if gameState == 0:
-
-        P.movement()
-        P.getAttack()
-
-    elif gameState == 1:
+    if gameState == 1 and len(npcObjectArray) >= 1:
 
         sk.movement()
         s1.movement()
+        npcHandler()
+
+    else:
+
+        npcHandler()
+        P.movement()
+        P.getAttack()
 
         
 
