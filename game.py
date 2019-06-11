@@ -1225,6 +1225,9 @@ class Player:
     def getFishing_cast(self):
         return self.fishing_cast
 
+    def getX(self):
+        return int(self.Tile % 20)
+
     def getY(self):
         #return int(self.y / 64)
         #return int((self.y + 55)/ 64)
@@ -1589,6 +1592,7 @@ class Skeleton:
                         self.attackedTile = self.Tile - 1
               
     def movement(self):
+        global gameState
         if self.alive == 1:
             safeTiles = [13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,33,34,35,36,37,38,80,81,82,83,87]
 
@@ -1600,30 +1604,36 @@ class Skeleton:
     #            self.animateCounter = 0
     #            self.attackCounter = 8
     #            self.attackDelay = 15
-            if self.BasicAI <= 8:
-                if self.BasicAI == 1 and self.walkCounter == 0 and self.attackCounter == 0:
-                    self.direction = 0
-                    if map[self.Tile + 20] in safeTiles and self.Tile not in self.frontBorder:
-                        self.walkCounter = 16
-                        self.Tile += 20
 
-                elif self.BasicAI == 2 and self.walkCounter == 0 and self.attackCounter == 0:
-                    self.direction = 1
-                    if map[self.Tile + 1] in safeTiles and self.Tile not in self.rightBorder:
-                        self.walkCounter = 16
-                        self.Tile += 1
+            
+            playerx = (P.getX() -1) * 64
+            playery = (P.getY() -1) * 64
 
-                elif self.BasicAI == 3 and self.walkCounter == 0 and self.attackCounter == 0:
-                    self.direction = 2
-                    if map[self.Tile - 20] in safeTiles and self.Tile not in self.backBorder:
-                        self.walkCounter = 16
-                        self.Tile -= 20
+            if self.walkCounter == 0 and self.attackCounter == 0 and self.y < playery:
+                self.direction = 0
+                if map[self.Tile + 20] in safeTiles and self.Tile not in self.frontBorder:
+                    self.walkCounter = 16
+                    self.Tile += 20
 
-                elif self.BasicAI == 4 and self.walkCounter == 0 and self.attackCounter == 0:
-                    self.direction = 3
-                    if map[self.Tile - 1] in safeTiles and self.Tile not in self.leftBorder:
-                        self.walkCounter = 16
-                        self.Tile -= 1
+            elif self.walkCounter == 0 and self.attackCounter == 0 and self.x < playerx:
+                self.direction = 1
+                if map[self.Tile + 1] in safeTiles and self.Tile not in self.rightBorder:
+                    self.walkCounter = 16
+                    self.Tile += 1
+
+            elif self.walkCounter == 0 and self.attackCounter == 0 and self.y > playery:
+                self.direction = 2
+                if map[self.Tile - 20] in safeTiles and self.Tile not in self.backBorder:
+                    self.walkCounter = 16
+                    self.Tile -= 20         
+
+            elif self.walkCounter == 0 and self.attackCounter == 0 and self.x > playerx:
+                self.direction = 3
+                if map[self.Tile - 1] in safeTiles and self.Tile not in self.leftBorder:
+                    self.walkCounter = 16
+                    self.Tile -= 1
+
+                    
 
             if self.walkCounter > 0:
                 self.animate = 1
@@ -1639,7 +1649,6 @@ class Skeleton:
 
                     self.BasicAI = random.randint(1,4)
 
-                    global gameState
                     gameState = 0
 
             if self.attackCounter == 8: #play slash sound.
@@ -1674,6 +1683,9 @@ class Skeleton:
 
     def checkAlive(self):
         return self.alive
+
+    def getX(self):
+        return int(self.Tile % 20)
     
     def getY(self):
         #return int(self.y / 64)
