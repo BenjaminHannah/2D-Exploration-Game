@@ -29,7 +29,10 @@ npcOccupiedTiles = []
 oneTime = True
 darknessCounter = 0
 ##
-slashSound = pygame.mixer.Sound('slash001.wav')
+slashSound = pygame.mixer.Sound('soundEffects/slash001.wav')
+gatesOpenSound = pygame.mixer.Sound('soundEffects/gatesOpen.wav')
+gatesCloseSound = pygame.mixer.Sound('soundEffects/gatesClose.wav')
+hurtSound = pygame.mixer.Sound('soundEffects/hurt001.wav')
 
 #Load Images#
 heartImage = pygame.image.load('hudImages/heart.png').convert_alpha()
@@ -144,6 +147,13 @@ tile_underground1_85 = pygame.image.load('tileImages/Tile (85).png').convert_alp
 tile_underground1_86 = pygame.image.load('tileImages/Tile (86).png').convert_alpha()
 
 tile_underground1_87 = pygame.image.load('tileImages/Tile (87).png').convert_alpha() #unique tile for underlay of transparent walls
+
+tile_underground1_88 = pygame.image.load('tileImages/Tile (88).png').convert_alpha()
+
+tile_underground1_89 = pygame.image.load('tileImages/Tile (89).png').convert_alpha()
+tile_underground1_90 = pygame.image.load('tileImages/Tile (90).png').convert_alpha()
+tile_underground1_91 = pygame.image.load('tileImages/Tile (91).png').convert_alpha()
+tile_underground1_92 = pygame.image.load('tileImages/Tile (92).png').convert_alpha()
 
 ################################OVERWORLD
 
@@ -691,6 +701,15 @@ SleftSlashing_005 = pygame.image.load('playerImages2/Left - Slashing_005.png').c
 SleftSlashing_006 = pygame.image.load('playerImages2/Left - Slashing_006.png').convert_alpha()
 SleftSlashing_007 = pygame.image.load('playerImages2/Left - Slashing_007.png').convert_alpha()
 SleftSlashing_008 = pygame.image.load('playerImages2/Left - Slashing_008.png').convert_alpha()
+
+SleftHurt_001 = pygame.image.load('playerImages2/Left - Hurt_001.png').convert_alpha()
+
+SrightHurt_001 = pygame.image.load('playerImages2/Right - Hurt_001.png').convert_alpha()
+
+SfrontHurt_001 = pygame.image.load('playerImages2/Front - Hurt_001.png').convert_alpha()
+
+SbackHurt_001 = pygame.image.load('playerImages2/Back - Hurt_001.png').convert_alpha()
+
 ##########################################################################################
 
 ##########################################################################################
@@ -726,6 +745,7 @@ class Player:
     def teleport(self,tile):
         global worldx
         global worldy
+        global gameState
 
         self.Tile = tile
 
@@ -747,6 +767,7 @@ class Player:
                     pygame.display.update()
 
                 self.visible = True
+                gameState = 0
 
         elif self.direction == 2: #w
                 worldy = ((int(tile / 20)) * 64) -256
@@ -762,6 +783,7 @@ class Player:
                     pygame.display.update()
                 
                 self.visible = True
+                gameState = 0
 
     def draw(self):
         #
@@ -1120,10 +1142,13 @@ class Player:
 
         if pressed[pygame.K_w] and self.walkCounter == 0 and self.attackCounter == 0 and not pressed[pygame.K_s] and not pressed[pygame.K_a] and not pressed[pygame.K_d]:
             self.direction = 2
-            if map[self.Tile - 20] in safeTiles and self.Tile not in self.backBorder and self.Tile - 20 not in npcOccupiedTiles:
+            if map[self.Tile - 20] in safeTiles and self.Tile not in self.backBorder and self.Tile - 20 not in npcOccupiedTiles and map[self.Tile - 40] != 89:  #if map[self.Tile - 40] != 89: //check for locked doors
                 self.walkCounter = 17
 
-                if map[self.Tile - 20] == 85:
+                #if map[self.Tile - 20] == 85:
+                #    teleport(self.Tile)
+
+                if map[self.Tile - 40] == 92:
                     teleport(self.Tile)
 
         if pressed[pygame.K_a] and self.walkCounter == 0 and self.attackCounter == 0 and not pressed[pygame.K_d] and not pressed[pygame.K_s] and not pressed[pygame.K_w]:
@@ -1203,8 +1228,8 @@ class Player:
             self.animate = 0
 
         if self.attackCounter == 4: #play slash sound.
-            #slashSound.play()
-            pass
+            slashSound.play()
+            #pass
 
         if self.attackCounter > 0:
             self.animate = 2
@@ -1257,6 +1282,7 @@ class Skeleton:
         self.walkCounter = 0
         self.attackCounter = 0
 
+        self.health = 3
         self.damagedTimer = 0
 
         self.Tile = int(((self.x + 64) /64) + (((self.y + 64)/ 64) * 20))
@@ -1362,6 +1388,9 @@ class Skeleton:
 
                     if self.Tile not in self.frontBorder:
                         self.attackedTile = self.Tile + 20
+
+                elif self.animate == 3:#front Hurt
+                    screen.blit(SfrontHurt_001,(self.x - worldx, self.y - worldy))
     
 
             elif self.direction == 1: #Right
@@ -1452,6 +1481,9 @@ class Skeleton:
                     if self.Tile not in self.rightBorder:
                         self.attackedTile = self.Tile + 1
 
+                elif self.animate == 3:#right Hurt
+                    screen.blit(SrightHurt_001,(self.x - worldx, self.y - worldy))
+
             elif self.direction == 2: #Back
 
                 if self.animate == 0:#back Idle
@@ -1508,6 +1540,9 @@ class Skeleton:
                 
                     if self.Tile not in self.backBorder:
                         self.attackedTile = self.Tile - 20
+
+                elif self.animate == 3:#back Hurt
+                    screen.blit(SbackHurt_001,(self.x - worldx, self.y - worldy))
 
             elif self.direction == 3: #Left
 
@@ -1595,6 +1630,9 @@ class Skeleton:
 
                     if self.Tile not in self.leftBorder:
                         self.attackedTile = self.Tile - 1
+                        Slef
+                elif self.animate == 3:#left Hurt
+                    screen.blit(SleftHurt_001,(self.x - worldx, self.y - worldy))
               
     def movement(self):
         global gameState
@@ -1660,7 +1698,13 @@ class Skeleton:
                     elif playery < self.y:
                         self.direction = 2
 
-                    gameState = 0
+                    elif playery == self.y:
+                        if playerx > self.x:
+                            self.direction = 1
+                        elif playerx < self.x:
+                            self.direction = 3
+
+                    gameState = 2
 
             if self.attackCounter == 8: #play slash sound.
                 slashSound.play()
@@ -1684,17 +1728,28 @@ class Skeleton:
             if self.damagedTimer > 0:
                 self.damagedTimer -= 1
 
+            if self.damagedTimer == 10:
+                self.animate = 0
+
     def checkDamage(self,playerAttack):
         if self.alive == 1:
             if self.Tile == playerAttack:
-                if self.damagedTimer == 0: 
-                    global npcOccupiedTiles
-                    global npcObjectArray
-                    npcOccupiedTiles.remove(self.Tile)
-                    npcObjectArray.remove(self)
+                if self.damagedTimer == 0:
+                    self.health = self.health - 1
+                    self.damagedTimer = 15 #Make sure this is lower than animateCounter
+                   
+                    self.animate = 3
+                    self.animateCounter = 0
+                    
+                    hurtSound.play()
 
-                    self.alive = 0
-                    self.damagedTimer = 15
+                    if self.health <= 0:
+                        global npcOccupiedTiles
+                        global npcObjectArray
+                        npcOccupiedTiles.remove(self.Tile)
+                        npcObjectArray.remove(self)
+
+                        self.alive = 0
                     
                     #print ("died")
 
@@ -1724,13 +1779,13 @@ newTile = 0
 
 map = [
 51,51,51,51,51,51,51,58,56,54,56,59,51,51,51,51,51,52,21,21,
-51,51,51,51,51,51,51,52,7,84,7,50,51,51,51,51,51,52,21,21,
+51,51,51,51,51,51,51,52,7,92,7,50,51,51,51,51,51,52,21,21,
 51,51,51,51,51,51,51,52,11,85,11,50,51,51,51,51,51,60,48,49,
 51,51,51,51,51,51,51,52,15,16,15,50,51,51,51,51,51,51,51,60,
 51,51,51,51,51,51,51,52,21,21,21,50,51,51,51,51,51,51,51,51,
 54,54,54,59,51,51,51,52,21,21,21,50,51,51,51,51,51,51,51,51,
 6,6,6,50,51,51,51,52,21,21,21,53,54,54,59,51,51,51,51,51,
-10,10,10,50,51,51,51,52,21,21,21,8,84,8,50,51,51,51,51,51,
+10,10,10,50,51,51,51,52,21,21,21,8,92,8,50,51,51,51,51,51,
 16,16,16,50,51,51,51,52,21,21,21,12,85,12,50,51,51,51,51,51,
 21,21,21,53,59,51,51,52,21,21,21,16,16,16,50,51,51,51,51,51,
 21,21,21,6,53,59,51,60,48,48,48,48,48,48,61,51,51,51,51,51,
@@ -1739,13 +1794,13 @@ map = [
 
 map1 = [
 51,51,51,51,51,51,51,58,56,54,56,59,51,51,51,51,51,52,21,21,
-51,51,51,51,51,51,51,52,7,84,7,50,51,51,51,51,51,52,21,21,
+51,51,51,51,51,51,51,52,7,92,7,50,51,51,51,51,51,52,21,21,
 51,51,51,51,51,51,51,52,11,85,11,50,51,51,51,51,51,60,48,49,
 51,51,51,51,51,51,51,52,15,16,15,50,51,51,51,51,51,51,51,60,
 51,51,51,51,51,51,51,52,21,21,21,50,51,51,51,51,51,51,51,51,
 54,54,54,59,51,51,51,52,21,21,21,50,51,51,51,51,51,51,51,51,
 6,6,6,50,51,51,51,52,21,21,21,53,54,54,59,51,51,51,51,51,
-10,10,10,50,51,51,51,52,21,21,21,8,84,8,50,51,51,51,51,51,
+10,10,10,50,51,51,51,52,21,21,21,8,92,8,50,51,51,51,51,51,
 16,16,16,50,51,51,51,52,21,21,21,12,85,12,50,51,51,51,51,51,
 21,21,21,53,59,51,51,52,21,21,21,16,16,16,50,51,51,51,51,51,
 21,21,21,6,53,59,51,60,48,48,48,48,48,48,61,51,51,51,51,51,
@@ -1770,7 +1825,7 @@ map2 = [
 map3 = [
 51,51,51,51,51,51,58,54,54,54,54,54,54,54,59,51,51,51,51,51,
 51,51,58,54,54,54,55,5,5,5,5,5,5,5,50,51,51,51,51,51,
-51,51,52,7,84,7,5,10,10,10,10,10,10,10,50,51,51,51,51,51,
+51,51,52,7,92,7,5,10,10,10,10,10,10,10,50,51,51,51,51,51,
 51,51,52,11,85,11,10,16,16,16,14,16,16,16,50,51,51,51,51,51,
 51,51,52,15,13,15,16,24,26,26,26,26,27,26,50,51,51,51,51,51,
 51,51,52,21,21,21,21,29,31,31,31,31,31,31,50,51,51,51,51,51,
@@ -2012,118 +2067,34 @@ def draw_Tile(i,layer,type):
 
         elif i == 84: #Passage Tile
             screen.blit(tile_underground1_0,(counter * 64 - worldx, counter2 * 64 - worldy))  ##### Changed to 0 for visual overlay
-        elif i == 85: #Passage Tile
-            screen.blit(tile_underground1_85,(counter * 64 - worldx, counter2 * 64 - worldy))  
+        #elif i == 85: #Passage Tile
+        #    screen.blit(tile_underground1_85,(counter * 64 - worldx, counter2 * 64 - worldy))  
         elif i == 86:
             screen.blit(tile_underground1_86,(counter * 64 - worldx, counter2 * 64 - worldy))
 
-    ######################################################
-    #OVERWORLD#
-
         elif i == 87:
-            screen.blit(tile_overworld1_1,(counter * 64 - worldx, counter2 * 64 - worldy))
-
+            screen.blit(tile_underground1_87,(counter * 64 - worldx, counter2 * 64 - worldy))
         elif i == 88:
-            screen.blit(tile_overworld1_2,(counter * 64 - worldx, counter2 * 64 - worldy))
+            screen.blit(tile_underground1_88,(counter * 64 - worldx, counter2 * 64 - worldy))
 
         elif i == 89:
-            screen.blit(tile_overworld1_3,(counter * 64 - worldx, counter2 * 64 - worldy))
-
+            screen.blit(tile_underground1_85,(counter * 64 - worldx, counter2 * 64 - worldy))
+            screen.blit(tile_underground1_85,(counter * 64 - worldx, counter2 * 64 - worldy +64)) 
+            screen.blit(tile_underground1_89,(counter * 64 - worldx, counter2 * 64 - worldy))
         elif i == 90:
-            screen.blit(tile_overworld1_4,(counter * 64 - worldx, counter2 * 64 - worldy))
-
+            screen.blit(tile_underground1_85,(counter * 64 - worldx, counter2 * 64 - worldy))
+            screen.blit(tile_underground1_85,(counter * 64 - worldx, counter2 * 64 - worldy +64)) 
+            screen.blit(tile_underground1_90,(counter * 64 - worldx, counter2 * 64 - worldy))
         elif i == 91:
-            screen.blit(tile_overworld1_5,(counter * 64 - worldx, counter2 * 64 - worldy))
-
+            screen.blit(tile_underground1_85,(counter * 64 - worldx, counter2 * 64 - worldy))
+            screen.blit(tile_underground1_85,(counter * 64 - worldx, counter2 * 64 - worldy +64)) 
+            screen.blit(tile_underground1_91,(counter * 64 - worldx, counter2 * 64 - worldy))
         elif i == 92:
-            screen.blit(tile_overworld1_6,(counter * 64 - worldx, counter2 * 64 - worldy))
+            screen.blit(tile_underground1_85,(counter * 64 - worldx, counter2 * 64 - worldy))
+            screen.blit(tile_underground1_85,(counter * 64 - worldx, counter2 * 64 - worldy +64)) 
+            screen.blit(tile_underground1_92,(counter * 64 - worldx, counter2 * 64 - worldy))
 
-        elif i == 93:
-            screen.blit(tile_overworld1_7,(counter * 64 - worldx, counter2 * 64 - worldy))
 
-        elif i == 94:
-            screen.blit(tile_overworld1_8,(counter * 64 - worldx, counter2 * 64 - worldy))
-
-        elif i == 95:
-            screen.blit(tile_overworld1_9,(counter * 64 - worldx, counter2 * 64 - worldy))
-
-        elif i == 96:
-            screen.blit(tile_overworld1_10,(counter * 64 - worldx, counter2 * 64 - worldy))
-
-        elif i == 97:
-            screen.blit(tile_overworld1_11,(counter * 64 - worldx, counter2 * 64 - worldy))
-
-        elif i == 98:
-            screen.blit(tile_overworld1_50,(counter * 64 - worldx, counter2 * 64 - worldy))
-
-        elif i == 99:
-            screen.blit(tile_overworld1_51,(counter * 64 - worldx, counter2 * 64 - worldy))
-
-        elif i == 100:
-            screen.blit(tile_overworld1_52,(counter * 64 - worldx, counter2 * 64 - worldy))
-
-        elif i == 101:
-            screen.blit(tile_overworld1_53,(counter * 64 - worldx, counter2 * 64 - worldy))
-
-        elif i == 102:
-            screen.blit(tile_overworld1_54,(counter * 64 - worldx, counter2 * 64 - worldy))
-
-        elif i == 103:
-            screen.blit(tile_overworld1_55,(counter * 64 - worldx, counter2 * 64 - worldy))
-
-        elif i == 104:
-            screen.blit(tile_overworld1_56,(counter * 64 - worldx, counter2 * 64 - worldy))
-
-        elif i == 105:
-            screen.blit(tile_overworld1_57,(counter * 64 - worldx, counter2 * 64 - worldy))
-
-        elif i == 106:
-            screen.blit(tile_overworld1_58,(counter * 64 - worldx, counter2 * 64 - worldy))
-
-        elif i == 107:
-            screen.blit(tile_overworld1_59,(counter * 64 - worldx, counter2 * 64 - worldy))
-
-        elif i == 108:
-            screen.blit(tile_overworld1_60,(counter * 64 - worldx, counter2 * 64 - worldy))
-
-        elif i == 109:
-            screen.blit(tile_overworld1_61,(counter * 64 - worldx, counter2 * 64 - worldy))
-
-        elif i == 110:
-            screen.blit(tile_overworld1_62,(counter * 64 - worldx, counter2 * 64 - worldy))
-
-        elif i == 111:
-            screen.blit(tile_overworld1_63,(counter * 64 - worldx, counter2 * 64 - worldy))
-
-        elif i == 112:
-            screen.blit(tile_overworld1_64,(counter * 64 - worldx, counter2 * 64 - worldy))
-
-        elif i == 113:
-            screen.blit(tile_overworld1_65,(counter * 64 - worldx, counter2 * 64 - worldy))
-
-        elif i == 114:
-            screen.blit(tile_overworld1_66,(counter * 64 - worldx, counter2 * 64 - worldy))
-
-        elif i == 115:
-            screen.blit(tile_overworld1_67,(counter * 64 - worldx, counter2 * 64 - worldy))
-
-        elif i == 116:
-            screen.blit(tile_overworld1_68,(counter * 64 - worldx, counter2 * 64 - worldy))
-
-        elif i == 117:
-            screen.blit(tile_overworld1_69,(counter * 64 - worldx, counter2 * 64 - worldy))
-
-        elif i == 118:
-            screen.blit(tile_overworld1_70,(counter * 64 - worldx, counter2 * 64 - worldy))
-
-        elif i == 119:
-            screen.blit(tile_overworld1_71,(counter * 64 - worldx, counter2 * 64 - worldy))
-
-        elif i == 120:
-            screen.blit(tile_overworld1_72,(counter * 64 - worldx, counter2 * 64 - worldy))
-
-        elif i == 121:
-            screen.blit(tile_overworld1_73,(counter * 64 - worldx, counter2 * 64 - worldy))
 
 ###################
 
@@ -2132,10 +2103,223 @@ def draw_Tile(i,layer,type):
         #
         if i == 84: #Passage Tile
             screen.blit(tile_underground1_84,(counter * 64 - worldx, counter2 * 64 - worldy))
+        elif i == 50: #Passage Tile
+            screen.blit(tile_underground1_50,(counter * 64 - worldx, counter2 * 64 - worldy))
+        elif i == 52: #Passage Tile
+            screen.blit(tile_underground1_52,(counter * 64 - worldx, counter2 * 64 - worldy))
     
     counter += 1
     if counter == 20:
         counter = 0
+
+def drawMap():
+    global sk
+    global s1
+    global P
+##############################
+    #Create an array for each possible enemy#
+
+    #NPC[0,1,2,3,4,5,6,7,8,9,10... etc]
+
+    #use this for the drawing and spawning and dying of enemies / NPC's#
+
+    #sort by y pos. draw by y pos. //
+    drawZ = [sk.getY() , "sk.draw()",s1.getY() , "s1.draw()", P.getY() , "P.draw()"]
+
+    #DRAW UNDERLAYER #START OUT THE DRAWING WITH THE TOP MOST
+    for i in range(20):
+        draw_Tile(i,0,0)
+    
+
+    #DRAW UNDERLAYER
+    for i in range(20):
+        draw_Tile(i,1,0)
+
+    if drawZ[0] == 0: #NEED TO CHECK IF THE obj IS ALIVE OR NOT!
+        eval(drawZ[1])#Uses the DrawZ to know what to draw in each order.
+    if drawZ[2] == 0:
+        eval(drawZ[3])
+    if drawZ[4] == 0:
+        eval(drawZ[5])
+
+    #DRAW OVERLAYER
+    for i in range(20):
+        draw_Tile(i,0,1)
+
+    ########################################################################################   
+    #DRAW UNDERLAYER
+    for i in range(20):
+        draw_Tile(i,2,0)
+
+    if drawZ[0] == 1:
+        eval(drawZ[1])
+    if drawZ[2] == 1:
+        eval(drawZ[3])
+    if drawZ[4] == 1:
+        eval(drawZ[5])
+
+    #DRAW OVERLAYER
+    for i in range(20):
+        draw_Tile(i,1,1)
+
+########################################################################################
+    #DRAW UNDERLAYER
+    for i in range(20):
+        draw_Tile(i,3,0)
+
+    if drawZ[0] == 2:
+        eval(drawZ[1])
+    if drawZ[2] == 2:
+        eval(drawZ[3])
+    if drawZ[4] == 2:
+        eval(drawZ[5])
+
+    #DRAW OVERLAYER
+    for i in range(20):
+        draw_Tile(i,2,1)
+
+    ########################################################################################   
+    #DRAW UNDERLAYER
+    for i in range(20):
+        draw_Tile(i,4,0)
+
+    if drawZ[0] == 3:
+        eval(drawZ[1])
+    if drawZ[2] == 3:
+        eval(drawZ[3])
+    if drawZ[4] == 3:
+        eval(drawZ[5])
+
+    #DRAW OVERLAYER
+    for i in range(20):
+        draw_Tile(i,3,1)
+
+    ########################################################################################    
+        #DRAW UNDERLAYER
+    for i in range(20):
+        draw_Tile(i,5,0)
+
+    if drawZ[0] == 4:
+        eval(drawZ[1])
+    if drawZ[2] == 4:
+        eval(drawZ[3])
+    if drawZ[4] == 4:
+        eval(drawZ[5])
+
+    #DRAW OVERLAYER
+    for i in range(20):
+        draw_Tile(i,4,1)
+
+    ########################################################################################
+        #DRAW UNDERLAYER
+    for i in range(20):
+        draw_Tile(i,6,0) 
+
+    if drawZ[0] == 5:
+        eval(drawZ[1])
+    if drawZ[2] == 5:
+        eval(drawZ[3])
+    if drawZ[4] == 5:
+        eval(drawZ[5])
+
+    #DRAW OVERLAYER
+    for i in range(20):
+        draw_Tile(i,5,1)
+
+    ########################################################################################    
+        #DRAW UNDERLAYER
+    for i in range(20):
+        draw_Tile(i,7,0)
+
+    if drawZ[0] == 6:
+        eval(drawZ[1])
+    if drawZ[2] == 6:
+        eval(drawZ[3])
+    if drawZ[4] == 6:
+        eval(drawZ[5])
+
+    #DRAW OVERLAYER
+    for i in range(20):
+        draw_Tile(i,6,1)
+
+    ########################################################################################    
+        #DRAW UNDERLAYER
+    for i in range(20):
+        draw_Tile(i,8,0)
+
+    if drawZ[0] == 7:
+        eval(drawZ[1])
+    if drawZ[2] == 7:
+        eval(drawZ[3])
+    if drawZ[4] == 7:
+        eval(drawZ[5])
+
+    #DRAW OVERLAYER
+    for i in range(20):
+        draw_Tile(i,7,1)
+    ########################################################################################    
+        #DRAW UNDERLAYER
+    for i in range(20):
+        draw_Tile(i,9,0)
+
+    if drawZ[0] == 8:
+        eval(drawZ[1])
+    if drawZ[2] == 8:
+        eval(drawZ[3])
+    if drawZ[4] == 8:
+        eval(drawZ[5])
+
+    #DRAW OVERLAYER
+    for i in range(20):
+        draw_Tile(i,8,1)
+
+    ########################################################################################    
+    #DRAW UNDERLAYER
+    for i in range(20):
+        draw_Tile(i,10,0)
+
+    if drawZ[0] == 9:
+        eval(drawZ[1])
+    if drawZ[2] == 9:
+        eval(drawZ[3])
+    if drawZ[4] == 9:
+        eval(drawZ[5])
+
+    #DRAW OVERLAYER
+    for i in range(20):
+        draw_Tile(i,9,1)
+
+    #DRAW UNDERLAYER
+    for i in range(20):
+        draw_Tile(i,11,0)
+
+    #DRAW OVERLAYER
+    for i in range(20):
+        draw_Tile(i,10,1)
+
+    #DRAW UNDERLAYER? Overlay? (all the comments may be backwards for the overlay underlay ^
+    for i in range(20):
+        draw_Tile(i,11,1)
+
+    ## lower map draw character 1 (extra addition...)
+
+    if drawZ[0] == 10:
+        eval(drawZ[1])
+    if drawZ[2] == 10:
+        eval(drawZ[3])
+    if drawZ[4] == 10:
+        eval(drawZ[5])
+
+    ## lower map draw character 1 (extra addition...)
+
+    if drawZ[0] == 11:
+        eval(drawZ[1])
+    if drawZ[2] == 11:
+        eval(drawZ[3])
+    if drawZ[4] == 11:
+        eval(drawZ[5])
+
+##########################################################################################
 
 def npcHandler():
     global npcObjectArray
@@ -2183,9 +2367,40 @@ def teleport(teleportTile):
             FloorLevel = 1
             P.teleport (65)
 
+def doorLock():
+    DoorLockCounter = 0
+    for i in map:
+        if i == 92:
+            map[DoorLockCounter] = 91
+
+        elif i == 91:
+            map[DoorLockCounter] = 90
+
+        elif i == 90:
+            map[DoorLockCounter] = 89
+            gatesCloseSound.play()
+        DoorLockCounter += 1
+
+def doorUnlock():
+    DoorLockCounter = 0
+    for i in map:
+        if i == 89:
+            map[DoorLockCounter] = 90
+            gatesCloseSound.play()
+
+        elif i == 90:
+            map[DoorLockCounter] = 91
+
+        elif i == 91:
+            map[DoorLockCounter] = 92
+        DoorLockCounter += 1
+
 
 playMenu = True
+pygame.mixer.music.load('music/titleMusic.mp3')
+pygame.mixer.music.play(-1)
 while playMenu == True:
+    
     events = pygame.event.get()
     for event in events:
         if event.type == pygame.QUIT:
@@ -2208,8 +2423,8 @@ while playMenu == True:
 
 ##########################################################################################
 playGame = True
-while playGame == True: #Main Menu
 
+while playGame == True:
     events = pygame.event.get()
     for event in events:
         if event.type == pygame.QUIT:
@@ -2222,217 +2437,14 @@ while playGame == True: #Main Menu
        pygame.display.quit()
        pygame.quit()
 
+    if pressed[pygame.K_z]:
+       doorLock()
+
+    if pressed[pygame.K_x]:
+       doorUnlock()
+
 ##########################################################################################
 #Paste Map Editor code here#
-##########################################################################################
-
-    def drawMap():
-        global sk
-        global s1
-        global P
-    ##############################
-        #Create an array for each possible enemy#
-
-        #NPC[0,1,2,3,4,5,6,7,8,9,10... etc]
-
-        #use this for the drawing and spawning and dying of enemies / NPC's#
-
-        #sort by y pos. draw by y pos. //
-        drawZ = [sk.getY() , "sk.draw()",s1.getY() , "s1.draw()", P.getY() , "P.draw()"]
-
-        #DRAW UNDERLAYER #START OUT THE DRAWING WITH THE TOP MOST
-        for i in range(20):
-            draw_Tile(i,0,0)
-    
-
-        #DRAW UNDERLAYER
-        for i in range(20):
-            draw_Tile(i,1,0)
-
-        if drawZ[0] == 0: #NEED TO CHECK IF THE obj IS ALIVE OR NOT!
-            eval(drawZ[1])#Uses the DrawZ to know what to draw in each order.
-        if drawZ[2] == 0:
-            eval(drawZ[3])
-        if drawZ[4] == 0:
-            eval(drawZ[5])
-
-        #DRAW OVERLAYER
-        for i in range(20):
-            draw_Tile(i,0,1)
-
-     ########################################################################################   
-        #DRAW UNDERLAYER
-        for i in range(20):
-            draw_Tile(i,2,0)
-
-        if drawZ[0] == 1:
-            eval(drawZ[1])
-        if drawZ[2] == 1:
-            eval(drawZ[3])
-        if drawZ[4] == 1:
-            eval(drawZ[5])
-
-        #DRAW OVERLAYER
-        for i in range(20):
-            draw_Tile(i,1,1)
-
-    ########################################################################################
-        #DRAW UNDERLAYER
-        for i in range(20):
-            draw_Tile(i,3,0)
-
-        if drawZ[0] == 2:
-            eval(drawZ[1])
-        if drawZ[2] == 2:
-            eval(drawZ[3])
-        if drawZ[4] == 2:
-            eval(drawZ[5])
-
-        #DRAW OVERLAYER
-        for i in range(20):
-            draw_Tile(i,2,1)
-
-     ########################################################################################   
-        #DRAW UNDERLAYER
-        for i in range(20):
-            draw_Tile(i,4,0)
-
-        if drawZ[0] == 3:
-            eval(drawZ[1])
-        if drawZ[2] == 3:
-            eval(drawZ[3])
-        if drawZ[4] == 3:
-            eval(drawZ[5])
-
-        #DRAW OVERLAYER
-        for i in range(20):
-            draw_Tile(i,3,1)
-
-     ########################################################################################    
-         #DRAW UNDERLAYER
-        for i in range(20):
-            draw_Tile(i,5,0)
-
-        if drawZ[0] == 4:
-            eval(drawZ[1])
-        if drawZ[2] == 4:
-            eval(drawZ[3])
-        if drawZ[4] == 4:
-            eval(drawZ[5])
-
-        #DRAW OVERLAYER
-        for i in range(20):
-            draw_Tile(i,4,1)
-
-     ########################################################################################
-         #DRAW UNDERLAYER
-        for i in range(20):
-            draw_Tile(i,6,0) 
-
-        if drawZ[0] == 5:
-            eval(drawZ[1])
-        if drawZ[2] == 5:
-            eval(drawZ[3])
-        if drawZ[4] == 5:
-            eval(drawZ[5])
-
-        #DRAW OVERLAYER
-        for i in range(20):
-            draw_Tile(i,5,1)
-
-     ########################################################################################    
-         #DRAW UNDERLAYER
-        for i in range(20):
-            draw_Tile(i,7,0)
-
-        if drawZ[0] == 6:
-            eval(drawZ[1])
-        if drawZ[2] == 6:
-            eval(drawZ[3])
-        if drawZ[4] == 6:
-            eval(drawZ[5])
-
-        #DRAW OVERLAYER
-        for i in range(20):
-            draw_Tile(i,6,1)
-
-     ########################################################################################    
-         #DRAW UNDERLAYER
-        for i in range(20):
-            draw_Tile(i,8,0)
-
-        if drawZ[0] == 7:
-            eval(drawZ[1])
-        if drawZ[2] == 7:
-            eval(drawZ[3])
-        if drawZ[4] == 7:
-            eval(drawZ[5])
-
-        #DRAW OVERLAYER
-        for i in range(20):
-            draw_Tile(i,7,1)
-     ########################################################################################    
-         #DRAW UNDERLAYER
-        for i in range(20):
-            draw_Tile(i,9,0)
-
-        if drawZ[0] == 8:
-            eval(drawZ[1])
-        if drawZ[2] == 8:
-            eval(drawZ[3])
-        if drawZ[4] == 8:
-            eval(drawZ[5])
-
-        #DRAW OVERLAYER
-        for i in range(20):
-            draw_Tile(i,8,1)
-
-     ########################################################################################    
-        #DRAW UNDERLAYER
-        for i in range(20):
-            draw_Tile(i,10,0)
-
-        if drawZ[0] == 9:
-            eval(drawZ[1])
-        if drawZ[2] == 9:
-            eval(drawZ[3])
-        if drawZ[4] == 9:
-            eval(drawZ[5])
-
-        #DRAW OVERLAYER
-        for i in range(20):
-            draw_Tile(i,9,1)
-
-        #DRAW UNDERLAYER
-        for i in range(20):
-            draw_Tile(i,11,0)
-
-        #DRAW OVERLAYER
-        for i in range(20):
-            draw_Tile(i,10,1)
-
-        #DRAW UNDERLAYER? Overlay? (all the comments may be backwards for the overlay underlay ^
-        for i in range(20):
-            draw_Tile(i,11,1)
-
-        ## lower map draw character 1 (extra addition...)
-
-        if drawZ[0] == 10:
-            eval(drawZ[1])
-        if drawZ[2] == 10:
-            eval(drawZ[3])
-        if drawZ[4] == 10:
-            eval(drawZ[5])
-
-        ## lower map draw character 1 (extra addition...)
-
-        if drawZ[0] == 11:
-            eval(drawZ[1])
-        if drawZ[2] == 11:
-            eval(drawZ[3])
-        if drawZ[4] == 11:
-            eval(drawZ[5])
-
 ##########################################################################################
    
         
@@ -2448,11 +2460,20 @@ while playGame == True: #Main Menu
 
         P = Player()
         
-        #pygame.mixer.music.load('mainMusic.mp3')
-        #pygame.mixer.music.play(-1)
+        pygame.mixer.music.load('music/mainMusic.mp3')
+        pygame.mixer.music.play(-1)
 
         oneTime = False
-    
+
+
+    if gameState == 0:
+        if len(npcObjectArray) >= 1:
+            doorLock()
+            doorLock()
+            doorLock()
+            
+        gameState = 2
+
     if gameState == 1 and len(npcObjectArray) >= 1:
 
         sk.movement()
@@ -2461,12 +2482,12 @@ while playGame == True: #Main Menu
 
     else:
 
-        npcHandler()
+        #npcHandler()
         P.movement()
         P.getAttack()
 
-        
-
+        if len(npcObjectArray) == 0:
+            doorUnlock()
 
     drawMap()
     P.animateObject()
