@@ -724,6 +724,10 @@ class Player:
 
         self.walkCounter = 0
         self.attackCounter = 0
+        
+        self.alive = 1
+        self.health = 10
+        self.damagedTimer = 0
 
         self.x = (64 * 9)
         self.y = 64 * 4
@@ -1172,7 +1176,7 @@ class Player:
                 
         elif pressed[pygame.K_SPACE] and self.walkCounter == 0 and self.attackCounter == 0 and self.attackDelay == 0: #attack
             self.animateCounter = 0
-            self.attackCounter = 4
+            self.attackCounter = 8
             self.attackDelay = 7
 
         #Face different Directions
@@ -1227,7 +1231,7 @@ class Player:
         if self.walkCounter == 0 and pressed[pygame.K_d] == False and pressed[pygame.K_a] == False and pressed[pygame.K_w] == False and pressed[pygame.K_s] == False:
             self.animate = 0
 
-        if self.attackCounter == 4: #play slash sound.
+        if self.attackCounter == 8: #play slash sound.
             slashSound.play()
             #pass
 
@@ -1249,8 +1253,30 @@ class Player:
         if self.animateCounter == 18:
             self.animateCounter = 0
 
+        if self.damagedTimer > 0:
+                self.damagedTimer -= 1
+
+        if self.damagedTimer == 10:
+            self.animate = 0
+
     def getAttack(self):
         return self.attackedTile
+
+    def checkDamage(self,enemyAttack):
+        if self.alive == 1:
+            if self.Tile == enemyAttack:
+                if self.damagedTimer == 0:
+                    self.health = self.health - 1
+                    self.damagedTimer = 15 #Make sure this is lower than animateCounter
+                   
+                    self.animate = 3
+                    self.animateCounter = 0
+                    
+                    hurtSound.play()
+
+                    if self.health <= 0:
+                        self.alive = 0 
+                        print ("You Died")
 
     def getFishing_cast(self):
         return self.fishing_cast
@@ -1278,6 +1304,8 @@ class Skeleton:
         self.animate = 0
         self.direction = direction
         self.attackDelay = 15
+
+        self.attackedTile = -1 #out of map
 
         self.walkCounter = 0
         self.attackCounter = 0
@@ -1630,7 +1658,7 @@ class Skeleton:
 
                     if self.Tile not in self.leftBorder:
                         self.attackedTile = self.Tile - 1
-                        Slef
+                        
                 elif self.animate == 3:#left Hurt
                     screen.blit(SleftHurt_001,(self.x - worldx, self.y - worldy))
               
@@ -1655,7 +1683,7 @@ class Skeleton:
             playery = (P.getY() -1) * 64
             playerTile = int(((playerx + 64) /64) + (((playery + 64)/ 64) * 20))
 
-            if self.walkCounter == 0 and self.attackCounter == 0 and self.y < playery and self.Tile - 20 != playerTile:
+            if self.walkCounter == 0 and self.attackCounter == 0 and self.y < playery and self.Tile + 20 != playerTile:
                 self.direction = 0
                 if map[self.Tile + 20] in safeTiles and self.Tile not in self.frontBorder and self.Tile + 20 not in npcOccupiedTiles:
                     self.walkCounter = 16
@@ -1678,6 +1706,36 @@ class Skeleton:
                 if map[self.Tile - 1] in safeTiles and self.Tile not in self.leftBorder and self.Tile - 1 not in npcOccupiedTiles:
                     self.walkCounter = 16
                     self.Tile -= 1
+
+
+            #attack
+            elif self.Tile + 20 == playerTile and self.walkCounter == 0 and self.attackCounter == 0 and self.attackDelay == 0 and self.Tile + 20 not in npcOccupiedTiles: #attack
+                self.animateCounter = 0
+                self.attackCounter = 16
+                self.attackDelay = 7
+                self.animate = 2
+                self.direction = 0
+
+            elif self.Tile + 1 == playerTile and self.walkCounter == 0 and self.attackCounter == 0 and self.attackDelay == 0 and self.Tile + 1 not in npcOccupiedTiles: #attack
+                self.animateCounter = 0
+                self.attackCounter = 16
+                self.attackDelay = 7
+                self.animate = 2
+                self.direction = 1
+
+            elif self.Tile - 20 == playerTile and self.walkCounter == 0 and self.attackCounter == 0 and self.attackDelay == 0 and self.Tile - 20 not in npcOccupiedTiles: #attack
+                self.animateCounter = 0
+                self.attackCounter = 16
+                self.attackDelay = 7
+                self.animate = 2
+                self.direction = 2
+
+            elif self.Tile - 1 == playerTile and self.walkCounter == 0 and self.attackCounter == 0 and self.attackDelay == 0 and self.Tile - 1 not in npcOccupiedTiles: #attack
+                self.animateCounter = 0
+                self.attackCounter = 16
+                self.attackDelay = 7
+                self.animate = 2
+                self.direction = 3
                     
 
             if self.walkCounter > 0:
@@ -1691,7 +1749,7 @@ class Skeleton:
 
                 if self.walkCounter == 0: #maybe beef up this statement to check for "if moving" to clean up walk animation
                     self.animate = 0
-
+                    gameState = 2
                     if playery > self.y:
                         self.direction = 0
 
@@ -1704,17 +1762,21 @@ class Skeleton:
                         elif playerx < self.x:
                             self.direction = 3
 
-                    gameState = 2
+                    
 
-            if self.attackCounter == 8: #play slash sound.
+            if self.attackCounter == 16: #play slash sound.
                 slashSound.play()
 
             if self.attackCounter > 0:
-                self.animate = 2
+                
                 self.attackCounter = self.attackCounter - 1
-                if self.attackCounter == 0:
+                if self.attackCounter == 7:
                     self.animate = 0
                     self.attackedTile = -1
+
+                if self.attackCounter == 0:
+                    gameState = 2
+                    
             elif self.attackDelay > 0:
                 self.attackDelay = self.attackDelay - 1
 
@@ -1749,9 +1811,12 @@ class Skeleton:
                         npcOccupiedTiles.remove(self.Tile)
                         npcObjectArray.remove(self)
 
-                        self.alive = 0
+                        self.alive = 0 
                     
                     #print ("died")
+
+    def getAttack(self):
+        return self.attackedTile
 
     def checkAlive(self):
         return self.alive
@@ -2497,6 +2562,9 @@ while playGame == True:
     #Check to see if any damage happens
     sk.checkDamage(P.getAttack()) 
     s1.checkDamage(P.getAttack())
+
+    P.checkDamage(sk.getAttack())
+    P.checkDamage(s1.getAttack())
 
     playerPos = P.getPos()
     playerX = playerPos[0]
