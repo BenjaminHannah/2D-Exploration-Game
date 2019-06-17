@@ -449,6 +449,11 @@ leftSlashing_006 = pygame.image.load('playerImages/Left - Slashing_006.png').con
 leftSlashing_007 = pygame.image.load('playerImages/Left - Slashing_007.png').convert_alpha()
 leftSlashing_008 = pygame.image.load('playerImages/Left - Slashing_008.png').convert_alpha()
 
+leftHurt_001 = pygame.image.load('playerImages/Left - Hurt_001.png').convert_alpha()
+rightHurt_001 = pygame.image.load('playerImages/Right - Hurt_001.png').convert_alpha()
+frontHurt_001 = pygame.image.load('playerImages/Front - Hurt_001.png').convert_alpha()
+backHurt_001 = pygame.image.load('playerImages/Back - Hurt_001.png').convert_alpha()
+
 frontFishing_000 = pygame.image.load('playerImages/Front - Fishing_000.png').convert_alpha()
 fishingLine_000 = pygame.image.load('hudImages/fishingLine_000.png').convert_alpha()
 ##########################################################################################
@@ -703,11 +708,8 @@ SleftSlashing_007 = pygame.image.load('playerImages2/Left - Slashing_007.png').c
 SleftSlashing_008 = pygame.image.load('playerImages2/Left - Slashing_008.png').convert_alpha()
 
 SleftHurt_001 = pygame.image.load('playerImages2/Left - Hurt_001.png').convert_alpha()
-
 SrightHurt_001 = pygame.image.load('playerImages2/Right - Hurt_001.png').convert_alpha()
-
 SfrontHurt_001 = pygame.image.load('playerImages2/Front - Hurt_001.png').convert_alpha()
-
 SbackHurt_001 = pygame.image.load('playerImages2/Back - Hurt_001.png').convert_alpha()
 
 ##########################################################################################
@@ -888,6 +890,9 @@ class Player:
 
                     if self.Tile not in self.frontBorder:
                         self.attackedTile = self.Tile + 20
+
+                elif self.animate == 3:#front Hurt
+                    screen.blit(frontHurt_001,(self.x, self.y))
     
 
             elif self.direction == 1: #Right
@@ -913,7 +918,7 @@ class Player:
                         elif int(self.animateCounter) == 16: screen.blit(rightIdle_016,(self.x,self.y))
                     
                         elif int(self.animateCounter) == 17: #switch to blinking
-                            screen.blit(rightIdle_017,(self.x,self.y)) 
+                            screen.blit(rightIdle_017,(self.x,self.y))
                             self.blinkCounter += 1
 
                             if self.blinkCounter == 10:
@@ -978,6 +983,9 @@ class Player:
                     if self.Tile not in self.rightBorder:
                         self.attackedTile = self.Tile + 1
 
+                elif self.animate == 3:#right Hurt
+                    screen.blit(rightHurt_001,(self.x, self.y))
+
             elif self.direction == 2: #Back
 
                 if self.animate == 0:#back Idle
@@ -1034,6 +1042,9 @@ class Player:
                 
                     if self.Tile not in self.backBorder:
                         self.attackedTile = self.Tile - 20
+
+                elif self.animate == 3:#back Hurt
+                    screen.blit(backHurt_001,(self.x, self.y))
 
             elif self.direction == 3: #Left
 
@@ -1121,6 +1132,9 @@ class Player:
 
                     if self.Tile not in self.leftBorder:
                         self.attackedTile = self.Tile - 1
+
+                elif self.animate == 3:#left Hurt
+                    screen.blit(leftHurt_001,(self.x, self.y))
 
 
     def movement(self):
